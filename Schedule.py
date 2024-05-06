@@ -55,12 +55,30 @@ class Schedule:
     def __init__(self, start_end_times, monday_date):
         self.monday_date = monday_date
         self.times_to_cal(start_end_times)
+
+    def __init__(self):
+        self.monday_date = 0
+        self.calendar_bookings = self.calendar_bookings
     
 
-    def times_to_cal(start_end_times):
-        for dt in start_end_times:
-            t_string = dt[dt.index("t")+1]
-            t_int = int(t_string)
-            time = math.ceil(t_int / 10000)
-            print(time)
+    def set_calendar_bookings(self, calendar):
+        self.calendar_bookings = calendar
         
+    def reset_calendar_bookings(self):
+        self.calendar_bookings = [
+            [False, False, False, False, False, False, False],
+            [False, False, False, False, False, False, False],
+            [False, False, False, False, False, False, False],
+            [False, False, False, False, False, False, False],
+            [False, False, False, False, False, False, False],
+            [False, False, False, False, False, False, False],
+            [False, False, False, False, False, False, False],
+            [False, False, False, False, False, False, False],
+            [False, False, False, False, False, False, False],
+            [False, False, False, False, False, False, False],
+            [False, False, False, False, False, False, False],
+            [False, False, False, False, False, False, False],
+            [False, False, False, False, False, False, False],
+            [False, False, False, False, False, False, False]
+        ]
+        return self.calendar_bookings
