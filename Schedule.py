@@ -2,22 +2,7 @@ import math
 
 class Schedule:
 
-    calendar_bookings = [
-        [False, False, False, False, False, False, False],
-        [False, False, False, False, False, False, False],
-        [False, False, False, False, False, False, False],
-        [False, False, False, False, False, False, False],
-        [False, False, False, False, False, False, False],
-        [False, False, False, False, False, False, False],
-        [False, False, False, False, False, False, False],
-        [False, False, False, False, False, False, False],
-        [False, False, False, False, False, False, False],
-        [False, False, False, False, False, False, False],
-        [False, False, False, False, False, False, False],
-        [False, False, False, False, False, False, False],
-        [False, False, False, False, False, False, False],
-        [False, False, False, False, False, False, False]
-    ]
+    calendar_bookings = [[]]
     monday_date = ""
 
     conversion_dict = {
@@ -58,8 +43,9 @@ class Schedule:
 
     def __init__(self):
         self.monday_date = 0
-        self.calendar_bookings = self.calendar_bookings
+        self.calendar_bookings = self.reset_calendar_bookings()
     
+
 
     def set_calendar_bookings(self, calendar):
         self.calendar_bookings = calendar
