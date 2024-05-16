@@ -2,6 +2,7 @@ import math
 import requests
 from bs4 import BeautifulSoup
 from Schedule import Schedule
+from Helpers import *
 
 class Location:
     id = 353     #353 is the dance studio
@@ -13,7 +14,7 @@ class Location:
     
     def get_start_end_times(self):
         print("calendar:")
-        response = requests.get("https://25live.collegenet.com/25live/data/wpi/run/rm_reservations.ics?caller=pro&space_id={}&start_dt=0&end_dt=+7&options=standard".format(self.id))
+        response = requests.get("https://25live.collegenet.com/25live/data/wpi/run/rm_reservations.ics?caller=pro&space_id={}&start_dt=0&end_dt=+6&options=standard".format(self.id))
         soup = BeautifulSoup(response.text, "html.parser")
         soup.prettify
 
@@ -31,11 +32,11 @@ class Location:
             else:
                 continue
             
-            dt = dt[4:15]
+            dt = timestamp_to_unix(dt)
             cal_times.append(dt)
 
         
-        print(cal_times)
+        # print(cal_times)
         return cal_times
 
 
@@ -44,12 +45,7 @@ class Location:
         is_end_time = False
         calendar = self.schedule.reset_calendar_bookings()
         for dt in start_end_times:
-            t_string = dt[dt.index("t")+1]
-            t_int = int(t_string)
-            time = math.floor(t_int / 10000) + is_end_time - 9
-            is_end_time = not is_end_time
-            print(time)
-
-            d_string = dt[0, dt.index("t")]
+            day = datetime.datetime.fromtimestamp(dt).strftime("%w")
+            print(day)
             
 

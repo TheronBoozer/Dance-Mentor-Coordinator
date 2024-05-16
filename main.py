@@ -3,6 +3,6 @@ from Location import Location
 
 def main():
     test = Location(353)
-    test.get_schedule()
+    test.set_schedule()
 
 main()

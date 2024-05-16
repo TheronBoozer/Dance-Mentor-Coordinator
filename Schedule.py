@@ -15,22 +15,6 @@ class Schedule:
             "Saturday" : 5,
             "Sunday" : 6
         }, 
-        "Time" : {
-            "09" : 0,
-            "10" : 1,
-            "11" : 2,
-            "12" : 3,
-            "13" : 4,
-            "14" : 5,
-            "15" : 6,
-            "16" : 7,
-            "17" : 8,
-            "18" : 9,
-            "19" : 10,
-            "20" : 11,
-            "21" : 12,
-            "22" : 13
-        }
     }
 
 
@@ -42,7 +26,6 @@ class Schedule:
         self.times_to_cal(start_end_times)
 
     def __init__(self):
-        self.monday_date = 0
         self.calendar_bookings = self.reset_calendar_bookings()
     
 
@@ -52,19 +35,12 @@ class Schedule:
         
     def reset_calendar_bookings(self):
         self.calendar_bookings = [
-            [False, False, False, False, False, False, False],
-            [False, False, False, False, False, False, False],
-            [False, False, False, False, False, False, False],
-            [False, False, False, False, False, False, False],
-            [False, False, False, False, False, False, False],
-            [False, False, False, False, False, False, False],
-            [False, False, False, False, False, False, False],
-            [False, False, False, False, False, False, False],
-            [False, False, False, False, False, False, False],
-            [False, False, False, False, False, False, False],
-            [False, False, False, False, False, False, False],
-            [False, False, False, False, False, False, False],
-            [False, False, False, False, False, False, False],
-            [False, False, False, False, False, False, False]
+            [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True],
+            [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True],
+            [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True],
+            [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True],
+            [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True],
+            [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True],
+            [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True]
         ]
         return self.calendar_bookings
