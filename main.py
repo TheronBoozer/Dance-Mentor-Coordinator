@@ -2,7 +2,6 @@ from Location import Location
 
 
 def main():
-    test = Location(353)
-    test.set_schedule()
+    test = Location(353, 7, 23)
 
 main()

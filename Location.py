@@ -5,14 +5,19 @@ from Schedule import Schedule
 from Helpers import *
 
 class Location:
-    id = 353     #353 is the dance studio
+    id = 0     #353 is the dance studio
     schedule = Schedule()
+    open_time = 0
+    close_time = 0
 
-    def __init__(self, space_id):
+    def __init__(self, space_id, open_time, close_time):
         self.id = space_id
+        self.open_time = open_time * 4
+        self.close_time = close_time * 4
+        self.set_schedule()
 
     
-    def get_start_end_times(self):
+    def get_unix_times(self):
         print("calendar:")
         response = requests.get("https://25live.collegenet.com/25live/data/wpi/run/rm_reservations.ics?caller=pro&space_id={}&start_dt=0&end_dt=+6&options=standard".format(self.id))
         soup = BeautifulSoup(response.text, "html.parser")
@@ -41,11 +46,5 @@ class Location:
 
 
     def set_schedule(self):
-        start_end_times = self.get_start_end_times()
-        is_end_time = False
-        calendar = self.schedule.reset_calendar_bookings()
-        for dt in start_end_times:
-            day = datetime.datetime.fromtimestamp(dt).strftime("%w")
-            print(day)
-            
+        self.schedule.set_calendar_bookings(self.get_unix_times(), self.open_time, self.close_time)
 
