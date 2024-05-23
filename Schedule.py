@@ -24,6 +24,7 @@ class Schedule:
 
     def set_calendar_vacancies(self, unix_times, open_time, close_time):
         
+        
         start_end_positions = [ [0, open_time, close_time],
                                 [0, open_time, close_time],
                                 [0, open_time, close_time],
@@ -66,3 +67,12 @@ class Schedule:
         # print(calendar[4])
 
         self.calendar_vacancies = calendar
+
+
+
+    def is_available(self, day, start_time, end_time):
+        for time in self.calendar_vacancies[day]:
+            if not time:
+                return False
+            
+        return True
