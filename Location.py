@@ -46,5 +46,5 @@ class Location:
 
 
     def set_schedule(self):
-        self.schedule.set_calendar_bookings(self.get_unix_times(), self.open_time, self.close_time)
+        self.schedule.set_calendar_vacancies(self.get_unix_times(), self.open_time, self.close_time)
 
