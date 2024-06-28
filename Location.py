@@ -70,9 +70,14 @@ class Location:
         driver = webdriver.Chrome()
         driver.get('https://25live.collegenet.com/pro/wpi#!/home/location/353/details')
 
-        html1 = driver.page_source
 
-        details_page = driver.execute_script("return document.documentElement.innerHTML;")
+
+        source = driver.page_source
+
+        html_page = driver.execute_script("return document.documentElement.innerHTML;")
+        html_page.find_elements(blah)
+        
+
         
         # details_page = requests.get('https://25live.collegenet.com/pro/wpi#!/home/location/353/details')
         # souper_details = BeautifulSoup(details_page, "html.parser")
