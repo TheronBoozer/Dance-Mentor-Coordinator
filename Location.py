@@ -1,17 +1,9 @@
 import math
 import requests
 from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 
 from Schedule import Schedule
 from Helpers import *
-
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support.wait import WebDriverWait
 
 #undetected chromedriver imports
 import undetected_chromedriver as uc
@@ -62,47 +54,3 @@ class Location:
     def set_schedule(self):
         self.schedule.set_calendar_vacancies(self.get_unix_times(), self.open_time, self.close_time)
 
-
-    def get_name_and_hours(self):
-        options = Options()
-        # options.add_argument('--headless=new')
-
-        driver = webdriver.Chrome()
-        driver.get('https://25live.collegenet.com/pro/wpi#!/home/location/353/details')
-
-
-
-        source = driver.page_source
-
-        html_page = driver.execute_script("return document.documentElement.innerHTML;")
-        html_page.find_elements(blah)
-        
-
-        
-        # details_page = requests.get('https://25live.collegenet.com/pro/wpi#!/home/location/353/details')
-        # souper_details = BeautifulSoup(details_page, "html.parser")
-        # souper_details.prettify()
-        print(details_page)
-
-
-
-def setup_driver():
-    """
-    Sets up a Chromedriver with optimal options for ask_gpt. \
-    """
-
-    # grab normal options
-    op = webdriver.ChromeOptions()
-    # make chrome a random user
-    op.add_argument(f"user-agent={UserAgent.random}")
-    # give chrome that users data
-    op.add_argument("user-data-dir=./")
-    # idk what these do
-    op.add_experimental_option("detach", True)
-    op.add_experimental_option("excludeSwitches", ["enable-logging"])
-
-    # make the driver!
-    driver = uc.Chrome(chrome_options=op)
-
-
-    return driver
