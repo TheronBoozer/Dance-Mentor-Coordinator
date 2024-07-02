@@ -1,11 +1,11 @@
 from typing import List
 
-from Hour import Hour
-from Quarter_Hours import Quarter_Hours
+from .Hour import Hour
+from .Quarter_Hour import Quarter_Hour
 
 
 class Day:
-    quarter_hours = [Quarter_Hours(i*15*60) for i in range(96)]
+    quarter_hours = [Quarter_Hour(i*15*60) for i in range(96)]
     free_hours = []
     weekday = ""
 
@@ -14,7 +14,7 @@ class Day:
         self.weekday = weekday
 
     def __init__(self, weekday:int):
-        weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+        weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
         self.weekday = weekdays[weekday]
 
 
@@ -22,21 +22,21 @@ class Day:
         for index, quarter_hour in enumerate(self.quarter_hours):
             if not quarter_hour.get_availability():
                 continue
-            elif not Quarter_Hours[index + 1].get_availability():
+            elif not Quarter_Hour[index + 1].get_availability():
                 index += 1
                 continue
-            elif not Quarter_Hours[index + 2].get_availability():
+            elif not Quarter_Hour[index + 2].get_availability():
                 index += 2
                 continue
-            elif not Quarter_Hours[index + 3].get_availability():
+            elif not Quarter_Hour[index + 3].get_availability():
                 index += 3
                 continue
             else:
-                self.free_hours.append(Hour([quarter_hour, Quarter_Hours[index + 1], Quarter_Hours[index + 2], Quarter_Hours[index + 3]]))
+                self.free_hours.append(Hour([quarter_hour, Quarter_Hour[index + 1], Quarter_Hour[index + 2], Quarter_Hour[index + 3]]))
 
 
 
-    def set_divisions(self, divisions:List[Quarter_Hours]):
+    def set_divisions(self, divisions:List[Quarter_Hour]):
         self.quarter_hours = divisions
 
 

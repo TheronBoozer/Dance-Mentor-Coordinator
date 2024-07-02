@@ -3,22 +3,19 @@ class Hourly_Time:
 
 
     # Initializers
-    def __init__(self):
-        self.int_timestamp = 0
-
     def __init__(self, int_timestamp:int):
         self.int_timestamp = int_timestamp
 
-    # def __init__(self, readable_timestamp:str):
-    #     self.int_timestamp = self.convert_time(readable_timestamp)
-
+    @classmethod
+    def from_string(self, readable_timestamp:str):
+        return Hourly_Time(self.__convert_time(readable_timestamp))
 
     # Getters
     def get_int_time(self) -> int:
         return self.int_timestamp
     
     def get_str_time(self) -> str:
-        return self.convert_time(self.int_timestamp)
+        return self.__convert_time(self.int_timestamp)
     
 
     # To String
@@ -27,7 +24,7 @@ class Hourly_Time:
 
 
 # Helping Functions for converting the time
-    def convert_time(self, timestamp : str) -> int :
+    def __convert_time(self, timestamp : str) -> int :
         """Takes in either the readable timestamp (12:00 pm) and converts it to an hourly unix timestamp (43200) or vice versa"""
         hour = int(timestamp[:timestamp.index(":")])
         minute = int(timestamp[timestamp.index(":"):timestamp.index(" ")])
@@ -41,7 +38,7 @@ class Hourly_Time:
 
 
 
-    def convert_time(self, timestamp : int) -> str :
+    def __convert_time(self, timestamp : int) -> str :
         """Takes in either the readable timestamp (12:00 pm) and converts it to an hourly unix timestamp (43200) or vice versa"""
         minute = int((timestamp % 3600) / 60)
         is_pm = timestamp >= 43200

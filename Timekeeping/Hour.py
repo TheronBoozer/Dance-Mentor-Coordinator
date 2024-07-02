@@ -1,14 +1,12 @@
-
-
 from typing import List
-from Quarter_Hours import Quarter_Hours
+from Timekeeping.Quarter_Hour import Quarter_Hour
 
 
 class Hour:
     quarters = []
 
 
-    def __init__(self, quarters:List[Quarter_Hours]):
+    def __init__(self, quarters:List[Quarter_Hour]):
         self.quarters = quarters
 
     def get_start_time(self):

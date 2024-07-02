@@ -1,5 +1,5 @@
 import requests
-from Schedule import Schedule
+from Scheduling.Schedule import Schedule
 
 
 class Mentor:

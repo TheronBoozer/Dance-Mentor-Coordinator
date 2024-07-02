@@ -1,7 +1,7 @@
 import datetime
 import math
 
-from Day import Day
+from Timekeeping.Day import Day
 
 class Schedule:
 
