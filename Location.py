@@ -5,9 +5,6 @@ from bs4 import BeautifulSoup
 from Schedule import Schedule
 from Helpers import *
 
-#undetected chromedriver imports
-import undetected_chromedriver as uc
-from fake_useragent import UserAgent
 
 class Location:
     id = 0     #353 is the dance studio

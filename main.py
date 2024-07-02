@@ -26,7 +26,7 @@ def main():
     # print(test)
     live = Twenty_Five_Live_Calendar(353)
 
-    # print(live.get_booked_times())
+    print(live.get_booked_times())
 
 
 
