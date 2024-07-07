@@ -72,7 +72,7 @@ class Day:
                     self.quarter_hours[index + 2], 
                     self.quarter_hours[index + 3]]))
 
-            if index >= len(self.quarter_hours):                                        # if the index goes out of bounds
+            if index >= len(self.quarter_hours) - 4:                                        # if the index goes out of bounds
                 break                                                                   # stop the loop
             
         return free_hours

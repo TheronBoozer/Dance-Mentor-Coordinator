@@ -1,5 +1,6 @@
 from Scheduling.Twenty_Five_Live_Calendar import Twenty_Five_Live_Calendar
 from Scheduling.When2Meet import When2Meet
+from Scheduling import Schedule
 
 from Timekeeping.Day import Day
 
@@ -36,7 +37,7 @@ class Schedule:
 
         free_hours = []                                     # create returnable array of hours
         for day in self.calendar:                           # for each day in the calendar
-            free_hours.add(day.find_free_hours)             # add the avalable hours
+            free_hours.extend(day.find_free_hours())             # add the avalable hours
 
         return free_hours
     
@@ -59,6 +60,8 @@ class Schedule:
         for quarter in available_quarters:                                                                                                              # for each quarter in the available ones 
             self.calendar[quarter.get_weekday()].get_quarters()[int(quarter.get_start_time().get_int_time() / (15*60))].set_available()                 # change the corresponding quarter in the calendar to be available
         
+        self.free_hours = self.__update_free_hours()                                    # update the hours of availability
+
         return self                                                                     # return self for convenience
     
 
@@ -72,8 +75,24 @@ class Schedule:
         for quarter in unavailable_quarters:                                                                                                            # for each quarter in the unavailable ones
             self.calendar[quarter.get_weekday()].get_quarters()[int(quarter.get_start_time().get_int_time() / (15*60))].set_unavailable()               # change the corresponding quarter in the calendar to be unavailable
         
+        self.free_hours = self.__update_free_hours()                                    # update the hours of availability
+
         return self                                                                     # return self for convenience
     
+
+    def cross_check_with(self, other : Schedule):
+        print(str(self))
+        print(str(other))
+        combined_hours = []
+        for hour in self.free_hours:
+            # for other_hour in other.free_hours:
+            #     if hour == other_hour:
+
+            if hour in other.get_free_hours():
+                    combined_hours.append(hour)
+
+        return combined_hours
+
 
 
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////

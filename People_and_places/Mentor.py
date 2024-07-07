@@ -91,6 +91,9 @@ class Mentor:
         if self.follower and self.leader: return 'Leader and Follower'
         elif self.follower: return 'Follower'
         elif self.leader: return 'Leader'
+
+    def get_schedule(self):
+        return self.schedule
             
 
 
