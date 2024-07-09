@@ -1,7 +1,7 @@
 import requests
 import json
-from People_and_places.Location import Location
-from People_and_places.Mentor import Mentor
+from Scheduled_Entities.Location import Location
+from Scheduled_Entities.Mentor import Mentor
 
 
 
