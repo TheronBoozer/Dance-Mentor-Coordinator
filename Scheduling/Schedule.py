@@ -80,16 +80,17 @@ class Schedule:
         return self                                                                     # return self for convenience
     
 
-    def cross_check_with(self, other : Schedule):
-        print(str(self))
-        print(str(other))
+    def cross_check_with(self, other_schedules):
+
         combined_hours = []
         for hour in self.free_hours:
             # for other_hour in other.free_hours:
             #     if hour == other_hour:
-
-            if hour in other.get_free_hours():
-                    combined_hours.append(hour)
+            for sched in other_schedules:
+                if hour not in sched.get_free_hours():
+                        break
+                        
+            combined_hours.append(hour)
 
         return combined_hours
 

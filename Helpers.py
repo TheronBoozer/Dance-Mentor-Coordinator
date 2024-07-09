@@ -26,7 +26,7 @@ def __create_2d_array(link):
     Generates a 2d array from a given google sheet link
     """
     
-    csv_link = link[:link.index('edit')] + 'export?format=csv'      # converts basic 'share' link to a readable csv link
+    csv_link = link[:link.index('edit')] + 'export?format=tsv'      # converts basic 'share' link to a readable csv link
 
     google_sheet = requests.get(csv_link)                           # read the csv file made from the link
     unorganized_data = google_sheet.text                            # sorts it into only the text
@@ -35,7 +35,7 @@ def __create_2d_array(link):
     sheet_information = []                                          # create empty array to be filled with row arrays 
 
     for str_row in array_of_str_rows:                               # for each string
-        row_array = str_row.split(',')                              # split the row text by commas
+        row_array = str_row.split('\t')                              # split the row text by commas
         row_array.pop(0)                                            # delete the timestamp
         sheet_information.append(row_array)                         # add to the master array
 

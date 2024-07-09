@@ -17,20 +17,21 @@ class Session_Request:
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     def __init__(self, information):
-        self.participants = information[1]
+        self.participants = information[0]
         self.schedule = Schedule()
 
-        self.emails = self.__parse_emails(information[2])
-        self.phone_numbers = self.__parse_phone_numbers(information[3])
+        self.emails = self.__parse_emails(information[1])
+        self.phone_numbers = self.__parse_phone_numbers(information[2])
 
-        self.when2meet = When2Meet(information[4])
+        self.when2meet_link = information[3]
+        self.when2meet = When2Meet(self.when2meet_link)
         self.schedule.change_availability(self.when2meet)
 
-        self.level = information[6]
-        self.topic = f"{information[5]} - {information[7]} : {information[8]}"
-        self.description = information[9]
-        self.mentor_preference = information[10].split(", ")
-        self.assistant_mentor = information[11] == "Yes"
+        self.level = information[5]
+        self.topic = f"{information[4]} - {information[6]} : {information[7]}"
+        self.description = information[8]
+        self.mentor_preference = information[9].split("' ")
+        self.assistant_mentor = information[10]
         
 
 
@@ -49,4 +50,38 @@ class Session_Request:
     def __parse_phone_numbers(self, phone_string : str):
         numbers = re.findall(r"(\d{3}[-\.\s]??\d{3}[-\.\s]??\d{4}|\(\d{3}\)\s*\d{3}[-\.\s]??\d{4}|\d{3}[-\.\s]??\d{4})", phone_string)
 
-        print(numbers)
+        return numbers
+
+    
+
+    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    # //////////////////////////////////////////*   GETTERS   */////////////////////////////////////////////////
+    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    def get_schedule(self) -> Schedule:
+        return self.schedule
+    
+
+    
+    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    # /////////////////////////////////////////*   TO STRING   *////////////////////////////////////////////////
+    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    def __str__(self) -> str:
+        return f"""
+    {self.participants}:
+     emails - {", ".join(self.emails)}
+     phone numbers - {", ".join(self.phone_numbers)}
+     availability - {self.when2meet_link}
+     session details:
+        level: {self.level}
+        topic: {self.topic}
+        description: {self.description}
+     mentor preferences:
+        main mentor options - {", ".join(self.mentor_preference)}
+        assistant mentor - {self.assistant_mentor}
+                """
