@@ -2,6 +2,7 @@ import requests
 import json
 from Scheduled_Entities.Location import Location
 from Scheduled_Entities.Mentor import Mentor
+from Scheduled_Entities.Session_Request import Session_Request
 
 
 
@@ -78,3 +79,16 @@ def get_locations():
 
     return locations
 
+def get_sessions():
+    """
+    Returns an array of the recent session requests
+    """
+
+    session_sheet = __get_links()["SESSION_REQUEST_SHEET_LINK"]
+    session_information = __create_2d_array(session_sheet)
+
+    sessions = []
+    for information in session_information:
+        sessions.append(Session_Request(information))
+
+    return sessions
