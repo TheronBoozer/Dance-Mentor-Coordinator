@@ -1,8 +1,10 @@
+import datetime
 import requests
 import json
 from Scheduled_Entities.Location import Location
 from Scheduled_Entities.Mentor import Mentor
 from Scheduled_Entities.Session_Request import Session_Request
+import re
 
 
 
@@ -21,7 +23,7 @@ def __get_links():
     return links                                    # returns the dictionary
 
 
-def __create_2d_array(link):
+def __create_2d_array(link : str, recent : False):
     """
     Generates a 2d array from a given google sheet link
     """
@@ -32,6 +34,12 @@ def __create_2d_array(link):
     unorganized_data = google_sheet.text                            # sorts it into only the text
     array_of_str_rows = unorganized_data.split('\r')                # splits the text into rows
 
+    array_of_str_rows.pop(0)                                        # remove the label row
+
+    if recent:
+        array_of_str_rows = __remove_old_rows(array_of_str_rows)
+            
+
     sheet_information = []                                          # create empty array to be filled with row arrays 
 
     for str_row in array_of_str_rows:                               # for each string
@@ -39,10 +47,33 @@ def __create_2d_array(link):
         row_array.pop(0)                                            # delete the timestamp
         sheet_information.append(row_array)                         # add to the master array
 
-    sheet_information.pop(0)                                        # remove the label row
+
 
     return sheet_information
 
+
+def __remove_old_rows(rows):
+    current_weekday = datetime.datetime.now(tz=None).weekday()
+    days_since_last_saturday = ((current_weekday + (7-5)) % 7 + 6) 
+    last_saturday_at_midnight = int(datetime.datetime.now(tz=None).timestamp()) - days_since_last_saturday * 24 * 3600 
+    last_saturday_at_midnight -= last_saturday_at_midnight % (24*3600) - 4*3600 
+
+    for row in rows[::-1]:
+        fixed_format = row[:row.index("\t")].strip()     
+        nums_in_format = re.findall(r"/d+", fixed_format)
+
+
+        for num in nums_in_format:
+            if len(num) == 1:
+                fixed_format.replace(num, f"0{num}")
+
+        timestamp = datetime.datetime.strptime(fixed_format, "%m/%d/%Y %H:%M:%S").timestamp()
+
+        if int(timestamp) <  last_saturday_at_midnight:
+            rows = rows[rows.index(row)+1:]
+            break
+
+    return rows
 
 
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,7 +116,7 @@ def get_sessions():
     """
 
     session_sheet = __get_links()["SESSION_REQUEST_SHEET_LINK"]
-    session_information = __create_2d_array(session_sheet)
+    session_information = __create_2d_array(session_sheet, True)
 
     sessions = []
     for information in session_information:
