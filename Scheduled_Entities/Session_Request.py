@@ -17,21 +17,21 @@ class Session_Request:
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     def __init__(self, information):
-        self.participants = information[0]
-        self.schedule = Schedule()
+        self.participants = information[0]                                              # save the names of the participants
+        self.schedule = Schedule()                                                      # create a schedule
 
-        self.emails = self.__parse_emails(information[1])
-        self.phone_numbers = self.__parse_phone_numbers(information[2])
+        self.emails = self.__parse_emails(information[1])                               # save a list of emails
+        self.phone_numbers = self.__parse_phone_numbers(information[2])                 # save a list of phone numbers
 
-        self.when2meet_link = information[3]
-        self.when2meet = When2Meet(self.when2meet_link)
-        self.schedule.change_availability(self.when2meet)
+        self.when2meet_link = information[3]                                            # save the when2meet link
+        self.when2meet = When2Meet(self.when2meet_link)                                 # create the when2meet object
+        self.schedule.change_availability(self.when2meet)                               # update the schedule based on the when2meet
 
-        self.level = information[5]
-        self.topic = f"{information[4]} - {information[6]} : {information[7]}"
-        self.description = information[8]
-        self.mentor_preference = information[9].split("' ")
-        self.assistant_mentor = information[10]
+        self.level = information[5]                                                     # save the level
+        self.topic = f"{information[4]} - {information[6]} : {information[7]}"          # create the topic ex: (Technique - Smooth, Standard : Tango, Waltz)
+        self.description = information[8]                                               # save the provided description
+        self.mentor_preference = information[9].split(", ")                             # create the array of mentor names
+        self.assistant_mentor = information[10].strip() == 'Yes'                        # save a boolean as to if an assistant is welcome
         
 
 
@@ -43,12 +43,20 @@ class Session_Request:
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     def __parse_emails(self, email_string : str):
-        emails = re.findall(r"([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)", email_string)
+        """
+        Given a string of emails, parse and return an array of the emails
+        """
+        
+        emails = re.findall(r"([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)", email_string)              # regex!!
 
         return emails
 
     def __parse_phone_numbers(self, phone_string : str):
-        numbers = re.findall(r"(\d{3}[-\.\s]??\d{3}[-\.\s]??\d{4}|\(\d{3}\)\s*\d{3}[-\.\s]??\d{4}|\d{3}[-\.\s]??\d{4})", phone_string)
+        """
+        Given a string of phone numbers, parse and return an array of the numbers
+        """
+        
+        numbers = re.findall(r"(\d{3}[-\.\s]??\d{3}[-\.\s]??\d{4}|\(\d{3}\)\s*\d{3}[-\.\s]??\d{4}|\d{3}[-\.\s]??\d{4})", phone_string)          # more regex!!
 
         return numbers
 

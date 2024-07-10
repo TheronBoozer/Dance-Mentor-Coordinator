@@ -4,7 +4,6 @@ import json
 from Scheduled_Entities.Location import Location
 from Scheduled_Entities.Mentor import Mentor
 from Scheduled_Entities.Session_Request import Session_Request
-import re
 
 
 
@@ -36,8 +35,9 @@ def __create_2d_array(link : str, recent : False):
 
     array_of_str_rows.pop(0)                                        # remove the label row
 
-    if recent:
-        array_of_str_rows = __remove_old_rows(array_of_str_rows)
+
+    if recent:                                                      # if only the recent rows are requested
+        array_of_str_rows = __remove_old_rows(array_of_str_rows)    # remove the old ones
             
 
     sheet_information = []                                          # create empty array to be filled with row arrays 
