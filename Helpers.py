@@ -53,24 +53,21 @@ def __create_2d_array(link : str, recent : False):
 
 
 def __remove_old_rows(rows):
-    current_weekday = datetime.datetime.now(tz=None).weekday()
-    days_since_last_saturday = ((current_weekday + (7-5)) % 7 + 6) 
-    last_saturday_at_midnight = int(datetime.datetime.now(tz=None).timestamp()) - days_since_last_saturday * 24 * 3600 
-    last_saturday_at_midnight -= last_saturday_at_midnight % (24*3600) - 4*3600 
+    """
+    A function that removes rows with a timestamp older than the past saturday
+    """
+    
+    current_weekday = datetime.datetime.now().weekday()                                                                         # get the current weekday from 0-6 Monday-Sunday
+    days_since_last_saturday = ((current_weekday + (7-5)) % 7 + 6)                                                              # some math to shift the current weekday to be the days since two saturdays ago
+    last_saturday_at_midnight = int(datetime.datetime.now().timestamp()) - days_since_last_saturday * 24 * 3600                 # subtract the days from the current datetime
+    last_saturday_at_midnight -= last_saturday_at_midnight % (24*3600) - 4*3600                                                 # remove residual hours and minutes so it's midnight on saturday
 
-    for row in rows[::-1]:
-        fixed_format = row[:row.index("\t")].strip()     
-        nums_in_format = re.findall(r"/d+", fixed_format)
+    for row in rows[::-1]:                                                                              # loop throw each row from the back
+        fixed_format = row[:row.index("\t")].strip()                                                    # grab just the timestamp
+        timestamp = datetime.datetime.strptime(fixed_format, "%m/%d/%Y %H:%M:%S").timestamp()           # create the integer timestamp from the readable one
 
-
-        for num in nums_in_format:
-            if len(num) == 1:
-                fixed_format.replace(num, f"0{num}")
-
-        timestamp = datetime.datetime.strptime(fixed_format, "%m/%d/%Y %H:%M:%S").timestamp()
-
-        if int(timestamp) <  last_saturday_at_midnight:
-            rows = rows[rows.index(row)+1:]
+        if int(timestamp) <  last_saturday_at_midnight:                                                 # if the timestamp is older than last saturday
+            rows = rows[rows.index(row)+1:]                                                             # clip the row array to only hold those more recent ones
             break
 
     return rows
