@@ -8,7 +8,7 @@ DISCOVERY_DOC = "https://forms.googleapis.com/$discovery/rest?version=v1"
 store = file.Storage("token.json")
 creds = None
 if not creds or creds.invalid:
-  flow = client.flow_from_clientsecrets("client_secrets.json", SCOPES)
+  flow = client.flow_from_clientsecrets("client_oauth.json", SCOPES)
   creds = tools.run_flow(flow, store)
 
 form_service = discovery.build(
