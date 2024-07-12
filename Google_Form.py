@@ -88,6 +88,8 @@ class Google_Form:
         questions = self.form_service.forms().get(formId=self.form_id).execute()
         questions = questions.get('items', [])
 
+        if len(questions) == 0: return
+
         delete_requests = []
 
         for i, item in enumerate(questions):
@@ -100,7 +102,7 @@ class Google_Form:
         self.form_service.forms().batchUpdate(formId=self.form_id, body=batch_delete_request).execute()
 
     
-    def add_multiple_choice_question(self, title, description, answers, type='RADIO', required=True, section_selection=False):
+    def add_multiple_choice_question(self, title, description, answers, type='RADIO', required=True, section_selection=False, index=-1):
         """
         Adds a multiple choice question to the given form with specified title, description, and answers
           The parameters -
@@ -116,8 +118,9 @@ class Google_Form:
                 option['goToSectionId'] = section_id
             options.append(option)
 
-        questions = self.form_service.forms().get(formId=self.form_id).execute()
-        num_of_questions = len(questions.get('items', []))
+        if index == -1:
+            questions = self.form_service.forms().get(formId=self.form_id).execute()
+            index = len(questions.get('items', []))
 
         NEW_QUESTION = {
             "requests": [
@@ -140,7 +143,7 @@ class Google_Form:
                                 }
                             },
                         },
-                        "location": {"index": num_of_questions},
+                        "location": {"index": index},
                     }
                 }
             ]
