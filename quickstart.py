@@ -1,20 +1,36 @@
 from apiclient import discovery
-from httplib2 import Http
 from oauth2client import client, file, tools
+from Helpers import save_object, recycle_object
 
-SCOPES = 'https://www.googleapis.com/auth/forms.body'
+import os.path
+
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+
+
+SCOPES = ['https://www.googleapis.com/auth/forms.body']
 DISCOVERY_DOC = "https://forms.googleapis.com/$discovery/rest?version=v1"
 
 store = file.Storage("token.json")
 creds = None
-if not creds or creds.invalid:
-  flow = client.flow_from_clientsecrets("client_oauth.json", SCOPES)
-  creds = tools.run_flow(flow, store)
+if os.path.exists("token.json") :
+    creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+if not creds or not creds.valid :
+    if creds and creds.expired and creds.refresh_token :
+        creds.refresh(Request())
+    else :
+        flow = InstalledAppFlow.from_client_secrets_file(
+            'client_oauth.json', SCOPES
+        )
+        creds = tools.run_flow(flow, store)
+    with open('token.json', 'w') as token :
+        token.write(creds.to_json())
 
 form_service = discovery.build(
     "forms",
     "v1",
-    http=creds.authorize(Http()),
+    credentials=creds,
     discoveryServiceUrl=DISCOVERY_DOC,
     static_discovery=False,
 )
