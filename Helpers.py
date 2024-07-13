@@ -133,6 +133,13 @@ def recycle_object(filename):
 def make_session_request_question(mentor : Mentor, locations : list, request : Session_Request):
     possible_times = mentor.get_schedule().cross_check_with(request.get_schedule())
 
-    location_timing = {}
+    options = ["I do not want this session"]
+    times = []
+
     for location in locations:
-        location_timing[location.get_name()] = location.get_schedule().cross_check_with(possible_times)
+        location_timing = location.get_schedule().cross_check_with(possible_times)
+        for time in location_timing:
+            if time not in times:
+                times.append(time)
+                options.append(f"{str(time)} - {location.get_name()}")
+
