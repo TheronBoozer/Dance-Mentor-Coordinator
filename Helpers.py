@@ -129,3 +129,10 @@ def save_object(obj, filename):
 def recycle_object(filename):
     with open(filename, 'rb') as inp:
         return pickle.load(inp)
+    
+def make_session_request_question(mentor : Mentor, locations : list, request : Session_Request):
+    possible_times = mentor.get_schedule().cross_check_with(request.get_schedule())
+
+    location_timing = {}
+    for location in locations:
+        location_timing[location.get_name()] = location.get_schedule().cross_check_with(possible_times)
