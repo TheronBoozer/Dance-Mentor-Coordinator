@@ -7,6 +7,9 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 
+from Scheduled_Entities.Mentor import Mentor
+from Scheduled_Entities.Session_Request import Session_Request
+
 
 SCOPES = ['https://www.googleapis.com/auth/forms.body']
 DISCOVERY_DOC = "https://forms.googleapis.com/$discovery/rest?version=v1"
@@ -111,11 +114,10 @@ class Google_Form:
         """
         
         options = []
-        for answer in answers:
+        for i, answer in enumerate (answers):
             option = {"value": answer}
             if section_selection:
-                section_id = answer.replace(' ', '_')
-                option['goToSectionId'] = section_id
+                option['goToSectionId'] = str(i)
             options.append(option)
 
         if index == -1:
@@ -157,21 +159,16 @@ class Google_Form:
         )
     
 
-    def add_section(self, title : str, description):
+    def add_section(self, title : str, description, id=None):
 
         questions = self.form_service.forms().get(formId=self.form_id).execute()
         num_of_questions = len(questions.get('items', []))
-
-        item_id = title.replace(' ', '_')
     
         NEW_SECTION = {
             "requests": [
                 {
                     "createItem": {
                         "item": {
-                            "itemId" : (
-                                item_id
-                            ),
                             "title": (
                                 title
                             ),
@@ -187,8 +184,63 @@ class Google_Form:
             ]
         }
 
+        if id is not None:
+            NEW_SECTION["requests"][0]["createItem"]["item"]["itemId"] = id
+
         return (
             self.form_service.forms()
             .batchUpdate(formId=self.form_id, body=NEW_SECTION)
             .execute()
         )
+    
+    def add_text(self, title : str, description):
+
+        questions = self.form_service.forms().get(formId=self.form_id).execute()
+        num_of_questions = len(questions.get('items', []))
+    
+        NEW_SECTION = {
+            "requests": [
+                {
+                    "createItem": {
+                        "item": {
+                            "title": (
+                                title
+                            ),
+                            "description" : (
+                                description
+                            ),
+                            "textItem": {
+                            },
+                        },
+                        "location": {"index": num_of_questions},
+                    }
+                }
+            ]
+        }
+
+        return (
+            self.form_service.forms()
+            .batchUpdate(formId=self.form_id, body=NEW_SECTION)
+            .execute()
+        )
+
+    def make_session_request_question(self, mentor : Mentor, locations : list, request : Session_Request):
+        possible_times = mentor.get_schedule().cross_check_with(request.get_schedule())
+        if len(possible_times) == 0:
+            self.add_text("You have no sessions", "This either means there are no sessions this week, or that your availability doesn't line up.\nTry again next week!")
+            return
+        title = request.get_partiicipants()
+        description = f"{title} \n\n {request.get_description()}"
+
+        options = ["I do not want this session"]
+        times = []
+
+        for location in locations:
+            location_timing = location.get_schedule().cross_check_with(possible_times)
+            for time in location_timing:
+                if time not in times:
+                    times.append(time)
+                    options.append(f"{str(time)} - {location.get_name()}")
+
+
+        self.add_multiple_choice_question(title, description, options, type="DROP_DOWN")

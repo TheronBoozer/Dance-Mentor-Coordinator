@@ -27,11 +27,10 @@ class Session_Request:
         self.when2meet = When2Meet(self.when2meet_link)                                 # create the when2meet object
         self.schedule.change_availability(self.when2meet)                               # update the schedule based on the when2meet
 
-        self.level = information[5]                                                     # save the level
-        self.topic = f"{information[4]} - {information[6]} : {information[7]}"          # create the topic ex: (Technique - Smooth, Standard : Tango, Waltz)
-        self.description = information[8]                                               # save the provided description
-        self.mentor_preference = information[9].split(", ")                             # create the array of mentor names
-        self.assistant_mentor = information[10].strip() == 'Yes'                        # save a boolean as to if an assistant is welcome
+        self.topic = f"{information[5]} {information[4]} - {information[6]} : {information[7]}"             # create the topic ex: (Technique - Smooth, Standard : Tango, Waltz)
+        self.description = information[8]                                                                   # save the provided description
+        self.mentor_preference = information[9].split(", ")                                                 # create the array of mentor names
+        self.assistant_mentor = information[10].strip() == 'Yes'                                            # save a boolean as to if an assistant is welcome
         
 
 
@@ -70,6 +69,15 @@ class Session_Request:
 
     def get_schedule(self) -> Schedule:
         return self.schedule
+    
+    def get_partiicipants(self) -> str:
+        return self.participants
+    
+    def get_topic(self) -> str:
+        return self.topic
+    
+    def get_description(self) -> str:
+        return self.description
     
 
     

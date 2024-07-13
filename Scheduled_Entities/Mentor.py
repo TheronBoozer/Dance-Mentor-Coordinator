@@ -94,6 +94,9 @@ class Mentor:
 
     def get_schedule(self):
         return self.schedule
+    
+    def get_name(self):
+        return self.name
             
 
 
