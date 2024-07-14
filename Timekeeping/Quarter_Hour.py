@@ -59,6 +59,9 @@ class Quarter_Hour:
     def get_weekday(self):
         return self.weekday
     
+    def get_string_weekday(self):
+        return self.__convert_weekday()
+    
     def get_availability(self):
         return self.available
     

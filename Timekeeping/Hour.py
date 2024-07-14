@@ -16,6 +16,7 @@ class Hour:
 
     def __init__(self, quarters:List[Quarter_Hour]):
         self.quarters = quarters
+        self.weekday = quarters[0].get_string_weekday()
 
 
 
@@ -54,5 +55,5 @@ class Hour:
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     def __str__(self) -> str:
-        return f"{self.get_start_time()} to {self.get_end_time()}"
+        return f"{self.weekday} - {self.get_start_time()} to {self.get_end_time()}"
     
