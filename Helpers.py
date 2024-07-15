@@ -1,11 +1,12 @@
 import datetime
-import pickle
 import requests
 import json
-from Google_Form import Google_Form
+from Scheduled_Entities.Google_Form import Google_Form
 from Scheduled_Entities.Location import Location
 from Scheduled_Entities.Mentor import Mentor
 from Scheduled_Entities.Session_Request import Session_Request
+import win32com.client as win32
+
 
 
 
@@ -20,7 +21,7 @@ def __get_links():
     Fetches the links to the location and mentor google sheets
     """
     
-    links = json.load(open('links.json'))           # open the file 'links.json'
+    links = json.load(open('Saved_Information/links.json'))           # open the file 'links.json'
     return links                                    # returns the dictionary
 
 
@@ -130,31 +131,48 @@ def get_form() -> Google_Form:
 
     form_link = __get_links()["CONFIRMATION_FORM_EDIT_LINK"]
     return Google_Form(form_link)
-
-
-def save_object(obj, filename):
-    with open(filename, 'wb') as outp:  # Overwrites any existing file.
-        pickle.dump(obj, outp, pickle.HIGHEST_PROTOCOL)
-
-def recycle_object(filename):
-    with open(filename, 'rb') as inp:
-        return pickle.load(inp)
     
 
 def make_initial_form(mentors : list, locations : list, sessions : list):
 
     form = get_form()
     form.clear_form()
-    
+
+    file = json.load(open('Saved_Information/expressions.json'))
+    expressions = file["FORM"]
+
+    no_sessions = True
+
     mentor_names = []
     for i, mentor in enumerate(mentors):
         mentor_names.append(mentor.get_name())
-        form.add_section(mentor.get_name(), "Please ensure that this section is yours by checking the name above.", id=str(i))
+        form.add_recipient(mentor.get_email())
+        form.add_section(mentor.get_name(), expressions["MENTOR_SECTION_HEADER"], id=str(i))
         for session in sessions:
-            form.make_session_request_question(mentor, locations, session)
+            if form.make_session_request_question(mentor, locations, session) is not None:
+                no_sessions = False
 
     
+    if no_sessions:
+        form.add_text(expressions["NO_SESSIONS_TITLE"], expressions["NO_SESSIONS_DESCRIPTION"])
 
-    form.add_multiple_choice_question("Please select your name:", None, mentor_names, section_selection=True, index=0)
+    form.add_multiple_choice_question(expressions["NAME_SELECTION"], None, mentor_names, section_selection=True, index=0)
 
     return form
+
+
+def send_form(form : Google_Form):
+    outlook = win32.Dispatch('outlook.application')
+    form_link = f'https://docs.google.com/forms/d/{form.get_id()}/viewform'
+
+    file = json.load(open('Saved_Information/expressions.json'))
+    expressions = file["INITIAL_EMAIL"]
+
+    
+    mail = outlook.CreateItem(0)
+    mail.To = form.get_recipients()
+    mail.Subject = expressions["SUBJECT"]
+    mail.Body = expressions["BODY"].replace("CONFIRMATION_FORM_LINK", form_link)
+    
+
+    mail.Send()

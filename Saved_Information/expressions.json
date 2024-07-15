@@ -1,0 +1,13 @@
+{
+    "FORM" : {
+        "MENTOR_SECTION_HEADER" : "Please ensure that this section is yours by checking the name above.",
+        "NO_SESSIONS_TITLE" : "You have no sessions",
+        "NO_SESSIONS_DESCRIPTION" : "This either means there are no sessions this week, or that your availability doesn't line up.\nTry again next week!",
+        "NAME_SELECTION" : "Please select your name:",
+        "SESSION_REJECTION" : "I do not want this session"
+    },
+    "INITIAL_EMAIL" : {
+        "SUBJECT" : "Weekly Dance Mentor Confirmation Form",
+        "BODY" : "Please fill out the following form to determine what dance mentor sessions you can take this week!\nCONFIRMATION_FORM_LINK\n\nThank you for your time!"
+    }
+}

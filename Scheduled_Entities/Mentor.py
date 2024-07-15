@@ -82,6 +82,10 @@ class Mentor:
             case "Text":                        # if it is text
                 return self.phone_number        # return their phone number
             
+    
+    def get_email(self):
+        return self.email
+            
 
     def get_role(self):
         """
