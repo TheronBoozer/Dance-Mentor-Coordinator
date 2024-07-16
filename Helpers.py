@@ -147,16 +147,17 @@ def make_initial_form(mentors : list, locations : list, sessions : list):
     for i, mentor in enumerate(mentors):
         mentor_names.append(mentor.get_name())
         form.add_recipient(mentor.get_email())
-        form.add_section(mentor.get_name(), expressions["MENTOR_SECTION_HEADER"], id=str(i))
-        for session in sessions:
-            if form.make_session_request_question(mentor, locations, session) is not None:
+        form.add_section(mentor.get_name(), expressions["MENTOR_SECTION_HEADER"], id=f'{i+1}0000')
+        for j, session in enumerate(sessions):
+            session_id = '0' * (4-len(str(i + 1))) + str(i + 1) + '0' * (4-len(str(j + 1))) + str(j+1)
+            if form.make_session_request_question(mentor, locations, session, question_id=session_id) is not None:
                 no_sessions = False
 
     
     if no_sessions:
         form.add_text(expressions["NO_SESSIONS_TITLE"], expressions["NO_SESSIONS_DESCRIPTION"])
 
-    form.add_multiple_choice_question(expressions["NAME_SELECTION"], None, mentor_names, section_selection=True, index=0)
+    form.add_multiple_choice_question(expressions["NAME_SELECTION"], None, mentor_names, section_selection=True, index=0, id='00000000')
 
     return form
 

@@ -1,6 +1,6 @@
 import json
 from apiclient import discovery
-from oauth2client import file, tools
+from oauth2client import client, file, tools
 
 import os.path
 
@@ -8,11 +8,12 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 
+
 from Scheduled_Entities.Mentor import Mentor
 from Scheduled_Entities.Session_Request import Session_Request
 
 
-SCOPES = ['https://www.googleapis.com/auth/forms.body']
+SCOPES = ['https://www.googleapis.com/auth/forms.body', 'https://www.googleapis.com/auth/forms.responses.readonly']
 DISCOVERY_DOC = "https://forms.googleapis.com/$discovery/rest?version=v1"
 
 class Google_Form:
@@ -36,6 +37,8 @@ class Google_Form:
         self.form_service = self.__setup_form_service()                 # set up the form recognition and such
         self.recipients = []                                            # create an empty list of emails for the form to be sent to
 
+        self.responses = []                                             # cretae the list of responses to be filled later
+
 
 
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,19 +56,20 @@ class Google_Form:
         creds = None                                                                        # create credentials
 
         if os.path.exists("Saved_Information/token.json") :                                                   # if the file 'token.json' exists
-            store = file.Storage("Saved_Information/token.json")                                              # grab the saved credentials token
             creds = Credentials.from_authorized_user_file('Saved_Information/token.json', SCOPES)             # make credentials from the saved token
 
-        if not creds or not creds.valid :                                                   # if the credentials weren't set or are invalid
+        if not creds or not creds.valid or not creds.scopes == SCOPES:                      # if the credentials weren't set or are invalid and the necessary scopes are provided
+
             if creds and creds.expired and creds.refresh_token :                            # if the credentials expired
                 creds.refresh(Request())                                                    # refresh them from the token
             else :                                                                          # otherwise
-                flow = InstalledAppFlow.from_client_secrets_file(                           # authenticate manually
+                store = file.Storage("Saved_Information/token.json")                        # grab or make the saved credentials token
+                flow = client.flow_from_clientsecrets(                                      # authenticate manually
                     'Saved_Information/client_oauth.json', SCOPES
                 )
                 creds = tools.run_flow(flow, store)                                         # update the credentials from the manual authentication
 
-            with open('Saved_Information/token.json', 'w') as token :                                         # open 'tokens.json'
+            with open('Saved_Information/token.json', 'w') as token :                       # open 'tokens.json'
                 token.write(creds.to_json())                                                # save the credentials to the json file
 
 
@@ -78,6 +82,11 @@ class Google_Form:
         )
 
         return form_service
+    
+
+    def update_responses(self):
+        self.responses = self.form_service.forms().responses().list(formId=self.form_id).execute()
+        print(self.responses)
     
 
 
@@ -115,7 +124,7 @@ class Google_Form:
         )
 
     
-    def add_multiple_choice_question(self, title, description, answers, type='RADIO', required=True, section_selection=False, index=-1):
+    def add_multiple_choice_question(self, title, description, answers, type='RADIO', required=True, section_selection=False, index=-1, id=None, last_page=False):
         """
         Adds a multiple choice question to the given form with specified title, description, and answers
           The parameters -
@@ -127,7 +136,9 @@ class Google_Form:
         for i, answer in enumerate (answers):                                                   # for every provided answer
             option = {"value": answer}                                                          # create the option dictionary
             if section_selection:                                                               # if the function was called with section selection on
-                option['goToSectionId'] = str(i)                                                # add the command to go to a section based on the order of the questions
+                option['goToSectionId'] = f'{i+1}0000'                                          # add the command to go to a section based on the order of the questions
+            if last_page:
+                option['goToAction'] = 'SUBMIT_FORM'
             options.append(option)                                                              # add that option to the big list for later
 
         if index == -1:                                                                         # if no index was provided
@@ -160,6 +171,9 @@ class Google_Form:
                 }
             ]
         }
+
+        if id is not None:                                                                      # if there was a given id
+            NEW_QUESTION["requests"][0]["createItem"]["item"]["questionItem"]["question"]["questionId"] = id                     # add a custom itemId to the item
 
         return (                                                                                # return the form
             self.form_service.forms()
@@ -240,7 +254,7 @@ class Google_Form:
         )
 
 
-    def make_session_request_question(self, mentor : Mentor, locations : list, request : Session_Request):
+    def make_session_request_question(self, mentor : Mentor, locations : list, request : Session_Request, question_id=None):
         """
         Creates a form question based on mentor and location availability
         """
@@ -267,7 +281,7 @@ class Google_Form:
                     options.append(f"{str(time)} - {location.get_name()}")                      # add the option for that time
 
 
-        self.add_multiple_choice_question(title, description, options, type="DROP_DOWN")        # add a drop down question with the time options as answers
+        self.add_multiple_choice_question(title, description, options, type="DROP_DOWN", id=question_id, last_page=True)        # add a drop down question with the time options as answers
 
 
     def add_recipient(self, email : str):

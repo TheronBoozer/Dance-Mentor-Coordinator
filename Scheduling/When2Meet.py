@@ -73,8 +73,11 @@ class When2Meet:
         Finds a list of available quarter hours for the location
         Returns tuples in the format ('weekday', 'unix hours:minutes')
         """
+        try:
+            calendar_page = requests.get(self.link)                                                     # get the linked when2meet page
+        except:
+            return self.update()
         
-        calendar_page = requests.get(self.link)                                                         # get the linked when2meet page
         calendar_html = BeautifulSoup(calendar_page.text, "html.parser")                                # parse the html with BeautifulSoup
 
         available_quarter_hour_html = calendar_html.find_all(style=self.__green_block_style)            # finds all free quarter hours in the pages html
