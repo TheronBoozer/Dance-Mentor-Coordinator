@@ -76,6 +76,28 @@ def __remove_old_rows(rows):
     return rows
 
 
+def weekly_timing(weekly_time : list, last_week=True):
+
+    weekday_reference = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+
+    current_weekday = datetime.datetime.now().weekday()
+    target_weekday = weekday_reference.index(weekly_time[0].capitalize())
+
+    current_time = int(datetime.datetime.now().timestamp())
+    target_hour = weekly_time[1]
+    target_minute = weekly_time[2]
+
+    days_between_target_and_now = (current_weekday + (7  - target_weekday)) % 7 + 7 * int(last_week)
+
+    print(int(last_week))
+
+    target_day = current_time - days_between_target_and_now * 24 * 3600
+    target_time = target_day - target_day % (24*3600) - 4*3600 + target_hour*3600 + target_minute*60
+
+    return target_time
+
+
+
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 # ///////////////////////////////////////*   PUBLIC METHODS   */////////////////////////////////////////////
@@ -84,7 +106,7 @@ def __remove_old_rows(rows):
 
 def get_mentors():
     """
-    Returns a dictionary of the dance mentors based on the google sheet link
+    Returns a list of the dance mentors based on the google sheet link
     """
     
     mentor_sheet_link = __get_links()["DANCE_MENTOR_INFORMATION_SHEET_LINK"]        # fetch the mentor sheet link
@@ -98,7 +120,7 @@ def get_mentors():
                 
 def get_locations():
     """
-    Returns a dictionary of the practice locations based on the google sheet link
+    Returns a list of the practice locations based on the google sheet link
     """
     
     location_sheet = __get_links()["LOCATION_INFORMATION_SHEET_LINK"]               # fetch the location sheet link
