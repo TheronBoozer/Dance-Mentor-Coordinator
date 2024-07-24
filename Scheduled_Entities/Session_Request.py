@@ -1,5 +1,6 @@
 import re
 
+from Scheduled_Entities.Mentor import Mentor
 from Scheduling.When2Meet import When2Meet
 from Scheduling.Schedule import Schedule
 
@@ -27,9 +28,11 @@ class Session_Request:
         self.when2meet = When2Meet(self.when2meet_link)                                 # create the when2meet object
         self.schedule.change_availability(self.when2meet)                               # update the schedule based on the when2meet
 
+        self.styles = information[6].split(", ")                                                            # save the styles covered
         self.topic = f"{information[5]} {information[4]} - {information[6]} : {information[7]}"             # create the topic ex: (Technique - Smooth, Standard : Tango, Waltz)
         self.description = information[8]                                                                   # save the provided description
         self.mentor_preference = information[9].split(", ")                                                 # create the array of mentor names
+        self.mentor_options = []                                                                            # craete an empty array to save the mentors who say they can take the session
         self.assistant_mentor = information[10].strip() == 'Yes'                                            # save a boolean as to if an assistant is welcome
         
 
@@ -60,6 +63,18 @@ class Session_Request:
         return numbers
 
     
+
+    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    # ///////////////////////////////////////*   PUBLIC METHODS   */////////////////////////////////////////////
+    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    def add_mentor_option(self, mentor : Mentor, time):
+
+        if mentor.get_name() in self.mentor_preference:
+            self.mentor_options.append([mentor, time])
+
 
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////

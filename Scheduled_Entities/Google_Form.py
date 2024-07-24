@@ -3,14 +3,17 @@ from apiclient import discovery
 from oauth2client import client, file, tools
 
 import os.path
+import datetime
 
+from google.auth.exceptions import RefreshError
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
 
 
 from Scheduled_Entities.Mentor import Mentor
 from Scheduled_Entities.Session_Request import Session_Request
+
+from Function_Phases.Helpers import weekly_timing
 
 
 SCOPES = ['https://www.googleapis.com/auth/forms.body', 'https://www.googleapis.com/auth/forms.responses.readonly']
@@ -54,6 +57,7 @@ class Google_Form:
         """
         
         creds = None                                                                        # create credentials
+        reload_needed = False
 
         if os.path.exists("Saved_Information/token.json") :                                                   # if the file 'token.json' exists
             creds = Credentials.from_authorized_user_file('Saved_Information/token.json', SCOPES)             # make credentials from the saved token
@@ -61,8 +65,14 @@ class Google_Form:
         if not creds or not creds.valid or not creds.scopes == SCOPES:                      # if the credentials weren't set or are invalid and the necessary scopes are provided
 
             if creds and creds.expired and creds.refresh_token :                            # if the credentials expired
-                creds.refresh(Request())                                                    # refresh them from the token
+                try:
+                    creds.refresh(Request())                                                    # refresh them from the token
+                except RefreshError:
+                    reload_needed = True
             else :                                                                          # otherwise
+                reload_needed = True
+
+            if reload_needed:
                 store = file.Storage("Saved_Information/token.json")                        # grab or make the saved credentials token
                 flow = client.flow_from_clientsecrets(                                      # authenticate manually
                     'Saved_Information/client_oauth.json', SCOPES
@@ -92,16 +102,24 @@ class Google_Form:
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     def update_responses(self):
+        """
+        grabs the recent responses to the form
+        """
+        
         self.responses = []
 
-        responses = self.form_service.forms().responses().list(formId=self.form_id).execute()
-        responses.reverse()
+        responses = self.form_service.forms().responses().list(formId=self.form_id).execute()["responses"]
+
+        initiation_time = weekly_timing("initiation", False)
 
         for response in responses:
-            if response["createTime"] < 2:
-                return self.responses
+            create_time = int(datetime.datetime.strptime(response["createTime"], "%Y-%m-%dT%H:%M:%S.%fZ").timestamp())
+            if create_time < initiation_time:
+                break
             
             self.responses.append(response)
+
+        return self.responses
 
 
     def clear_form(self):
@@ -286,10 +304,10 @@ class Google_Form:
             for time in location_timing:                                                        # for those times
                 if time not in times:                                                           # if the time is not already listed
                     times.append(time)                                                          # add it to the list
-                    options.append(f"{str(time)} - {location.get_name()}")                      # add the option for that time
+                    options.append(f"{str(time)} at {location.get_name()}")                      # add the option for that time
 
 
-        self.add_multiple_choice_question(title, description, options, type="DROP_DOWN", id=question_id, last_page=True)        # add a drop down question with the time options as answers
+        return self.add_multiple_choice_question(title, description, options, type="DROP_DOWN", id=question_id, last_page=True)        # add a drop down question with the time options as answers
 
 
     def add_recipient(self, email : str):
