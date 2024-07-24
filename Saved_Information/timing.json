@@ -1,5 +1,5 @@
 {
-    "initiate" : ["Saturday", 0, 0],
-    "pair up" : ["Sunday", 0, 0],
+    "initiation" : ["Saturday", 0, 0],
+    "confirmation" : ["Sunday", 0, 0],
     "update" : ["Sunday", 1, 0]
 }
