@@ -345,7 +345,7 @@ class Google_Form:
             return None                                                                         # return nothing
         
         title = f'{request.get_partiicipants()} session request'                                # create the title based on the participating party
-        description = f"{request.get_topic()} \n\n {request.get_description()}"                 # create the body of the question with the topic and added description
+        description = f"{request.get_topic()}\n\nDetails:\n\t{request.get_description()}"       # create the body of the question with the topic and added description
 
         options = [expressions["SESSION_REJECTION"]]                                            # create the answer options with the default rejecting answer
         times = []                                                                              # create the list of times
@@ -355,7 +355,7 @@ class Google_Form:
             for time in location_timing:                                                        # for those times
                 if time not in times:                                                           # if the time is not already listed
                     times.append(time)                                                          # add it to the list
-                    options.append(f"{str(time)} at {location.get_name()}")                      # add the option for that time
+                    options.append(f"{str(time)} at {location.get_name()}")                     # add the option for that time
 
 
         self.add_multiple_choice_question(title, description, options, type="DROP_DOWN", id=question_id, last_page=True)        # add a drop down question with the time options as answers

@@ -1,5 +1,6 @@
 {
     "FORM" : {
+        "MENTOR_SECTION_TITLE" : "[NAME] Session Confirmation",
         "MENTOR_SECTION_HEADER" : "Please ensure that this section is yours by checking the name above.",
         "NO_SESSIONS_TITLE" : "You have no sessions",
         "NO_SESSIONS_DESCRIPTION" : "This either means there are no sessions this week, or that your availability doesn't line up.\nTry again next week!",

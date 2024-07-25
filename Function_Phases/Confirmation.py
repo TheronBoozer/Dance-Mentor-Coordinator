@@ -22,8 +22,8 @@ def create_session_pairings(info, form : Google_Form):
             if question_id == "00000000" or 'b' in question_id:
                 continue
 
-            session_id = question_id[4:]
-            mentor_id = question_id[:3]
+            session_id = question_id[5:]
+            mentor_id = question_id[:4]
             linked_question = response["answers"][question_id.replace('a', 'b')]
 
             answer = question["textAnswers"]["answers"][0]["value"]
@@ -32,3 +32,9 @@ def create_session_pairings(info, form : Google_Form):
 
             if not answer == rejected_expression:
                 session_requests[int(session_id) - 1].add_mentor_option([match_rating, mentor_list[int(mentor_id) - 1], answer])
+
+
+
+
+    for session in session_requests:
+        print(session.get_mentor())

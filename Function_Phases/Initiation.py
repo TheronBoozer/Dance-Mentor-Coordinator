@@ -46,7 +46,8 @@ def make_initial_form(mentors : list, locations : list, sessions : list):
         no_sessions = True                                                                                                  # create a boolean tracking session amounts
         mentor_names.append(mentor.get_name())                                                                              # add the name to the list
         form.add_recipient(mentor.get_email())                                                                              # add their email to the email list
-        form.add_section(mentor.get_name(), expressions["MENTOR_SECTION_HEADER"], id=f'{i+1}0000')                          # add their section header with proper id
+        title = expressions["MENTOR_SECTION_TITLE"].replace("[NAME]", mentor.get_name())                                    # create the title using the mentor name
+        form.add_section(title, expressions["MENTOR_SECTION_HEADER"], id=f'{i+1}0000')                                      # add their section header with proper id
 
         for j, session in enumerate(sessions):                                                                              # for each session 
             session_id = '0' * (4-len(str(i + 1))) + str(i + 1) + 'a' + '0' * (3-len(str(j + 1))) + str(j+1)                # create the question id

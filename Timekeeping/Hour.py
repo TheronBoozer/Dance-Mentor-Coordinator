@@ -27,10 +27,11 @@ class Hour:
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     def __eq__(self, other : Hour):
+        day = self.get_weekday() == other.get_weekday()
         start = self.get_start_time() == other.get_start_time()
         end = self.get_end_time() == other.get_end_time()
 
-        return start and end
+        return start and end and day
 
 
 
@@ -45,6 +46,9 @@ class Hour:
     
     def get_end_time(self):
         return self.quarters[-1].get_end_time()
+    
+    def get_weekday(self):
+        return self.weekday
     
 
 
