@@ -112,11 +112,12 @@ class Google_Form:
 
         initiation_time = weekly_timing("initiation", False)
 
-        for response in responses:
+        for response in responses[1::2]:
             create_time = int(datetime.datetime.strptime(response["createTime"], "%Y-%m-%dT%H:%M:%S.%fZ").timestamp())
             if create_time < initiation_time:
                 break
             
+            response["rating"] = responses[responses.index(response) + 1]
             self.responses.append(response)
 
         return self.responses
@@ -207,6 +208,52 @@ class Google_Form:
             .execute()
         )
     
+
+    def add_desirability_question(self):
+        """
+        adds the question to determine how much the mentor would like to take on that session
+        """
+        
+        form = self.form_service.forms().get(formId=self.form_id).execute()                     # get the form
+        index = len(form.get('items', []))                                                      # make the index the end of the questions
+
+        expressions = json.load(open('Saved_Information/expressions.json'))["FORM"]["SCALE_QUESTION"]
+        
+        NEW_QUESTION = {                                                                        # make the question item
+            "requests": [
+                {
+                    "createItem": {
+                        "item": {
+                            "title": (
+                                expressions["TITLE"]
+                            ),
+                            "description" : (
+                                expressions["DESCRIPTION"]
+                            ),
+                            "questionItem": {
+                                "question": {
+                                    "required": True,
+                                    "scaleQuestion": {
+                                        "low": 0,
+                                        "high": 5,
+                                        "lowLabel": expressions["LOW_LABEL"],
+                                        "highLabel": expressions["HIGH_LABEL"]
+                                    },
+                                }
+                            },
+                        },
+                        "location": {"index": index},
+                    }
+                }
+            ]
+        }
+    
+        return (                                                                                # return the form
+                self.form_service.forms()
+                .batchUpdate(formId=self.form_id, body=NEW_QUESTION)                            # create the questions
+                .execute()
+            )
+
 
     def add_section(self, title : str, description, id=None):
         """
@@ -307,7 +354,9 @@ class Google_Form:
                     options.append(f"{str(time)} at {location.get_name()}")                      # add the option for that time
 
 
-        return self.add_multiple_choice_question(title, description, options, type="DROP_DOWN", id=question_id, last_page=True)        # add a drop down question with the time options as answers
+        self.add_multiple_choice_question(title, description, options, type="DROP_DOWN", id=question_id, last_page=True)        # add a drop down question with the time options as answers
+        self.add_desirability_question()
+        return True
 
 
     def add_recipient(self, email : str):
