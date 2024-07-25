@@ -108,16 +108,19 @@ class Google_Form:
         
         self.responses = []
 
-        responses = self.form_service.forms().responses().list(formId=self.form_id).execute()["responses"]
+        try:
+            responses = self.form_service.forms().responses().list(formId=self.form_id).execute()["responses"]
+        except KeyError:
+            print("there are no responses")
+            return self.responses
 
         initiation_time = weekly_timing("initiation", False)
 
-        for response in responses[1::2]:
+        for response in responses:
             create_time = int(datetime.datetime.strptime(response["createTime"], "%Y-%m-%dT%H:%M:%S.%fZ").timestamp())
             if create_time < initiation_time:
                 break
             
-            response["rating"] = responses[responses.index(response) + 1]
             self.responses.append(response)
 
         return self.responses
@@ -209,7 +212,7 @@ class Google_Form:
         )
     
 
-    def add_desirability_question(self):
+    def add_desirability_question(self, questionId):
         """
         adds the question to determine how much the mentor would like to take on that session
         """
@@ -232,6 +235,7 @@ class Google_Form:
                             ),
                             "questionItem": {
                                 "question": {
+                                    "questionId": questionId,
                                     "required": True,
                                     "scaleQuestion": {
                                         "low": 0,
@@ -355,7 +359,7 @@ class Google_Form:
 
 
         self.add_multiple_choice_question(title, description, options, type="DROP_DOWN", id=question_id, last_page=True)        # add a drop down question with the time options as answers
-        self.add_desirability_question()
+        self.add_desirability_question(questionId=question_id.replace('a', 'b'))
         return True
 
 

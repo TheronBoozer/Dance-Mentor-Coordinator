@@ -32,7 +32,7 @@ class Session_Request:
         self.topic = f"{information[5]} {information[4]} - {information[6]} : {information[7]}"             # create the topic ex: (Technique - Smooth, Standard : Tango, Waltz)
         self.description = information[8]                                                                   # save the provided description
         self.mentor_preference = information[9].split(", ")                                                 # create the array of mentor names
-        self.mentor_options = []                                                                            # craete an empty array to save the mentors who say they can take the session
+        self.assigned_mentor = [0, None, "No available time"]                                               # craeate an array to save the highest rated mentor
         self.assistant_mentor = information[10].strip() == 'Yes'                                            # save a boolean as to if an assistant is welcome
         
 
@@ -70,10 +70,17 @@ class Session_Request:
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    def add_mentor_option(self, mentor : Mentor, time):
+    def add_mentor_option(self, mentor_answers):
+
+        match_rating = mentor_answers[0]
+        mentor = mentor_answers[1]
+        time = mentor_answers[2]
 
         if mentor.get_name() in self.mentor_preference:
-            self.mentor_options.append([mentor, time])
+            match_rating += 100 + self.mentor_preference.index(mentor.get_name())
+
+        if match_rating > self.assigned_mentor[0]:
+            self.assigned_mentor = [match_rating, mentor, time]
 
 
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////

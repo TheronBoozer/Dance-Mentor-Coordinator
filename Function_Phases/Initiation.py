@@ -49,7 +49,7 @@ def make_initial_form(mentors : list, locations : list, sessions : list):
         form.add_section(mentor.get_name(), expressions["MENTOR_SECTION_HEADER"], id=f'{i+1}0000')                          # add their section header with proper id
 
         for j, session in enumerate(sessions):                                                                              # for each session 
-            session_id = '0' * (4-len(str(i + 1))) + str(i + 1) + '0' * (4-len(str(j + 1))) + str(j+1)                      # create the question id
+            session_id = '0' * (4-len(str(i + 1))) + str(i + 1) + 'a' + '0' * (3-len(str(j + 1))) + str(j+1)                # create the question id
             if form.make_session_request_question(mentor, locations, session, question_id=session_id) is not None:          # if at any point it creates a question
                 no_sessions = False                                                                                         # change no_sessions to false
 
