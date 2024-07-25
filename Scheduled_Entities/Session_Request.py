@@ -28,14 +28,14 @@ class Session_Request:
         self.when2meet = When2Meet(self.when2meet_link)                                 # create the when2meet object
         self.schedule.change_availability(self.when2meet)                               # update the schedule based on the when2meet
 
-        self.styles = information[6].split(", ")                                                            # save the styles covered
-        self.topic = f"{information[5]} {information[4]} - {information[6]} : {information[7]}"             # create the topic ex: (Technique - Smooth, Standard : Tango, Waltz)
-        self.description = information[8]                                                                   # save the provided description
-        self.mentor_preference = information[9].split(", ")                                                 # create the array of mentor names
-        self.assigned_mentor = [0, None, "No available time"]                                               # craeate an array to save the highest rated mentor
-        self.assistant_mentor = information[10].strip() == 'Yes'                                            # save a boolean as to if an assistant is welcome
+        self.styles = information[7].split(", ")                                                                            # save the styles covered
+        self.parts = information[6].split(", ")                                                                             # save the parts covered
+        self.topic = f"{information[5]} {information[4]}\n{information[6]}\n{information[7]} : {information[8]}"            # create the topic ex: (Bronze Technique \n Following \n Smooth, Standard : Tango, Waltz)
+        self.description = information[9]                                                                                   # save the provided description
+        self.mentor_preference = information[10].split(", ")                                                                # create the array of mentor names
+        self.assigned_mentor = [0, None, "No available time"]                                                               # craeate an array to save the highest rated mentor
+        self.assistant_mentor = information[11].strip() == 'Yes'                                                            # save a boolean as to if an assistant is welcome
         
-
 
     
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
