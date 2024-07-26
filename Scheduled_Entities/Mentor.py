@@ -18,23 +18,29 @@ class Mentor:
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     def __init__(self, information):
-        self.name = information[0]                                                              # store name
-        self.email = information[1]                                                             # store email
-        self.phone_number = information[2]                                                      # store phone number
-        self.contact_method = information[3]                                                    # store the preferred contact method (email, slack, or text)
+        self.name = information[0]                                                                  # store name
+        self.email = information[1]                                                                 # store email
+        self.phone_number = information[2]                                                          # store phone number
+        self.contact_method = information[3]                                                        # store the preferred contact method (email, slack, or text)
 
-        self.schedule = Schedule().change_availability(When2Meet(information[4]))               # create and store a schedule based on their when2meet availability
+        self.schedule = Schedule().change_availability(When2Meet(information[4]))                   # create and store a schedule based on their when2meet availability
 
-        self.teaching_levels = {}                                                               # create a dictionary to store their teaching level capabilities
-        self.teaching_levels["smooth level"] = self.__level_conversion(information[5])          # store the smooth level
-        self.teaching_levels["standard level"] = self.__level_conversion(information[6])        # store standard level
-        self.teaching_levels["rhythm level"] = self.__level_conversion(information[7])          # store rhythm level
-        self.teaching_levels["latin level"] = self.__level_conversion(information[8])           # store latin level
+        self.teaching_levels = {                                                                    # create a dictionary to store their teaching level capabilities
+            "Smooth" : {},
+            "Standard" : {},
+            "Rhythm" : {},
+            "Latin" : {}
+        }
 
-        self.teaching_levels["smooth part"] = self.__part_conversion(information[9])            # store the smooth part
-        self.teaching_levels["standard part"] = self.__part_conversion(information[10])         # store standard part
-        self.teaching_levels["rhythm part"] = self.__part_conversion(information[11])           # store rhythm part
-        self.teaching_levels["latin part"] = self.__part_conversion(information[12])            # store latin part
+        self.teaching_levels["Smooth"]["Level"] = self.__level_conversion(information[5])           # store the smooth level as an int
+        self.teaching_levels["Standard"]["Level"] = self.__level_conversion(information[6])         # store standard level as an int
+        self.teaching_levels["Rhythm"]["Level"] = self.__level_conversion(information[7])           # store rhythm level as an int
+        self.teaching_levels["Latin"]["Level"] = self.__level_conversion(information[8])            # store latin level as an int
+
+        self.teaching_levels["Smooth"]["Part"] = self.__part_conversion(information[9])             # store the smooth part as str
+        self.teaching_levels["Standard"]["Part"] = self.__part_conversion(information[10])          # store standard part as str
+        self.teaching_levels["Rhythm"]["Part"] = self.__part_conversion(information[11])            # store rhythm part as str
+        self.teaching_levels["Latin"]["Part"] = self.__part_conversion(information[12])             # store latin part as str
 
 
 
@@ -108,6 +114,12 @@ class Mentor:
     
     def get_name(self):
         return self.name
+    
+    def get_teaching_levels(self):
+        return self.teaching_levels
+    
+    def get_phone_number(self):
+        return self.phone_number
             
 
 

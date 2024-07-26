@@ -1,0 +1,125 @@
+
+    To: ['wtboozer@wpi.edu', 'something@something.something']
+    Subject: Dance Mentor Session
+Hello Theron Boozer!
+You have submitted a Session Sign-up Form for the Dance Mentors Program.
+
+Your session is scheduled for Monday, July 29th from 12:15 PM to 1:15 PM.
+Please try to arrive at least 5-10 minutes before your session so that you have time to put your shoes on and be ready to dance when your session time starts.
+
+Your Dance Mentor for this session is Wesley Boozer.
+
+Location: RC Dance Studio
+
+Dance Mentor’s Contact Information:
+Phone - 214467890857
+Email – something@something.something
+
+Mentee contact Information:
+Phone - 4045938350
+Email - wtboozer@wpi.edu
+
+Session Details:
+    Silver Routine -
+        Roles: Leader
+        Styles: Standard, Rhythm
+        Dances: Mambo, Tango
+    "combine mambo and tango please"
+
+If you need to cancel your session, please reach out to your assigned Dance Mentor or me as soon as possible.
+
+After your session, if you would like to provide feedback to help us improve, the Dance Mentors Program - Feedback Form may be accessed here.
+-------------------------------------------------
+    To: ['email@email.email', 'boozerwt@gmail.com']
+    Subject: Dance Mentor Session
+Hello Theron Boozer, Nelson Mandela!
+You have submitted a Session Sign-up Form for the Dance Mentors Program.
+
+Your session is scheduled for Monday, July 29th from 11:30 AM to 12:30 PM.
+Please try to arrive at least 5-10 minutes before your session so that you have time to put your shoes on and be ready to dance when your session time starts.
+
+Your Dance Mentor for this session is Taylor Boozer.
+
+Location: RC Dance Studio
+
+Dance Mentor’s Contact Information:
+Phone - 82
+Email – boozerwt@gmail.com
+
+Mentee contact Information:
+Phone - 9867765654
+Email - email@email.email
+
+Session Details:
+    Newcomer Technique -
+        Roles: Leader, Follower
+        Styles: Latin
+        Dances: Bachata
+    "batchata"
+
+If you need to cancel your session, please reach out to your assigned Dance Mentor or me as soon as possible.
+
+After your session, if you would like to provide feedback to help us improve, the Dance Mentors Program - Feedback Form may be accessed here.
+-------------------------------------------------
+    To: ['jrbiden@wpi.edu', 'wtboozer@wpi.edu']
+    Subject: Dance Mentor Session
+Hello Joe Biden!
+You have submitted a Session Sign-up Form for the Dance Mentors Program.
+
+Your session is scheduled for Monday, July 29th from 1:15 PM to 2:15 PM.
+Please try to arrive at least 5-10 minutes before your session so that you have time to put your shoes on and be ready to dance when your session time starts.
+
+Your Dance Mentor for this session is Theron Boozer.
+
+Location: RC Dance Studio
+
+Dance Mentor’s Contact Information:
+Phone - (404) 593-8350
+Email – wtboozer@wpi.edu
+
+Mentee contact Information:
+Phone - 
+Email - jrbiden@wpi.edu
+
+Session Details:
+    Gold Level Evaluation -
+        Roles: Leader
+        Styles: Standard
+        Dances: Viennese Waltz
+    "clackin my bones together one last time"
+
+If you need to cancel your session, please reach out to your assigned Dance Mentor or me as soon as possible.
+
+After your session, if you would like to provide feedback to help us improve, the Dance Mentors Program - Feedback Form may be accessed here.
+-------------------------------------------------
+    To: ['tjjabroni@wpi.edu', 'ihopethisdoesntexist@yahoo.com']
+    Subject: Dance Mentor Session
+Hello Toni Jabroni!
+You have submitted a Session Sign-up Form for the Dance Mentors Program.
+
+Your session is scheduled for Monday, July 29th from 11:15 AM to 12:15 PM.
+Please try to arrive at least 5-10 minutes before your session so that you have time to put your shoes on and be ready to dance when your session time starts.
+
+Your Dance Mentor for this session is Tiffany Boozer.
+
+Location: RC Dance Studio
+
+Dance Mentor’s Contact Information:
+Phone - 1234567890
+Email – ihopethisdoesntexist@yahoo.com
+
+Mentee contact Information:
+Phone - 4566572344
+Email - tjjabroni@wpi.edu
+
+Session Details:
+    Showcase or Other Level Evaluation -
+        Roles: Follower
+        Styles: Latin
+        Dances: Paso Doble, Samba
+    "I would like a hotdog"
+
+If you need to cancel your session, please reach out to your assigned Dance Mentor or me as soon as possible.
+
+After your session, if you would like to provide feedback to help us improve, the Dance Mentors Program - Feedback Form may be accessed here.
+-------------------------------------------------

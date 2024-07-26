@@ -97,3 +97,42 @@ def weekly_timing(phase : str, last_week=True):
     target_time = target_day - target_day % (24*3600) - 4*3600 + target_hour*3600 + target_minute*60            # remove any residual time then add to get back to the target including fixing for timezones
 
     return target_time
+
+
+def weekday_to_date(weekday : str) -> str:
+    """
+    given a weekday this will return the next upcoming day with the correspoinding weekday
+    """
+
+    weekday_reference = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]          # create a weekday reference array
+    current_timestamp = int(datetime.datetime.now().timestamp())-4*3600                                         # get the current timestamp accounting for timezones
+    current_datetime = datetime.datetime.fromtimestamp(current_timestamp)
+
+    current_weekday = current_datetime.weekday()                                                                # get what weekday it is today
+    target_weekday = weekday_reference.index(weekday.capitalize())                                              # convert the weekday string to the numeric interpretation
+
+    days_between_target_and_now = (target_weekday-current_weekday)%7
+    target_timestamp = current_timestamp + days_between_target_and_now*24*3600
+    target_datetime = datetime.datetime.fromtimestamp(target_timestamp)
+
+    month = target_datetime.strftime("%B")
+    day = target_datetime.strftime("%d")
+    day = remove_padding(day)
+
+    if day == '1' or day == '21' or day == '31':
+        suffix = 'st'
+    elif day == '2' or day == '22':
+        suffix = 'nd'
+    elif day == '3' or day == '23':
+        suffix = 'rd'
+    else:
+        suffix = 'th'
+
+    return f'{month} {day}{suffix}'
+
+
+def remove_padding(padded_number : str) -> str:
+    if padded_number.startswith('0'):
+        return remove_padding(padded_number[1:])
+    
+    return padded_number
