@@ -90,18 +90,9 @@ def send_email(session : Session_Request):
 
     mentee_emails.append(mentor_email)
     recipients = mentee_emails
-    # mail = outlook.CreateItem(0)                                                                # create an email item
-    # mail.To = recipients                                                             # send the email to the form recipients
-    # mail.Subject = subject                                                       # set the subject
-    # mail.Body = body                # set the body including the confirmation link
+    mail = outlook.CreateItem(0)                                                                # create an email item
+    mail.To = recipients                                                             # send the email to the form recipients
+    mail.Subject = subject                                                       # set the subject
+    mail.Body = body                # set the body including the confirmation link
     
-    # mail.Send()
-    email = f"""
-    To: {recipients}
-    Subject: {subject}
-{body}
--------------------------------------------------"""
-
-    file = open('test.txt', 'a')
-    file.write(email)
-    file.close
+    mail.Send()

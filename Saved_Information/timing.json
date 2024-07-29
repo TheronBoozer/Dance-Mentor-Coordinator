@@ -1,5 +1,8 @@
 {
+    "EXAMPLE" : ["WEEKDAY", "HOUR", "MINUTE"],
+    
+    "setup" : ["Friday", 23, 45],
     "initiation" : ["Saturday", 0, 0],
     "confirmation" : ["Sunday", 0, 0],
-    "update" : ["Sunday", 1, 0]
+    "update" : ["Sunday", 0, 15]
 }

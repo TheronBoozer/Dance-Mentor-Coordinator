@@ -78,12 +78,17 @@ def send_form(form : Google_Form):
     outlook = win32.Dispatch('outlook.application')                                             # find the outlook application
     form_link = f'https://docs.google.com/forms/d/{form.get_id()}/viewform'                     # get the form share link
 
-    expressions = json.load(open('Saved_Information/expressions.json'))["INITIAL_EMAIL"]        # grab the expressions used in the email
+    body = open('Saved_Information/Initial_Mentor_Email.txt', 'r')                              # grab the email file
+    body = body.read()                                                                          # read it
+    subject = body[body.index('{'):body.index('}')]                                             # parse the subject
+    body = body.replace(subject, "")[3:]                                                        # remove subject
+
+    body = body.replace("[CONFIRMATION_FORM_LINK]", form_link)                                  # replace the confirmation
 
     mail = outlook.CreateItem(0)                                                                # create an email item
     mail.To = form.get_recipients()                                                             # send the email to the form recipients
-    mail.Subject = expressions["SUBJECT"]                                                       # set the subject
-    mail.Body = expressions["BODY"].replace("CONFIRMATION_FORM_LINK", form_link)                # set the body including the confirmation link
+    mail.Subject = subject                                                                      # set the subject
+    mail.Body = body                                                                            # set the body
     
     mail.Send()
 
