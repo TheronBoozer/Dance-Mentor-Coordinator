@@ -12,9 +12,5 @@
             "LOW_LABEL" : "I am probably the worst DM for this",
             "HIGH_LABEL" : "Very confident"
         }
-    },
-    "INITIAL_EMAIL" : {
-        "SUBJECT" : "Weekly Dance Mentor Confirmation Form",
-        "BODY" : "Please fill out the following form to determine what dance mentor sessions you can take this week!\nCONFIRMATION_FORM_LINK\n\nThank you for your time!"
     }
 }

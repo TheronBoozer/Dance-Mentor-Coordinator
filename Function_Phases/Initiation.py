@@ -1,15 +1,16 @@
 import json
 import win32com.client as win32
 
-from Function_Phases.Helpers import get_links
+from Function_Phases.Helpers import get_links, recycle_object
 from Scheduled_Entities.Google_Form import Google_Form
 
 
 
-def send_out_initial_form(info) -> Google_Form:
+def send_out_initial_form() -> Google_Form:
     """
     assigns the proper data and then makes and emails the initial form
     """
+    info = recycle_object('Saved_Information/scheduled_entities')
     
     mentor_list = info["mentor_list"]                                                           # set the mentor list
     location_list = info["location_list"]                                                       # set the location list

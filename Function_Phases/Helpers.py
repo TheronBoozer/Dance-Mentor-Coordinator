@@ -1,4 +1,5 @@
 import datetime
+import pickle
 import requests
 import json
 
@@ -88,8 +89,8 @@ def weekly_timing(phase : str, last_week=True):
     target_weekday = weekday_reference.index(phase_time[0].capitalize())                                        # convert the weekday string to the numeric interpretation
 
     current_time = int(datetime.datetime.now().timestamp())                                                     # get the current timestamp
-    target_hour = phase_time[1]                                                                                 # save the target hour in military time
-    target_minute = phase_time[2]                                                                               # save the target minute
+    target_hour = int(phase_time[1][:phase_time[1].index(':')])                                                 # save the target hour in military time
+    target_minute = int(phase_time[1][phase_time[1].index(':')+1:])                                             # save the target minute
 
     days_between_target_and_now = (current_weekday + (7 - target_weekday)) % 7 + 7 * int(last_week)             # some math to find how many days have passed since the target day
 
@@ -136,3 +137,12 @@ def remove_padding(padded_number : str) -> str:
         return remove_padding(padded_number[1:])
     
     return padded_number
+
+
+def save_object(obj, filename):
+    with open(filename, 'wb') as outp:  # Overwrites any existing file.
+        pickle.dump(obj, outp, pickle.HIGHEST_PROTOCOL)
+
+def recycle_object(filename):
+    with open(filename, 'rb') as inp:
+        return pickle.load(inp)

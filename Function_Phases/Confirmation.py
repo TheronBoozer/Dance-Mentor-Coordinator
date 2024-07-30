@@ -2,10 +2,13 @@ import win32com.client as win32
 import json
 from Scheduled_Entities.Session_Request import Session_Request
 from Scheduled_Entities.Google_Form import Google_Form
-from Function_Phases.Helpers import weekday_to_date
+from Function_Phases.Helpers import weekday_to_date, recycle_object
 
 
-def create_session_pairings(info, form : Google_Form):
+def create_session_pairings(form : Google_Form):
+
+    info = recycle_object('Saved_Information/scheduled_entities')
+
 
     mentor_list = info["mentor_list"]
     session_requests = info["session_requests"]

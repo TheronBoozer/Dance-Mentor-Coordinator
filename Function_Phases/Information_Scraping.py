@@ -1,4 +1,5 @@
-from Function_Phases.Helpers import get_links, create_2d_array
+
+from Function_Phases.Helpers import get_links, create_2d_array, save_object
 
 
 from Scheduled_Entities.Location import Location
@@ -18,6 +19,8 @@ def get_weekly_information():
         "location_list" : get_locations(),                                          # set the location information
         "session_requests" : get_sessions(),                                        # set the session information
     }
+
+    save_object(information, 'Saved_Information/scheduled_entities')
 
     return information
 

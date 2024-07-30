@@ -9,11 +9,11 @@ from Function_Phases.Confirmation import create_session_pairings
 
 def main():
 
-    weekly_information = get_weekly_information()
+    get_weekly_information()
 
-    confirmation_form = send_out_initial_form(weekly_information)
+    confirmation_form = send_out_initial_form()
 
-    create_session_pairings(weekly_information, confirmation_form)
+    create_session_pairings(confirmation_form)
 
 
 
