@@ -5,9 +5,10 @@ from Scheduled_Entities.Google_Form import Google_Form
 from Function_Phases.Helpers import weekday_to_date, recycle_object
 
 
-def create_session_pairings(form : Google_Form):
+def create_session_pairings():
 
-    info = recycle_object('Saved_Information/scheduled_entities')
+    form = recycle_object('Saved_Information/confirmation_form.pkl')
+    info = recycle_object('Saved_Information/scheduled_entities.pkl')
 
 
     mentor_list = info["mentor_list"]
@@ -61,6 +62,7 @@ def send_email(session : Session_Request):
 
     mentee_names = session.get_participants()
     mentor = session.get_mentor()[1]
+
     mentor_name = mentor.get_name()
 
     mentee_emails = session.get_emails()

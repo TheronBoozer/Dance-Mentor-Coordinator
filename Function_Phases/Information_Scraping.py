@@ -13,15 +13,15 @@ def get_weekly_information():
     """
     creates the mentor/location/session information dictionary
     """
-    
+    # global information
     information = {                                                                 # create the final dictionary of information
         "mentor_list" : get_mentors(),                                              # set the mentor information
         "location_list" : get_locations(),                                          # set the location information
         "session_requests" : get_sessions(),                                        # set the session information
     }
 
-    save_object(information, 'Saved_Information/scheduled_entities')
-
+    save_object(information, 'Saved_Information/scheduled_entities.pkl')
+    
     return information
 
 

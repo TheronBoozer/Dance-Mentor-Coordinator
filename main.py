@@ -11,9 +11,9 @@ def main():
 
     get_weekly_information()
 
-    confirmation_form = send_out_initial_form()
+    send_out_initial_form()
 
-    create_session_pairings(confirmation_form)
+    create_session_pairings()
 
 
 
