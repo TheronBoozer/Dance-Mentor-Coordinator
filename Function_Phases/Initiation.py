@@ -84,13 +84,13 @@ def send_form(form : Google_Form):
 
     body = open('Saved_Information/Initial_Mentor_Email.txt', 'r')                              # grab the email file
     body = body.read()                                                                          # read it
-    subject = body[body.index('{'):body.index('}')]                                             # parse the subject
+    subject = body[body.index('{')+1:body.index('}')]                                           # parse the subject
     body = body.replace(subject, "")[3:]                                                        # remove subject
 
     body = body.replace("[CONFIRMATION_FORM_LINK]", form_link)                                  # replace the confirmation
 
     mail = outlook.CreateItem(0)                                                                # create an email item
-    mail.To = form.get_recipients()                                                             # send the email to the form recipients
+    mail.To = ";".join(form.get_recipients())                                                   # send the email to the form recipients
     mail.Subject = subject                                                                      # set the subject
     mail.Body = body                                                                            # set the body
     

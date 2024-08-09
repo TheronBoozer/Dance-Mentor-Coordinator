@@ -14,6 +14,9 @@ def create_session_pairings():
     mentor_list = info["mentor_list"]
     session_requests = info["session_requests"]
 
+    if not session_requests:
+        return
+
     responses = form.update_responses()
 
     rejected_expression = json.load(open('Saved_Information/expressions.json'))["FORM"]["SESSION_REJECTION"]
@@ -63,9 +66,13 @@ def send_email(session : Session_Request):
     mentee_names = session.get_participants()
     mentor = session.get_mentor()[1]
 
-    mentor_name = mentor.get_name()
-
     mentee_emails = session.get_emails()
+
+    if mentor == None:
+        # sedn rejection email
+        return send_rejection(session)
+
+    mentor_name = mentor.get_name()
     mentor_email = mentor.get_email()
 
     mentor_phone_number = mentor.get_phone_number()
@@ -96,7 +103,33 @@ def send_email(session : Session_Request):
     mentee_emails.append(mentor_email)
     recipients = mentee_emails
     mail = outlook.CreateItem(0)                                                                # create an email item
-    mail.To = recipients                                                             # send the email to the form recipients
+    mail.To = ";".join(recipients)                                                             # send the email to the form recipients
+    mail.Subject = subject                                                       # set the subject
+    mail.Body = body                # set the body including the confirmation link
+    
+    mail.Send()
+
+
+def send_rejection(session : Session_Request):
+    emails = session.get_emails()
+    names = session.get_participants()
+    topic = session.get_topic()
+    description = session.get_description()
+
+    outlook = win32.Dispatch('outlook.application')                                             # find the outlook application
+
+    email_outline = open('Saved_Information/Secondary_Email_Confirmation.txt', 'r')       # grab the expressions used in the email
+    email_outline = email_outline.read()
+    subject = email_outline[email_outline.index('{')+1 : email_outline.index('}')]
+    body = email_outline.replace(subject, "")[3:]
+
+    body = body.replace("[MENTEE_NAMES]", names)
+    body = body.replace("[SESSION_TOPIC]", topic)
+    body = body.replace("[SESSION_DECRIPTION]", description)
+
+    recipients = emails
+    mail = outlook.CreateItem(0)                                                                # create an email item
+    mail.To = ";".join(recipients)                                                             # send the email to the form recipients
     mail.Subject = subject                                                       # set the subject
     mail.Body = body                # set the body including the confirmation link
     

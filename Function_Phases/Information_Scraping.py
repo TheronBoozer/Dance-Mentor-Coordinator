@@ -67,5 +67,8 @@ def get_sessions():
     for information in session_information:                                         # for each array in the 2d array
         sessions.append(Session_Request(information))                               # add to the array
 
+    # if not sessions:
+    #     return False
+    
     return sessions
  
