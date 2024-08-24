@@ -1,8 +1,8 @@
 {
     "EXAMPLE" : ["WEEKDAY", "HOUR:MINUTE"],
 
-    "setup" : ["Friday", "23:45"],
-    "initiation" : ["Saturday", "00:00"],
-    "confirmation" : ["Sunday", "00:00"],
-    "update" : ["Sunday", "00:15"]
+    "setup" : ["Saturday", "07:45"],
+    "initiation" : ["Saturday", "08:00"],
+    "confirmation" : ["Sunday", "08:00"],
+    "update" : ["Sunday", "08:15"]
 }
