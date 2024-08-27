@@ -2,7 +2,7 @@ import win32com.client as win32
 import json
 from Scheduled_Entities.Session_Request import Session_Request
 from Scheduled_Entities.Google_Form import Google_Form
-from Function_Phases.Helpers import weekday_to_date, recycle_object
+from Function_Phases.Helpers import weekday_to_date, recycle_object, save_object
 
 
 def create_session_pairings():
@@ -45,10 +45,12 @@ def create_session_pairings():
 
 
 def send_final_emails(sessions):
-
+    mega_session_list = []
 
     for session in sessions:
-        send_email(session)
+        mega_session_list.append(send_email(session))
+
+    save_object(mega_session_list, 'Saved_Information/Session_Log.pkl')
 
 
 def send_email(session : Session_Request):
@@ -108,6 +110,9 @@ def send_email(session : Session_Request):
     mail.Body = body                # set the body including the confirmation link
     
     mail.Send()
+
+
+    return [mentor_name, mentee_names, datetime]
 
 
 def send_rejection(session : Session_Request):

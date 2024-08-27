@@ -1,6 +1,7 @@
 {
     "EXAMPLE" : ["WEEKDAY", "HOUR:MINUTE"],
 
+    "restart" : ["Saturday", "00:00"],
     "setup" : ["Saturday", "07:45"],
     "initiation" : ["Saturday", "08:00"],
     "confirmation" : ["Sunday", "08:00"],

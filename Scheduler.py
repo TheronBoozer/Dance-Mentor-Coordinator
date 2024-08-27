@@ -5,21 +5,26 @@ import schedule
 from Function_Phases.Information_Scraping import get_weekly_information
 from Function_Phases.Initiation import send_out_initial_form
 from Function_Phases.Confirmation import create_session_pairings
+from Function_Phases.Update import update, reboot
 
 
 def assign_task_timing():
     # Run job on a specific day of the week
+    assign_timing("restart", reboot)
+
     assign_timing("setup", get_weekly_information)
 
     assign_timing("initiation", send_out_initial_form)
 
     assign_timing("confirmation", create_session_pairings)
 
+    assign_timing("update", update)
+
     
 
     while True:
         schedule.run_pending()
-        time.sleep(1800)
+        time.sleep(900)
 
 
 def assign_timing(phase : str, function : function):

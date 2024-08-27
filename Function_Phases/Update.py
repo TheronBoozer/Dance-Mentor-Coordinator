@@ -1,18 +1,26 @@
-import os.path
-
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
+from Function_Phases.Helpers import get_links, recycle_object
+from Scheduled_Entities.Google_Sheet import Google_Sheet
+import os
 
 
 
-def Update():
+def update():
 
     count_sessions()
 
-    # reboot()
+    reboot()
 
 
 def count_sessions():
+
+    sheet_link = get_links()["SESSION_LOG_SHEET"]
+
+    sheet = Google_Sheet(sheet_link)
+
+    session_log = recycle_object('Saved_Information/Session_Log.pkl')
+
+    sheet.append(session_log)
+
+
+def reboot():
+    os.system("shutdown -t 5 -r -f")
