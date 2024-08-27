@@ -16,7 +16,7 @@ from Scheduled_Entities.Session_Request import Session_Request
 from Function_Phases.Helpers import weekly_timing
 
 
-SCOPES = ['https://www.googleapis.com/auth/forms.body', 'https://www.googleapis.com/auth/forms.responses.readonly']
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/forms.body', 'https://www.googleapis.com/auth/forms.responses.readonly']
 DISCOVERY_DOC = "https://forms.googleapis.com/$discovery/rest?version=v1"
 
 class Google_Form:
@@ -60,7 +60,7 @@ class Google_Form:
         reload_needed = False
 
         if os.path.exists("Saved_Information/token.json") :                                                   # if the file 'token.json' exists
-            creds = Credentials.from_authorized_user_file('Saved_Information/token.json', SCOPES)             # make credentials from the saved token
+            creds = Credentials.from_authorized_user_file('Saved_Information/token.json')             # make credentials from the saved token
 
         if not creds or not creds.valid or not creds.scopes == SCOPES:                      # if the credentials weren't set or are invalid and the necessary scopes are provided
 
@@ -70,6 +70,9 @@ class Google_Form:
                 except RefreshError:
                     reload_needed = True
             else :                                                                          # otherwise
+                reload_needed = True
+
+            if not creds.scopes == SCOPES:
                 reload_needed = True
 
             if reload_needed:
