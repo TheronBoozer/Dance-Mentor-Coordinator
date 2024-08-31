@@ -1,25 +1,32 @@
 
-# from Function_Phases.Information_Scraping import get_weekly_information
-# from Function_Phases.Initiation import send_out_initial_form
-# from Function_Phases.Confirmation import create_session_pairings
 
 from Scheduler import assign_task_timing
-from Function_Phases.Helpers import add_to_startup
+import getpass
+import os
+from pathlib import Path
 
 
 
 def main():
 
-    # get_weekly_information()
+    print("it's go time")
 
-    # send_out_initial_form()
-
-    # create_session_pairings()
     add_to_startup()
     assign_task_timing()
 
 
+def add_to_startup(file_path=""):
+    USER_NAME = getpass.getuser()
+    bat_path = r'C:\Users\%s\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup' % USER_NAME
+    bat = Path(bat_path + "\\" + "open.bat")
 
+    if bat.exists():
+        return
+    
+    if file_path == "":
+        file_path = os.path.dirname(os.path.realpath(__file__))
+    with open(bat_path + '\\' + "open.bat", "w+") as bat_file:
+        bat_file.write(r'start "" "%s"' % file_path)
 
 
 main()
