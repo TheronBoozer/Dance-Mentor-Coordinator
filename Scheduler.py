@@ -27,7 +27,7 @@ def assign_task_timing():
         time.sleep(900)
 
 
-def assign_timing(phase : str, function : function):
+def assign_timing(phase : str, function):
     weektime = json.load(open('Saved_Information/timing.json'))[phase]
 
     weekday = weektime[0]

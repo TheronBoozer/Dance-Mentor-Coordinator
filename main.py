@@ -4,6 +4,7 @@
 # from Function_Phases.Confirmation import create_session_pairings
 
 from Scheduler import assign_task_timing
+from Function_Phases.Helpers import add_to_startup
 
 
 
@@ -14,7 +15,7 @@ def main():
     # send_out_initial_form()
 
     # create_session_pairings()
-
+    add_to_startup()
     assign_task_timing()
 
 
