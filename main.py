@@ -1,5 +1,5 @@
 
-
+from Scheduled_Entities.Google_Form import Google_Form
 from Scheduler import assign_task_timing
 import getpass
 import os
@@ -29,4 +29,9 @@ def add_to_startup(file_path=""):
         bat_file.write(r'start "" "%s"' % file_path)
 
 
+def update_tokens():
+    access_form = Google_Form("https://docs.google.com/spreadsheets/d/1PtMRoHYLS_VMHVLC0O4lCinp1BIVL-425-z9owAa88U/edit?resourcekey=&gid=553428416#gid=553428416")
+
+
+# update_tokens()
 main()
