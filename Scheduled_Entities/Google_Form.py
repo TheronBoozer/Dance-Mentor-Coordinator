@@ -61,19 +61,22 @@ class Google_Form:
 
         if os.path.exists("Saved_Information/token.json") :                                                   # if the file 'token.json' exists
             creds = Credentials.from_authorized_user_file('Saved_Information/token.json')             # make credentials from the saved token
+        else:
+            reload_needed = True
 
         if not creds or not creds.valid or not creds.scopes == SCOPES:                      # if the credentials weren't set or are invalid and the necessary scopes are provided
 
-            if creds and creds.expired and creds.refresh_token :                            # if the credentials expired
+            if creds and creds.expired and creds.refresh_token and not reload_needed:                            # if the credentials expired
                 try:
                     creds.refresh(Request())                                                    # refresh them from the token
                 except RefreshError:
                     reload_needed = True
+            elif not reload_needed and not creds.scopes == SCOPES:
+                reload_needed = True
             else :                                                                          # otherwise
                 reload_needed = True
 
-            if not creds.scopes == SCOPES:
-                reload_needed = True
+            
 
             if reload_needed:
                 store = file.Storage("Saved_Information/token.json")                        # grab or make the saved credentials token

@@ -14,7 +14,7 @@ from Scheduled_Entities.Mentor import Mentor
 from Scheduled_Entities.Session_Request import Session_Request
 
 
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/forms.body', 'https://www.googleapis.com/auth/forms.responses.readonly']
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/forms.body', 'https://www.googleapis.com/auth/forms']
 DISCOVERY_DOC = "https://forms.googleapis.com/$discovery/rest?version=v1"
 
 class Google_Sheet:

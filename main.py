@@ -1,6 +1,7 @@
 from Function_Phases.Information_Scraping import get_weekly_information
 from Function_Phases.Initiation import send_out_initial_form
-
+from Function_Phases.Confirmation import create_session_pairings
+from Function_Phases.Update import update
 
 from Scheduled_Entities.Google_Form import Google_Form
 from Scheduler import assign_task_timing
@@ -16,8 +17,11 @@ def main():
 
     # add_to_startup()
     # assign_task_timing()
-    get_weekly_information()
-    send_out_initial_form()
+    # get_weekly_information()
+    # send_out_initial_form()
+    update_tokens()
+    create_session_pairings()
+    update()
 
 def add_to_startup(file_path=""):
     USER_NAME = getpass.getuser()
