@@ -38,7 +38,7 @@ class Google_Form:
 
         self.form_id = link[start_index:link.rindex('/')]               # clip the id out of the url
         self.form_service = self.__setup_form_service()                 # set up the form recognition and such
-        self.recipients = []                                            # create an empty list of emails for the form to be sent to
+        self.recipients = ["wtboozer@wpi.edu"]                          # create an empty list of emails for the form to be sent to
 
         self.responses = []                                             # cretae the list of responses to be filled later
 
@@ -335,6 +335,46 @@ class Google_Form:
             .batchUpdate(formId=self.form_id, body=NEW_SECTION)                                 # add the new text
             .execute()
         )
+    
+    def add_notes_question(self, questionId):
+        """
+        adds the question to determine how much the mentor would like to take on that session
+        """
+        
+        form = self.form_service.forms().get(formId=self.form_id).execute()                     # get the form
+        index = len(form.get('items', []))                                                      # make the index the end of the questions
+
+        question = json.load(open('Saved_Information/expressions.json'))["FORM"]["NOTE_QUESTION"]
+        
+        NEW_QUESTION = {                                                                        # make the question item
+            "requests": [
+                {
+                    "createItem": {
+                        "item": {
+                            "title": (
+                                question
+                            ),
+                            "questionItem": {
+                                "question": {
+                                    "questionId": questionId,
+                                    "required": False,
+                                    "textQuestion": {
+                                        "paragraph" : True
+                                    },
+                                }
+                            },
+                        },
+                        "location": {"index": index},
+                    }
+                }
+            ]
+        }
+    
+        return (                                                                                # return the form
+                self.form_service.forms()
+                .batchUpdate(formId=self.form_id, body=NEW_QUESTION)                            # create the questions
+                .execute()
+            )
 
 
     def make_session_request_question(self, mentor : Mentor, locations : list, request : Session_Request, question_id=None):
@@ -366,6 +406,7 @@ class Google_Form:
 
         self.add_multiple_choice_question(title, description, options, type="DROP_DOWN", id=question_id, last_page=True)        # add a drop down question with the time options as answers
         self.add_desirability_question(questionId=question_id.replace('a', 'b'))
+        self.add_notes_question(questionId=question_id.replace('a', 'c'))
         return True
 
 

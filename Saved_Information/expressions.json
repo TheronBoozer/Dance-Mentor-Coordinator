@@ -11,6 +11,7 @@
             "DESCRIPTION" : "This question will help determine which mentor to give the session to\nIf you selected that you do not want the session above, just put 0",
             "LOW_LABEL" : "I am probably the worst DM for this",
             "HIGH_LABEL" : "Very confident"
-        }
+        },
+        "NOTE_QUESTION" : "Do you have any additional notes? (leave blank if no)"
     }
 }

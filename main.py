@@ -24,7 +24,7 @@ def main():
     # assign_task_timing()
     info = get_weekly_information()
     # print(info["mentor_list"][1].get_schedule())
-    send_out_initial_form()
+    send_out_initial_form(email_on=False)
     # update_tokens()
     # create_session_pairings()
     # update()
