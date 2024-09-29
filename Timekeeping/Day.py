@@ -53,8 +53,8 @@ class Day:
         
         free_hours = []                                                                 # create returnable array to fill with the Hour objects
 
-        for index, quarter_hour in enumerate(self.quarter_hours):                       # for each Quarter_Hour object in the stored quarter hours
-            if not quarter_hour.get_availability():                                     # if the first one is not free
+        for index in range(0, len(self.quarter_hours)):                       # for each Quarter_Hour object in the stored quarter hours
+            if not self.quarter_hours[index].get_availability():                                     # if the first one is not free
                 continue                                                                    # start over
             elif not self.quarter_hours[index + 1].get_availability():                  # or the second one is not free
                 index += 1                                                                  # index past it (no point in starting the process over with this quarter when its already known to be booked)
@@ -67,10 +67,11 @@ class Day:
                 continue                                                                    # start over
             else:                                                                       # if all four of them are available
                 free_hours.append(                                                          # create an Hour object containing all of the quarters an append it to the free hours
-                    Hour([quarter_hour, 
+                    Hour([self.quarter_hours[index], 
                     self.quarter_hours[index + 1], 
                     self.quarter_hours[index + 2], 
                     self.quarter_hours[index + 3]]))
+                index += 4
 
             if index >= len(self.quarter_hours) - 4:                                        # if the index goes out of bounds
                 break                                                                   # stop the loop

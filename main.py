@@ -18,13 +18,13 @@ from pathlib import Path
 
 def main():
 
-    # print("it's go time")
+    print("it's go time")
 
     # add_to_startup()
     # assign_task_timing()
     info = get_weekly_information()
-    # print(info["mentor_list"][1].get_schedule())
-    send_out_initial_form(email_on=False)
+    # print(info["session_requests"][-1].get_participants())
+    send_out_initial_form(email_on=True)
     # update_tokens()
     # create_session_pairings()
     # update()
