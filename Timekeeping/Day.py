@@ -54,6 +54,8 @@ class Day:
         free_hours = []                                                                 # create returnable array to fill with the Hour objects
 
         for index in range(0, len(self.quarter_hours)):                       # for each Quarter_Hour object in the stored quarter hours
+            if index >= len(self.quarter_hours) - 4:                                        # if the index goes out of bounds
+                break                                                                   # stop the loop
             if not self.quarter_hours[index].get_availability():                                     # if the first one is not free
                 continue                                                                    # start over
             elif not self.quarter_hours[index + 1].get_availability():                  # or the second one is not free
@@ -73,8 +75,7 @@ class Day:
                     self.quarter_hours[index + 3]]))
                 index += 4
 
-            if index >= len(self.quarter_hours) - 4:                                        # if the index goes out of bounds
-                break                                                                   # stop the loop
+
             
         return free_hours
 
