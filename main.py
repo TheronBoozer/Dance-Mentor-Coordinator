@@ -22,8 +22,7 @@ def main():
 
     # add_to_startup()
     # assign_task_timing()
-    info = get_weekly_information()
-    # print(info["session_requests"][-1].get_participants())
+    get_weekly_information()
     send_out_initial_form(email_on=True)
     # update_tokens()
     # create_session_pairings()
