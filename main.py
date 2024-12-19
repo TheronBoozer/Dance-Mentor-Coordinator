@@ -22,10 +22,10 @@ def main():
 
     # add_to_startup()
     # assign_task_timing()
-    get_weekly_information()
-    send_out_initial_form(email_on=True)
+    # get_weekly_information()
+    # send_out_initial_form(email_on = False)
     # update_tokens()
-    # create_session_pairings()
+    create_session_pairings(email_on = False)
     # update()
 
 

@@ -5,7 +5,7 @@ from Scheduled_Entities.Google_Form import Google_Form
 from Function_Phases.Helpers import weekday_to_date, recycle_object, save_object
 
 
-def create_session_pairings():
+def create_session_pairings(email_on):
 
     form = recycle_object('Saved_Information/confirmation_form.pkl')
     info = recycle_object('Saved_Information/scheduled_entities.pkl')
@@ -22,6 +22,7 @@ def create_session_pairings():
     rejected_expression = json.load(open('Saved_Information/expressions.json'))["FORM"]["SESSION_REJECTION"]
 
     for response in responses:
+        print("got a reply")
         for question in response["answers"].values():
             
             question_id = question["questionId"]
@@ -36,12 +37,16 @@ def create_session_pairings():
             answer = question["textAnswers"]["answers"][0]["value"]
             
             match_rating = int(linked_question["textAnswers"]["answers"][0]["value"]) * 10
-
+            print(mentor_id)
             if not answer == rejected_expression:
                 session_requests[int(session_id) - 1].add_mentor_option([match_rating, mentor_list[int(mentor_id) - 1], answer])
 
+    print(session_requests[0].get_mentor())
 
-    send_final_emails(session_requests)
+    if(email_on):
+        send_final_emails(session_requests)
+
+    # form.deleteAllResponses()
 
 
 def send_final_emails(sessions):

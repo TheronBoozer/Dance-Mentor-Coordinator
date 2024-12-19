@@ -111,7 +111,6 @@ class Google_Form:
         """
         grabs the recent responses to the form
         """
-        
         self.responses = []
 
         try:
@@ -123,9 +122,10 @@ class Google_Form:
         initiation_time = weekly_timing("initiation", False)
 
         for response in responses:
+            print(response)
             create_time = int(datetime.datetime.strptime(response["createTime"], "%Y-%m-%dT%H:%M:%S.%fZ").timestamp())
             if create_time < initiation_time:
-                break
+                continue
             
             self.responses.append(response)
 
@@ -417,6 +417,34 @@ class Google_Form:
         
         self.recipients.append(email)                                                           # add the email to the saved list
 
+
+    def clear_responses(self):
+        """
+        Clears all questions and descriptions from the form
+        """
+        
+        form = self.form_service.forms().get(formId=self.form_id).execute()                     # get the form used
+        responses = self.form_service.forms().responses().list(formId=self.form_id).execute()["responses"]
+        questions = form.get('items', [])                                                       # find all the items inthe form
+
+        if len(questions) == 0: return form                                                     # if the form is already emtpy, return the form
+
+        delete_requests = []                                                                    # create the array of requests
+
+        for i, item in enumerate(questions):                                                    # for each item in the form
+            if 'title' in item:                                                                 # if the item has a title
+                delete_requests.append({"deleteItem": {"location": {"index": i}}})              # add the index of the item to the delete requests
+
+        delete_requests.reverse()                                                               # reverse the list to avoid index errors
+
+        batch_delete_request = {"requests" : delete_requests}                                   # create the batch request item
+
+        return (                                                                                # return the form
+            self.form_service
+            .forms()
+            .batchUpdate(formId=self.form_id, body=batch_delete_request)                        # delete all the requested items
+            .execute()
+        )
 
 
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -96,8 +96,8 @@ def weekly_timing(phase : str, last_week=True):
     days_between_target_and_now = (current_weekday + (7 - target_weekday)) % 7 + 7 * int(last_week)             # some math to find how many days have passed since the target day
 
     target_day = current_time - days_between_target_and_now * 24 * 3600                                         # get to the correct unix day
-    target_time = target_day - target_day % (24*3600) - 4*3600 + target_hour*3600 + target_minute*60            # remove any residual time then add to get back to the target including fixing for timezones
-
+    target_time = target_day - target_day % (24*3600) + 5*3600 + target_hour*3600 + target_minute*60            # remove any residual time then add to get back to the target including fixing for timezones
+    print(target_time)
     return target_time
 
 

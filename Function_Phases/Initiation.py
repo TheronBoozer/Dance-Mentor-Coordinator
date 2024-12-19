@@ -20,7 +20,7 @@ def send_out_initial_form(email_on = True) -> Google_Form:
     form = make_initial_form(mentor_list, location_list, session_requests)                      # create the form
 
     if email_on:
-        send_form(form)                                                                             # email the form out
+        send_form(form)                                                                         # email the form out
 
     save_object(form, 'Saved_Information/confirmation_form.pkl')
     
