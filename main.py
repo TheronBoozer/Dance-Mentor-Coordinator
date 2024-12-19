@@ -25,7 +25,7 @@ def main():
     # get_weekly_information()
     # send_out_initial_form(email_on = False)
     # update_tokens()
-    create_session_pairings(email_on = False)
+    create_session_pairings(email_on = True)
     # update()
 
 

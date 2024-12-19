@@ -100,14 +100,14 @@ class Mentor:
         return self.email
             
 
-    def get_role(self):
-        """
-        Returns the mentors role teaching capabilities
-        """
+    # def get_role(self):
+    #     """
+    #     Returns the mentors role teaching capabilities
+    #     """
         
-        if self.follower and self.leader: return 'Leader and Follower'
-        elif self.follower: return 'Follower'
-        elif self.leader: return 'Leader'
+    #     if self.follower and self.leader: return 'Leader and Follower'
+    #     elif self.follower: return 'Follower'
+    #     elif self.leader: return 'Leader'
 
     def get_schedule(self):
         return self.schedule
@@ -131,16 +131,14 @@ class Mentor:
 
     def __str__(self) -> str:
         contact = self.get_preferred_contact()
-        role = self.get_role()
         return f"""
     {self.name}:
      {contact}
-     {role}
      Dance Levels:
-        - {self.__level_conversion(self.teaching_levels['smooth'])} in Smooth,
-        - {self.__level_conversion(self.teaching_levels['standard'])} in Standard,
-        - {self.__level_conversion(self.teaching_levels['rhythm'])} in Rhythm,
-        - {self.__level_conversion(self.teaching_levels['latin'])} in Latin
+        - {self.__level_conversion(self.teaching_levels['Smooth'])} in Smooth,
+        - {self.__level_conversion(self.teaching_levels['Standard'])} in Standard,
+        - {self.__level_conversion(self.teaching_levels['Rhythm'])} in Rhythm,
+        - {self.__level_conversion(self.teaching_levels['Latin'])} in Latin
                         """
     
 

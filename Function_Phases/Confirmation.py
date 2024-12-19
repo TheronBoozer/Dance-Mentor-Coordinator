@@ -22,7 +22,6 @@ def create_session_pairings(email_on):
     rejected_expression = json.load(open('Saved_Information/expressions.json'))["FORM"]["SESSION_REJECTION"]
 
     for response in responses:
-        print("got a reply")
         for question in response["answers"].values():
             
             question_id = question["questionId"]
@@ -37,11 +36,9 @@ def create_session_pairings(email_on):
             answer = question["textAnswers"]["answers"][0]["value"]
             
             match_rating = int(linked_question["textAnswers"]["answers"][0]["value"]) * 10
-            print(mentor_id)
             if not answer == rejected_expression:
                 session_requests[int(session_id) - 1].add_mentor_option([match_rating, mentor_list[int(mentor_id) - 1], answer])
 
-    print(session_requests[0].get_mentor())
 
     if(email_on):
         send_final_emails(session_requests)
@@ -72,6 +69,7 @@ def send_email(session : Session_Request):
 
     mentee_names = session.get_participants()
     mentor = session.get_mentor()[1]
+    print(mentor.get_email())
 
     mentee_emails = session.get_emails()
 
@@ -108,11 +106,11 @@ def send_email(session : Session_Request):
     body = body.replace("[SESSION_DESCRIPTION]", description)
 
     mentee_emails.append(mentor_email)
-    recipients = mentee_emails
+    recipients = ["wtboozer@wpi.edu"]
     mail = outlook.CreateItem(0)                                                                # create an email item
-    mail.To = ";".join(recipients)                                                             # send the email to the form recipients
-    mail.Subject = subject                                                       # set the subject
-    mail.Body = body                # set the body including the confirmation link
+    mail.To = ";".join(recipients)                                                              # send the email to the form recipients
+    mail.Subject = subject                                                                      # set the subject
+    mail.Body = body                                                                            # set the body including the confirmation link
     
     mail.Send()
 

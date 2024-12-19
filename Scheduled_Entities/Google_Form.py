@@ -119,10 +119,9 @@ class Google_Form:
             print("there are no responses")
             return self.responses
 
-        initiation_time = weekly_timing("initiation", False)
+        initiation_time = weekly_timing("initiation", True)
 
         for response in responses:
-            print(response)
             create_time = int(datetime.datetime.strptime(response["createTime"], "%Y-%m-%dT%H:%M:%S.%fZ").timestamp())
             if create_time < initiation_time:
                 continue

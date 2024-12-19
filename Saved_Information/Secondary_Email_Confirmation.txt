@@ -9,9 +9,9 @@ Your Dance Mentor for this session is [MENTOR_NAME].
 
 Location: [LOCATION]
 
-Dance Mentor’s Contact Information:
+Dance Mentor Contact Information:
 Phone - [MENTOR_PHONE_NUMBER]
-Email – [MENTOR_EMAIL]
+Email - [MENTOR_EMAIL]
 
 Mentee contact Information:
 Phone - [MENTEE_PHONE_NUMBERS]
