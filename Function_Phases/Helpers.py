@@ -2,6 +2,7 @@ import datetime
 import pickle
 import requests
 import json
+import smtplib
 
 
 
@@ -36,6 +37,10 @@ def __remove_old_rows(rows : list):
 # ///////////////////////////////////////*   PUBLIC METHODS   */////////////////////////////////////////////
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+# --------------------------------------------
+# -----------spreadsheet functions------------
+# --------------------------------------------
 
 def get_links():
     """
@@ -75,6 +80,10 @@ def create_2d_array(link : str, recent = False):
 
     return sheet_information
 
+
+# --------------------------------------------
+# --------------timing functions--------------
+# --------------------------------------------
 
 def weekly_timing(phase : str, last_week=True):
     """
@@ -140,6 +149,10 @@ def remove_padding(padded_number : str) -> str:
     return padded_number
 
 
+# --------------------------------------------
+# --------------pickle functions--------------
+# --------------------------------------------
+
 def save_object(obj, filename):
     with open(filename, 'wb') as outp:  # Overwrites any existing file.
         pickle.dump(obj, outp, pickle.HIGHEST_PROTOCOL)
@@ -147,3 +160,26 @@ def save_object(obj, filename):
 def recycle_object(filename):
     with open(filename, 'rb') as inp:
         return pickle.load(inp)
+    
+
+# --------------------------------------------
+# --------------email functions---------------
+# --------------------------------------------
+
+def smtp_mailing(recipients, subject, body):
+    smtp_info = json.load(open('Saved_Information/smtp_secrets.json'))
+    
+    server = smtp_info['server']
+    port = smtp_info['port']
+    username = smtp_info['username']            # danceofficers@gmail.com
+    password = smtp_info['password']            # ch@ch@ch@1997 or app password once I sign in
+
+    from_user = username
+    to_user = 'wtboozer@wpi.edu'#";".join(recipients)
+
+    message = f'Subject: {subject}\n\n{body}'
+
+    with smtplib.SMTP(server, port) as smtp:
+        smtp.starttls()
+        smtp.login(username, password)
+        smtp.sendmail(from_user, to_user, message)

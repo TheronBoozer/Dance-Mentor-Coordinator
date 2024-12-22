@@ -15,31 +15,41 @@ import os
 from pathlib import Path
 
 
-
 def main():
 
     print("it's go time")
+    print("running on : {os.name};\n\t - 'nt' = Windows\n\t - 'posix' = MacOS\n\t - none = Linux")
 
-    # add_to_startup()
+    add_to_startup()
     # assign_task_timing()
     # get_weekly_information()
     # send_out_initial_form(email_on = False)
     # update_tokens()
-    create_session_pairings(email_on = True)
+    # create_session_pairings(email_on = True)
     # update()
 
 
+
 def add_to_startup(file_path=""):
-    USER_NAME = getpass.getuser()
-    bat_path = r'C:\Users\%s\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup' % USER_NAME
-    bat = Path(bat_path + "\\" + "DM_Bot.bat")
+
+    if(os.name == 'nt'):
+        USER_NAME = getpass.getuser()
+        bat_path = r'C:\Users\%s\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\DM_Bot.bat' % USER_NAME
+        bat = Path(bat_path)
+    elif(os.name == 'posix'):
+        print("unsupported OS")
+        return
+    else:
+        bat_path = "/etc/init.d/DM_Bot.bat"
+        bat = Path(bat_path)
+
 
     if bat.exists():
         return
     
     if file_path == "":
         file_path = os.path.dirname(os.path.realpath(__file__))
-    with open(bat_path + '\\' + "DM_bot.bat", "w+") as bat_file:
+    with open(bat_path, "w+") as bat_file:
         bat_file.write(r'''@echo off
 cd %s
 python main.py

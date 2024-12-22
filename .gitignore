@@ -2,3 +2,4 @@ token.json
 confirmation_form.pkl
 scheduled_entities.pkl
 client_oauth.json
+smtp_secrets.json

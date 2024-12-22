@@ -1,7 +1,7 @@
 import json
 import win32com.client as win32
 
-from Function_Phases.Helpers import get_links, recycle_object, save_object
+from Function_Phases.Helpers import get_links, recycle_object, save_object, smtp_mailing
 from Scheduled_Entities.Google_Form import Google_Form
 
 
@@ -80,7 +80,7 @@ def send_form(form : Google_Form):
     sends an email with an attached google form
     """
     
-    outlook = win32.Dispatch('outlook.application')                                             # find the outlook application
+    # outlook = win32.Dispatch('outlook.application')                                             # find the outlook application
     form_link = f'https://docs.google.com/forms/d/{form.get_id()}/viewform'                     # get the form share link
 
     body = open('Saved_Information/Initial_Mentor_Email.txt', 'r')                              # grab the email file
@@ -88,12 +88,15 @@ def send_form(form : Google_Form):
     subject = body[body.index('{')+1:body.index('}')]                                           # parse the subject
     body = body.replace(subject, "")[3:]                                                        # remove subject
 
+    recipients = form.get_recipients()
+
     body = body.replace("[CONFIRMATION_FORM_LINK]", form_link)                                  # replace the confirmation
 
-    mail = outlook.CreateItem(0)                                                                # create an email item
-    mail.To = ";".join(form.get_recipients())                                                   # send the email to the form recipients
-    mail.Subject = subject                                                                      # set the subject
-    mail.Body = body                                                                            # set the body
+    # mail = outlook.CreateItem(0)                                                                # create an email item
+    # mail.To = ";".join(form.get_recipients())                                                   # send the email to the form recipients
+    # mail.Subject = subject                                                                      # set the subject
+    # mail.Body = body                                                                            # set the body
     
-    mail.Send()
+    # mail.Send()
+    smtp_mailing(recipients, subject, body)
 

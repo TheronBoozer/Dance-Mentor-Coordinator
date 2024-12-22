@@ -2,7 +2,7 @@ import win32com.client as win32
 import json
 from Scheduled_Entities.Session_Request import Session_Request
 from Scheduled_Entities.Google_Form import Google_Form
-from Function_Phases.Helpers import weekday_to_date, recycle_object, save_object
+from Function_Phases.Helpers import smtp_mailing, weekday_to_date, recycle_object, save_object
 
 
 def create_session_pairings(email_on):
@@ -60,7 +60,7 @@ def send_email(session : Session_Request):
     sends an email with the session details
     """
     
-    outlook = win32.Dispatch('outlook.application')                                             # find the outlook application
+    # outlook = win32.Dispatch('outlook.application')                                             # find the outlook application
 
     email_outline = open('Saved_Information/Secondary_Email_Confirmation.txt', 'r')       # grab the expressions used in the email
     email_outline = email_outline.read()
@@ -69,7 +69,6 @@ def send_email(session : Session_Request):
 
     mentee_names = session.get_participants()
     mentor = session.get_mentor()[1]
-    print(mentor.get_email())
 
     mentee_emails = session.get_emails()
 
@@ -106,13 +105,14 @@ def send_email(session : Session_Request):
     body = body.replace("[SESSION_DESCRIPTION]", description)
 
     mentee_emails.append(mentor_email)
-    recipients = ["wtboozer@wpi.edu"]
-    mail = outlook.CreateItem(0)                                                                # create an email item
-    mail.To = ";".join(recipients)                                                              # send the email to the form recipients
-    mail.Subject = subject                                                                      # set the subject
-    mail.Body = body                                                                            # set the body including the confirmation link
+    recipients = mentee_emails
+    # mail = outlook.CreateItem(0)                                                                # create an email item
+    # mail.To = ";".join(recipients)                                                              # send the email to the form recipients
+    # mail.Subject = subject                                                                      # set the subject
+    # mail.Body = body                                                                            # set the body including the confirmation link
     
-    mail.Send()
+    # mail.Send()
+    smtp_mailing(recipients, subject, body)
 
 
     return [mentor_name, mentee_names, datetime]
@@ -124,7 +124,7 @@ def send_rejection(session : Session_Request):
     topic = session.get_topic()
     description = session.get_description()
 
-    outlook = win32.Dispatch('outlook.application')                                             # find the outlook application
+    # outlook = win32.Dispatch('outlook.application')                                             # find the outlook application
 
     email_outline = open('Saved_Information/Secondary_Email_Confirmation.txt', 'r')       # grab the expressions used in the email
     email_outline = email_outline.read()
@@ -136,9 +136,10 @@ def send_rejection(session : Session_Request):
     body = body.replace("[SESSION_DECRIPTION]", description)
 
     recipients = emails
-    mail = outlook.CreateItem(0)                                                                # create an email item
-    mail.To = ";".join(recipients)                                                             # send the email to the form recipients
-    mail.Subject = subject                                                       # set the subject
-    mail.Body = body                # set the body including the confirmation link
+    # mail = outlook.CreateItem(0)                                                                # create an email item
+    # mail.To = ";".join(recipients)                                                             # send the email to the form recipients
+    # mail.Subject = subject                                                       # set the subject
+    # mail.Body = body                # set the body including the confirmation link
     
-    mail.Send()
+    # mail.Send()
+    smtp_mailing(recipients, subject, body)
