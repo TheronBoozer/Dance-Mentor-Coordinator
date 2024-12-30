@@ -1,7 +1,6 @@
 # import win32com.client as win32
 import json
 from Scheduled_Entities.Session_Request import Session_Request
-from Scheduled_Entities.Google_Form import Google_Form
 from Function_Phases.Helpers import smtp_mailing, weekday_to_date, recycle_object, save_object
 
 

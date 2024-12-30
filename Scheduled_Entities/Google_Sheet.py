@@ -1,17 +1,13 @@
-import json
 from apiclient import discovery
 from oauth2client import client, file, tools
 
 import os.path
-import datetime
 
 from google.auth.exceptions import RefreshError
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 
 
-from Scheduled_Entities.Mentor import Mentor
-from Scheduled_Entities.Session_Request import Session_Request
 
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/forms.body', 'https://www.googleapis.com/auth/forms']

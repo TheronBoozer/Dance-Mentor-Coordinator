@@ -13,7 +13,7 @@ def assign_task_timing():
     # Run job on a specific day of the week
     print("Assigning tasks...\n")
 
-    # assign_timing("restart", reboot)
+    assign_timing("restart", reboot)
 
     assign_timing("setup", get_weekly_information)
 

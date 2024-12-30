@@ -1,4 +1,3 @@
-from typing import List
 
 from .Hour import Hour
 from .Quarter_Hour import Quarter_Hour

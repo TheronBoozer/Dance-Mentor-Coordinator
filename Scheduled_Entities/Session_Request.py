@@ -1,6 +1,5 @@
 import re
 
-from Scheduled_Entities.Mentor import Mentor
 from Scheduling.When2Meet import When2Meet
 from Scheduling.Schedule import Schedule
 
