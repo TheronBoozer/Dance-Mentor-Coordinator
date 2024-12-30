@@ -9,8 +9,11 @@ from Function_Phases.Update import update, reboot
 
 
 def assign_task_timing():
+
     # Run job on a specific day of the week
-    assign_timing("restart", reboot)
+    print("Assigning tasks...\n")
+
+    # assign_timing("restart", reboot)
 
     assign_timing("setup", get_weekly_information)
 
@@ -20,7 +23,7 @@ def assign_task_timing():
 
     assign_timing("update", update)
 
-    
+    print("Tasks assigned -\n Entering main loop.")
 
     while True:
         schedule.run_pending()

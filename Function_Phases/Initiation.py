@@ -1,5 +1,5 @@
 import json
-import win32com.client as win32
+# import win32com.client as win32
 
 from Function_Phases.Helpers import get_links, recycle_object, save_object, smtp_mailing
 from Scheduled_Entities.Google_Form import Google_Form

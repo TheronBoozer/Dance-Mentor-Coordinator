@@ -175,7 +175,7 @@ def smtp_mailing(recipients, subject, body):
     password = smtp_info['password']            # ch@ch@ch@1997 or app password once I sign in
 
     from_user = username
-    to_user = 'wtboozer@wpi.edu'#";".join(recipients)
+    to_user = ";".join(recipients)
 
     message = f'Subject: {subject}\n\n{body}'
 

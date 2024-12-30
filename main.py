@@ -18,10 +18,10 @@ from pathlib import Path
 def main():
 
     print("it's go time")
-    print("running on : {os.name};\n\t - 'nt' = Windows\n\t - 'posix' = MacOS\n\t - none = Linux")
+    print(f"running on: {os.name};\n\t - 'nt' = Windows\n\t - 'posix' = MacOS\n\t - none = Linux\n")
 
-    add_to_startup()
-    # assign_task_timing()
+    # add_to_startup()
+    assign_task_timing()
     # get_weekly_information()
     # send_out_initial_form(email_on = False)
     # update_tokens()
