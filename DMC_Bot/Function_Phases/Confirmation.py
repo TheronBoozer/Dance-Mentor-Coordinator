@@ -1,10 +1,11 @@
 # import win32com.client as win32
 import json
+from DMC_Bot import flags
 from Scheduled_Entities.Session_Request import Session_Request
 from Function_Phases.Helpers import smtp_mailing, weekday_to_date, recycle_object, save_object
 
 
-def create_session_pairings(email_on):
+def create_session_pairings():
 
     form = recycle_object('Saved_Information/confirmation_form.pkl')
     info = recycle_object('Saved_Information/scheduled_entities.pkl')
@@ -39,7 +40,7 @@ def create_session_pairings(email_on):
                 session_requests[int(session_id) - 1].add_mentor_option([match_rating, mentor_list[int(mentor_id) - 1], answer])
 
 
-    if(email_on):
+    if flags.EMAIL_ON:
         send_final_emails(session_requests)
 
     # form.deleteAllResponses()

@@ -20,9 +20,9 @@ def main():
     # add_to_startup()
     # assign_task_timing()
     get_weekly_information()
-    send_out_initial_form(email_on = False)
+    send_out_initial_form()
     # update_tokens()
-    # create_session_pairings(email_on = True)
+    create_session_pairings()
     # update()
 
     # tristen_when = When2Meet("https://www.when2meet.com/?26094819-wqXFj")

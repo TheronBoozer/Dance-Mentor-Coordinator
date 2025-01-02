@@ -1,12 +1,13 @@
 import json
 
+from DMC_Bot import flags
 from Function_Phases.Helpers import get_links, recycle_object, save_object, smtp_mailing
 from Scheduled_Entities.Google_Form import Google_Form
 
 
 
 
-def send_out_initial_form(email_on = True) -> Google_Form:
+def send_out_initial_form() -> Google_Form:
     """
     assigns the proper data and then makes and emails the initial form
     """
@@ -18,7 +19,7 @@ def send_out_initial_form(email_on = True) -> Google_Form:
 
     form = make_initial_form(mentor_list, location_list, session_requests)                      # create the form
 
-    if email_on:
+    if flags.EMAIL_ON:
         send_form(form)                                                                         # email the form out
 
     save_object(form, 'DMC_Bot/Saved_Information/confirmation_form.pkl')
