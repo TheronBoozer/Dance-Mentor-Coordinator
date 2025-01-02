@@ -85,19 +85,19 @@ class Schedule:
         if type(other_schedule) == Schedule: other_schedule = other_schedule.get_free_hours()
 
         combined_hours = []
-        for hour in self.free_hours:
-            if hour in other_schedule:
-                combined_hours.append(hour)
-
-        # mutable_copy = self.free_hours
-        # recent_time = 0
-
-        # while self.free_hours:
-        #     hour = mutable_copy[0]
-        #     if hour in other_schedule and recent_time <= hour.get_start_int():
-        #         recent_time = hour.get_end_int()
+        # for hour in self.free_hours:
+        #     if hour in other_schedule:
         #         combined_hours.append(hour)
-        #     mutable_copy.pop(0)
+
+        mutable_copy = self.free_hours
+        recent_time = 0
+
+        while self.free_hours:
+            hour = mutable_copy[0]
+            if hour in other_schedule and recent_time <= hour.get_start_int():
+                recent_time = hour.get_end_int()
+                combined_hours.append(hour)
+            mutable_copy.pop(0)
 
         return combined_hours
 

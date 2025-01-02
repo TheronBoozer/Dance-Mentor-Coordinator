@@ -48,10 +48,10 @@ class Hour:
         return self.quarters[-1].get_end_time()
     
     def get_start_int(self):
-        return self.get_start_time().get_int_time()
+        return self.get_start_time().get_int_time() + self.quarters[0].get_weekday()*24*3600
     
     def get_end_int(self):
-        return self.get_end_time().get_int_time()
+        return self.get_end_time().get_int_time() + self.quarters[0].get_weekday()*24*3600
     
     def get_weekday(self):
         return self.weekday
