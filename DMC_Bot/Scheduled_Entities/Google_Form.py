@@ -389,7 +389,7 @@ class Google_Form:
         if len(possible_times) == 0:                                                            # if there are no possible times 
             return None                                                                         # return nothing
         
-        title = f'{request.get_participants()} session request'                                # create the title based on the participating party
+        title = f'{request.get_participants()} session request'                                 # create the title based on the participating party
         description = f"{request.get_topic()}\n\nDetails -\n\t{request.get_description()}"      # create the body of the question with the topic and added description
 
         options = [expressions["SESSION_REJECTION"]]                                            # create the answer options with the default rejecting answer

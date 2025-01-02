@@ -89,10 +89,11 @@ class Schedule:
         #     if hour in other_schedule:
         #         combined_hours.append(hour)
 
-        mutable_copy = self.free_hours
+        mutable_copy = []
+        mutable_copy.extend(self.free_hours)
         recent_time = 0
 
-        while self.free_hours:
+        while mutable_copy:
             hour = mutable_copy[0]
             if hour in other_schedule and recent_time <= hour.get_start_int():
                 recent_time = hour.get_end_int()
