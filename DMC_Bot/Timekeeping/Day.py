@@ -72,7 +72,7 @@ class Day:
                     self.quarter_hours[index + 1], 
                     self.quarter_hours[index + 2], 
                     self.quarter_hours[index + 3]]))
-                index += 4
+                # index += 4
 
 
             

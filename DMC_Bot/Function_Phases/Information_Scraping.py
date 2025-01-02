@@ -20,7 +20,7 @@ def get_weekly_information():
         "session_requests" : get_sessions(),                                        # set the session information
     }
 
-    save_object(information, 'Saved_Information/scheduled_entities.pkl')
+    save_object(information, 'DMC_Bot/Saved_Information/scheduled_entities.pkl')
     
     return information
 

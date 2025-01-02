@@ -58,7 +58,7 @@ class Schedule:
         available_quarters = when2meet_calendar.get_availability()                      # get the array of available quarters from the When2Meet
 
         for quarter in available_quarters:                                                                                                              # for each quarter in the available ones 
-            self.calendar[quarter.get_weekday()].get_quarters()[int(quarter.get_start_time().get_int_time() / (15*60))].set_available()                 # change the corresponding quarter in the calendar to be available
+            self.calendar[quarter.get_weekday()].get_quarters()[int(quarter.get_start_int() / (15*60))].set_available()                 # change the corresponding quarter in the calendar to be available
         
         self.free_hours = self.__update_free_hours()                                    # update the hours of availability
 
@@ -73,7 +73,7 @@ class Schedule:
         
         unavailable_quarters = live_calendar.get_unavailable_times()                    # get the array of booked quarters from 25Live
         for quarter in unavailable_quarters:                                                                                                            # for each quarter in the unavailable ones
-            self.calendar[quarter.get_weekday()].get_quarters()[int(quarter.get_start_time().get_int_time() / (15*60))].set_unavailable()               # change the corresponding quarter in the calendar to be unavailable
+            self.calendar[quarter.get_weekday()].get_quarters()[int(quarter.get_start_int() / (15*60))].set_unavailable()               # change the corresponding quarter in the calendar to be unavailable
         
         self.free_hours = self.__update_free_hours()                                    # update the hours of availability
 
@@ -88,6 +88,16 @@ class Schedule:
         for hour in self.free_hours:
             if hour in other_schedule:
                 combined_hours.append(hour)
+
+        # mutable_copy = self.free_hours
+        # recent_time = 0
+
+        # while self.free_hours:
+        #     hour = mutable_copy[0]
+        #     if hour in other_schedule and recent_time <= hour.get_start_int():
+        #         recent_time = hour.get_end_int()
+        #         combined_hours.append(hour)
+        #     mutable_copy.pop(0)
 
         return combined_hours
 

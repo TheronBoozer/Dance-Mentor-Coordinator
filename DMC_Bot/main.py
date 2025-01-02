@@ -9,19 +9,32 @@ from Scheduler import assign_task_timing
 import os
 # from pathlib import Path
 
+from Scheduling.When2Meet import When2Meet
+from Scheduling.Schedule import Schedule
 
 def main():
 
     print("it's go time")
-    print(f"running on: {os.name};\n\t - 'nt' = Windows\n\t - 'posix' = MacOS\n\t - none = Linux\n")
+    print(f"running on: {os.name};\n\t - 'nt' = Windows\n\t - 'posix' = Linux\n")
 
     # add_to_startup()
-    assign_task_timing()
-    # get_weekly_information()
-    # send_out_initial_form(email_on = False)
+    # assign_task_timing()
+    get_weekly_information()
+    send_out_initial_form(email_on = False)
     # update_tokens()
     # create_session_pairings(email_on = True)
     # update()
+
+    # tristen_when = When2Meet("https://www.when2meet.com/?26094819-wqXFj")
+    # TEST_when = When2Meet("https://www.when2meet.com/?28104739-d8Spw")
+
+    # tristen = Schedule().change_availability(tristen_when)
+    # TEST = Schedule().change_availability(TEST_when)
+
+    # combined = TEST.cross_check_with(tristen)
+
+    # print(combined)
+
 
 
 

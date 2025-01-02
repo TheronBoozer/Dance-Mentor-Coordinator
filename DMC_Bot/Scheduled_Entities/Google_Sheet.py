@@ -45,8 +45,8 @@ class Google_Sheet:
         creds = None                                                                        # create credentials
         reload_needed = False
 
-        if os.path.exists("Saved_Information/token.json") :                                                   # if the file 'token.json' exists
-            creds = Credentials.from_authorized_user_file('Saved_Information/token.json')             # make credentials from the saved token
+        if os.path.exists("DMC_Bot/Saved_Information/token.json") :                                                   # if the file 'token.json' exists
+            creds = Credentials.from_authorized_user_file('DMC_Bot/Saved_Information/token.json')             # make credentials from the saved token
 
         if not creds or not creds.valid or not creds.scopes == SCOPES:                      # if the credentials weren't set or are invalid and the necessary scopes are provided
 
@@ -62,13 +62,13 @@ class Google_Sheet:
                 reload_needed = True
 
             if reload_needed:
-                store = file.Storage("Saved_Information/token.json")                        # grab or make the saved credentials token
+                store = file.Storage("DMC_Bot/Saved_Information/token.json")                        # grab or make the saved credentials token
                 flow = client.flow_from_clientsecrets(                                      # authenticate manually
-                    'Saved_Information/client_oauth.json', SCOPES
+                    'DMC_Bot/Saved_Information/client_oauth.json', SCOPES
                 )
                 creds = tools.run_flow(flow, store)                                         # update the credentials from the manual authentication
 
-            with open('Saved_Information/token.json', 'w') as token :                       # open 'tokens.json'
+            with open('DMC_Bot/Saved_Information/token.json', 'w') as token :                       # open 'tokens.json'
                 token.write(creds.to_json())                                                # save the credentials to the json file
 
 

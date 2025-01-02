@@ -47,7 +47,7 @@ def get_links():
     Fetches the links to the location and mentor google sheets
     """
     
-    links = json.load(open('Saved_Information/links.json'))                                             # open the file 'links.json'
+    links = json.load(open('DMC_Bot/Saved_Information/links.json'))                                             # open the file 'links.json'
     return links                                                                                        # returns the dictionary
 
 
@@ -91,7 +91,7 @@ def weekly_timing(phase : str, last_week=True):
         set last_week to False to grab the most recent one
     """
 
-    phase_time = json.load(open('Saved_Information/timing.json'))[phase]                                        # grab what time the program is meant to run each week
+    phase_time = json.load(open('DMC_Bot/Saved_Information/timing.json'))[phase]                                        # grab what time the program is meant to run each week
 
     weekday_reference = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]          # create a weekday reference array
 
@@ -167,7 +167,7 @@ def recycle_object(filename):
 # --------------------------------------------
 
 def smtp_mailing(recipients, subject, body):
-    smtp_info = json.load(open('Saved_Information/smtp_secrets.json'))
+    smtp_info = json.load(open('DMC_Bot/Saved_Information/smtp_secrets.json'))
     
     server = smtp_info['server']
     port = smtp_info['port']

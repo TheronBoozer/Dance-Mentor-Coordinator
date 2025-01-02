@@ -59,8 +59,8 @@ class Google_Form:
         creds = None                                                                        # create credentials
         reload_needed = False
 
-        if os.path.exists("Saved_Information/token.json") :                                                   # if the file 'token.json' exists
-            creds = Credentials.from_authorized_user_file('Saved_Information/token.json')             # make credentials from the saved token
+        if os.path.exists("DMC_Bot/Saved_Information/token.json") :                                                   # if the file 'token.json' exists
+            creds = Credentials.from_authorized_user_file('DMC_Bot/Saved_Information/token.json')             # make credentials from the saved token
         else:
             reload_needed = True
 
@@ -79,13 +79,13 @@ class Google_Form:
             
 
             if reload_needed:
-                store = file.Storage("Saved_Information/token.json")                        # grab or make the saved credentials token
+                store = file.Storage("DMC_Bot/aved_Information/token.json")                        # grab or make the saved credentials token
                 flow = client.flow_from_clientsecrets(                                      # authenticate manually
-                    'Saved_Information/client_oauth.json', SCOPES
+                    'DMC_Bot/Saved_Information/client_oauth.json', SCOPES
                 )
                 creds = tools.run_flow(flow, store)                                         # update the credentials from the manual authentication
 
-            with open('Saved_Information/token.json', 'w') as token :                       # open 'tokens.json'
+            with open('DMC_Bot/Saved_Information/token.json', 'w') as token :                       # open 'tokens.json'
                 token.write(creds.to_json())                                                # save the credentials to the json file
 
 
@@ -225,7 +225,7 @@ class Google_Form:
         form = self.form_service.forms().get(formId=self.form_id).execute()                     # get the form
         index = len(form.get('items', []))                                                      # make the index the end of the questions
 
-        expressions = json.load(open('Saved_Information/expressions.json'))["FORM"]["SCALE_QUESTION"]
+        expressions = json.load(open('DMC_Bot/Saved_Information/expressions.json'))["FORM"]["SCALE_QUESTION"]
         
         NEW_QUESTION = {                                                                        # make the question item
             "requests": [
@@ -343,7 +343,7 @@ class Google_Form:
         form = self.form_service.forms().get(formId=self.form_id).execute()                     # get the form
         index = len(form.get('items', []))                                                      # make the index the end of the questions
 
-        question = json.load(open('Saved_Information/expressions.json'))["FORM"]["NOTE_QUESTION"]
+        question = json.load(open('DMC_Bot/Saved_Information/expressions.json'))["FORM"]["NOTE_QUESTION"]
         
         NEW_QUESTION = {                                                                        # make the question item
             "requests": [
@@ -381,7 +381,7 @@ class Google_Form:
         Creates a form question based on mentor and location availability
         """
 
-        file = json.load(open('Saved_Information/expressions.json'))
+        file = json.load(open('DMC_Bot/Saved_Information/expressions.json'))
         expressions = file["FORM"]
 
         possible_times = mentor.get_schedule().cross_check_with(request.get_schedule())         # cross check the mentors schedule with the session schedule
@@ -417,33 +417,33 @@ class Google_Form:
         self.recipients.append(email)                                                           # add the email to the saved list
 
 
-    def clear_responses(self):
-        """
-        Clears all questions and descriptions from the form
-        """
+    # def clear_responses(self):
+    #     """
+    #     Clears all questions and descriptions from the form
+    #     """
         
-        form = self.form_service.forms().get(formId=self.form_id).execute()                     # get the form used
-        responses = self.form_service.forms().responses().list(formId=self.form_id).execute()["responses"]
-        questions = form.get('items', [])                                                       # find all the items inthe form
+    #     form = self.form_service.forms().get(formId=self.form_id).execute()                     # get the form used
+    #     responses = self.form_service.forms().responses().list(formId=self.form_id).execute()["responses"]
+    #     questions = form.get('items', [])                                                       # find all the items inthe form
 
-        if len(questions) == 0: return form                                                     # if the form is already emtpy, return the form
+    #     if len(questions) == 0: return form                                                     # if the form is already emtpy, return the form
 
-        delete_requests = []                                                                    # create the array of requests
+    #     delete_requests = []                                                                    # create the array of requests
 
-        for i, item in enumerate(questions):                                                    # for each item in the form
-            if 'title' in item:                                                                 # if the item has a title
-                delete_requests.append({"deleteItem": {"location": {"index": i}}})              # add the index of the item to the delete requests
+    #     for i, item in enumerate(questions):                                                    # for each item in the form
+    #         if 'title' in item:                                                                 # if the item has a title
+    #             delete_requests.append({"deleteItem": {"location": {"index": i}}})              # add the index of the item to the delete requests
 
-        delete_requests.reverse()                                                               # reverse the list to avoid index errors
+    #     delete_requests.reverse()                                                               # reverse the list to avoid index errors
 
-        batch_delete_request = {"requests" : delete_requests}                                   # create the batch request item
+    #     batch_delete_request = {"requests" : delete_requests}                                   # create the batch request item
 
-        return (                                                                                # return the form
-            self.form_service
-            .forms()
-            .batchUpdate(formId=self.form_id, body=batch_delete_request)                        # delete all the requested items
-            .execute()
-        )
+    #     return (                                                                                # return the form
+    #         self.form_service
+    #         .forms()
+    #         .batchUpdate(formId=self.form_id, body=batch_delete_request)                        # delete all the requested items
+    #         .execute()
+    #     )
 
 
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////

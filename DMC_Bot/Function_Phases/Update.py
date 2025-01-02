@@ -17,7 +17,7 @@ def count_sessions():
 
     sheet = Google_Sheet(sheet_link)
 
-    session_log = recycle_object('Saved_Information/Session_Log.pkl')
+    session_log = recycle_object('DMC_Bot/Saved_Information/Session_Log.pkl')
 
     sheet.append(session_log)
 

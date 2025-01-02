@@ -1,6 +1,7 @@
 # date and time handling imports
 import datetime
 import time
+import pytz
 
 # html parsing imports
 import re
@@ -38,19 +39,35 @@ class When2Meet:
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    def __unix_to_week_tuple(self, timestamp : str) -> tuple :
+    def __unix_to_week_tuple(self, timestamp : str, timezone = pytz.timezone("GMT")) -> tuple :
         """
         Takes in the 25Live timestamp (`"20240225T070438/r"`) 
         Returns a tuple with the weekday and hour:minute unix timestamp (`(4, 70438)`)
         """
+        
+        full_unix = datetime.datetime.fromtimestamp(int(timestamp), pytz.timezone("UTC"))
+        local_unix = full_unix.astimezone(timezone)
 
-        full_unix = datetime.datetime.fromtimestamp(int(timestamp))
-        time_unix = int(time.mktime(full_unix.timetuple())) % (24*3600)                 # convert the full unix to just the hour and minute in EST
+        time_unix = int(time.mktime(local_unix.timetuple())) % (24*3600) - 5*3600       # convert the full unix to just the hour and minute in EST
         weekday = full_unix.weekday()                                                   # get the weekday from the full unix
         quarter = Quarter_Hour(weekday, time_unix).set_available()                      # create Quarter_Hour object for the time
 
         return quarter
     
+    def __str_to_timezone(self, timing : str) :
+        """
+        Takes in the When2Meet bollocks "ShowSlot(1735480800,&quot;Sun 29 Dec 2024 09:00:00 AM EST&quot;);" or "ShowSlot(279709200,&quot;Sunday 09:00:00 AM&quot;);"
+        returns a tuple with the weekday and hour:minute timestamp
+        """
+
+        cleaned_timing = timing[timing.find("\"")+1: timing.rfind("\"")]
+        time_zone = "GMT"
+        if(len(cleaned_timing) == 31): 
+            time_zone = cleaned_timing[28:]
+            if time_zone == "EDT":
+                time_zone = "EST"
+
+        return pytz.timezone(time_zone)
 
     def __green_block_style(self, style):
         """
@@ -83,8 +100,11 @@ class When2Meet:
         available_quarter_hour_html = calendar_html.find_all(style=self.__green_block_style)            # finds all free quarter hours in the pages html
         self.available_quarter_hours.clear()                                                            # clears any current available hours
 
+        if available_quarter_hour_html:
+            timezone = self.__str_to_timezone(available_quarter_hour_html[0]["onmouseover"])
+
         for quarter in available_quarter_hour_html:                                                     # loop through each available html 
-            week_tuple = self.__unix_to_week_tuple(quarter["data-time"])                                # convert the unix time available to a tuple in the format of -> (weekday, time)
+            week_tuple = self.__unix_to_week_tuple(quarter["data-time"], timezone)                                # convert the unix time available to a tuple in the format of -> (weekday, time)
             self.available_quarter_hours.append(week_tuple)                                             # add the above tuple to the stored array of available times
 
 

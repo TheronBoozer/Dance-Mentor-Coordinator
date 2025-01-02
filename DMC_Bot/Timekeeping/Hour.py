@@ -47,6 +47,12 @@ class Hour:
     def get_end_time(self):
         return self.quarters[-1].get_end_time()
     
+    def get_start_int(self):
+        return self.get_start_time().get_int_time()
+    
+    def get_end_int(self):
+        return self.get_end_time().get_int_time()
+    
     def get_weekday(self):
         return self.weekday
     

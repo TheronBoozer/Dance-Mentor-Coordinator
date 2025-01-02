@@ -71,6 +71,11 @@ class Quarter_Hour:
     def get_end_time(self):
         return self.end_time
 
+    def get_start_int(self):
+        return self.start_time.get_int_time()
+    
+    def get_end_int(self):
+        return self.end_time.get_int_time()
 
 
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
