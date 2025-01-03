@@ -1,13 +1,12 @@
-
+# internal references
 from Function_Phases.Helpers import get_links, create_2d_array, save_object
-
-
 from Scheduled_Entities.Location import Location
 from Scheduled_Entities.Mentor import Mentor
 from Scheduled_Entities.Session_Request import Session_Request
 
-
-
+# run foremost function
+from Function_Phases.Information_Scraping import get_weekly_information
+get_weekly_information()
 
 def get_weekly_information():
     """

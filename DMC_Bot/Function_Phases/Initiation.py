@@ -1,10 +1,14 @@
+# external imports
 import json
 
+# internal references
 from DMC_Bot import flags
 from Function_Phases.Helpers import get_links, recycle_object, save_object, smtp_mailing
 from Scheduled_Entities.Google_Form import Google_Form
 
-
+# run foremost function
+from Function_Phases.Initiation import send_out_initial_form
+send_out_initial_form()
 
 
 def send_out_initial_form() -> Google_Form:

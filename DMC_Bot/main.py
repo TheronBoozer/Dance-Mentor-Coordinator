@@ -11,7 +11,7 @@ def main():
     """
     Adds the created tasks to the correctly scheduled times
     """
-    
+
     print("it's go time")
     print(f"running on: {os.name};\n\t - 'nt' = Windows\n\t - 'posix' = Linux\n")
 
