@@ -1,8 +1,8 @@
 # create virtual environment (venv)
 cd ~
-mkdir /home/$USER/DMC_Bot/.venv
-python3 -m venv --system-site-packages home/$USER/DMC_Bot/.venv
-source home/$USER/DMC_Bot/.venv/bin/activate
+mkdir ~/DMC_Bot/.venv
+python3 -m venv --system-site-packages ~/DMC_Bot/.venv
+source ~/DMC_Bot/.venv/bin/activate
 
 # use pip to install packages
 python -m ensurepip --upgrade
@@ -35,14 +35,14 @@ chmod 755 DMC_Bot/Launchers/Restart.sh
 
 # turn off LEDs
 cd ~
-sudo sh -c "echo '# Disable Power LED (Red)' >>/boot/firmware/config.txt"
-sudo sh -c "echo 'dtparam=pwr_led_activelow=off\n' >>/boot/firmware/config.txt"                     # disable red power LED
+# sudo sh -c "echo '# Disable Power LED (Red)' >>/boot/firmware/config.txt"
+# sudo sh -c "echo 'dtparam=pwr_led_activelow=off\n' >>/boot/firmware/config.txt"                     # disable red power LED
 sudo sh -c "echo '# Disable Activity LED (Green)' >>/boot/firmware/config.txt"
 sudo sh -c "echo 'dtparam=act_led_trigger=none' >>/boot/firmware/config.txt"                        # disable green activity LED on triggers
-sudo sh -c "echo 'dtparam=act_led_activelow=off\n' >>/boot/firmware/config.txt"                     # disable green activity LED on power
-sudo sh -c "echo '# Disable LAN LEDs' >>/boot/firmware/config.txt"
-sudo sh -c "echo 'dtparam=eth_led0=14' >>/boot/firmware/config.txt"                                 # disable LAN LED 0
-sudo sh -c "echo 'dtparam=eth_led1=14\n' >>/boot/firmware/config.txt"                               # disable LAN LED 1
+sudo sh -c "echo 'dtparam=act_led_activelow=on\n' >>/boot/firmware/config.txt"                     # disable green activity LED on power
+# sudo sh -c "echo '# Disable LAN LEDs' >>/boot/firmware/config.txt"
+# sudo sh -c "echo 'dtparam=eth_led0=14' >>/boot/firmware/config.txt"                                 # disable LAN LED 0
+# sudo sh -c "echo 'dtparam=eth_led1=14\n' >>/boot/firmware/config.txt"                               # disable LAN LED 1
 
 
 # restart
