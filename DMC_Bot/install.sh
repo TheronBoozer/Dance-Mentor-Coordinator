@@ -15,7 +15,7 @@ pip install --upgrade beautifulsoup4
 
 # make launchers executable
 cd ~
-chmod 755 DMC_Bot/Launchers/launcher.sh
+chmod 755 DMC_Bot/Launchers/Schedule.sh
 chmod 755 DMC_Bot/Launchers/Confirm.sh
 chmod 755 DMC_Bot/Launchers/Initiate.sh
 chmod 755 DMC_Bot/Launchers/Scrape.sh

@@ -6,10 +6,6 @@ from DMC_Bot import flags
 from Scheduled_Entities.Session_Request import Session_Request
 from Function_Phases.Helpers import smtp_mailing, weekday_to_date, recycle_object, save_object
 
-# run foremost function
-from Function_Phases.Confirmation import create_session_pairings
-create_session_pairings()
-
 
 def create_session_pairings():
 

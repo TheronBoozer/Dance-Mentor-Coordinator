@@ -3,9 +3,6 @@ from Function_Phases.Helpers import get_links, recycle_object
 from Scheduled_Entities.Google_Sheet import Google_Sheet
 from Function_Phases.Restart import reboot
 
-# run foremost function
-from Function_Phases.Update import update
-update()
 
 
 def update():
