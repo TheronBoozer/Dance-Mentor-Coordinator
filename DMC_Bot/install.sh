@@ -1,7 +1,7 @@
 # create virtual environment (venv)
 cd ~
 mkdir ~/DMC_Bot/.venv
-python3 -m venv --system-site-packages ~/DMC_Bot/.venv
+python -m venv --system-site-packages ~/DMC_Bot/.venv
 source ~/DMC_Bot/.venv/bin/activate
 
 # use pip to install packages
