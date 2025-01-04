@@ -15,12 +15,12 @@ pip install --upgrade beautifulsoup4
 
 # make launchers executable
 cd ~
-chmod 755 home/$USER/DMC_Bot/Launchers/launcher.sh
-chmod 755 home/$USER/DMC_Bot/Launchers/Confirm.sh
-chmod 755 home/$USER/DMC_Bot/Launchers/Initiate.sh
-chmod 755 home/$USER/DMC_Bot/Launchers/Scrape.sh
-chmod 755 home/$USER/DMC_Bot/Launchers/Update.sh
-chmod 755 home/$USER/DMC_Bot/Launchers/Restart.sh
+chmod 755 DMC_Bot/Launchers/launcher.sh
+chmod 755 DMC_Bot/Launchers/Confirm.sh
+chmod 755 DMC_Bot/Launchers/Initiate.sh
+chmod 755 DMC_Bot/Launchers/Scrape.sh
+chmod 755 DMC_Bot/Launchers/Update.sh
+chmod 755 DMC_Bot/Launchers/Restart.sh
 
 # set cron variables
 (crontab -l 2>/dev/null; echo "SHELL=/home/$USER/DMC_Bot/.venv") | crontab -                # set cron shell to venv
@@ -32,3 +32,18 @@ chmod 755 home/$USER/DMC_Bot/Launchers/Restart.sh
 (crontab -l; echo "8 0 * * 6 Launchers/Initiate.sh >> /logs/initial.log") | crontab -       # Initialize at 08:00 Saturday
 (crontab -l; echo "20 0 * * 7 Launchers/Confirm.sh >> /logs/confirm.log") | crontab -       # Confirm at 20:00 Sunday
 (crontab -l; echo "20 15 * * 7 Launchers/Update.sh >> /logs/update.log") | crontab -        # Update at 20:15 Sunday
+
+# turn off LEDs
+cd ~
+sudo echo "#Disable Power LED (Red)" >>/boot/firmware/config.txt
+sudo echo "dtparam=pwr_led_activelow=off\n" >>/boot/firmware/config.txt                     # disable red power LED
+sudo echo "#Disable Activity LED (Green)" >>/boot/firmware/config.txt
+sudo echo "dtparam=act_led_trigger=none" >>/boot/firmware/config.txt                        # disable green activity LED on triggers
+sudo echo "dtparam=act_led_activelow=off\n" >>/boot/firmware/config.txt                     # disable green activity LED on power
+sudo echo "#Disable LAN LEDs" >>/boot/firmware/config.txt
+sudo echo "dtparam=eth_led0=14" >>/boot/firmware/config.txt                                 # disable LAN LED 0
+sudo echo "dtparam=eth_led1=14\n" >>/boot/firmware/config.txt                               # disable LAN LED 1
+
+
+# restart
+sudo reboot
