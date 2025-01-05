@@ -1,3 +1,4 @@
+import argparse
 import json
 from apiclient import discovery
 from oauth2client import client, file, tools
@@ -79,6 +80,7 @@ class Google_Form:
             
 
             if reload_needed:
+                
                 store = file.Storage("DMC_Bot/Saved_Information/token.json")                        # grab or make the saved credentials token
                 flow = client.flow_from_clientsecrets(                                      # authenticate manually
                     'DMC_Bot/Saved_Information/client_oauth.json', SCOPES

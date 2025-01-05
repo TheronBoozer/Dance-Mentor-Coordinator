@@ -1,3 +1,4 @@
+import argparse
 from apiclient import discovery
 from oauth2client import client, file, tools
 
@@ -67,7 +68,6 @@ class Google_Sheet:
                     'DMC_Bot/Saved_Information/client_oauth.json', SCOPES
                 )
                 creds = tools.run_flow(flow, store)                                         # update the credentials from the manual authentication
-
             with open('DMC_Bot/Saved_Information/token.json', 'w') as token :                       # open 'tokens.json'
                 token.write(creds.to_json())                                                # save the credentials to the json file
 

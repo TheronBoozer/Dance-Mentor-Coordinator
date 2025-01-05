@@ -31,7 +31,7 @@ def assign_task_timing():
 
 
 def assign_timing(phase : str, function):
-    weektime = json.load(open('Saved_Information/timing.json'))[phase]
+    weektime = json.load(open('DMC_Bot/Saved_Information/timing.json'))[phase]
 
     weekday = weektime[0]
     time = weektime[1]
