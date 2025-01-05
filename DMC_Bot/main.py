@@ -17,7 +17,7 @@ def main():
     print("it's go time")
     print(f"running on: {os.name};\n\t - 'nt' = Windows\n\t - 'posix' = Linux\n")
 
-    task = sys.argv[0]
+    task = sys.argv.pop(1)
 
     if task == "Schedule":
         assign_task_timing()
@@ -32,7 +32,7 @@ def main():
     elif task == "Restart":
         reboot()
     else:
-        print("Please enter a command line argument for what the program should do/n")
+        print("Please enter a command line argument for what the program should do\n")
 
 
 

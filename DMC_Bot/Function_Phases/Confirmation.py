@@ -2,15 +2,15 @@
 import json
 
 # internal references
-from DMC_Bot import flags
+import flags
 from Scheduled_Entities.Session_Request import Session_Request
 from Function_Phases.Helpers import smtp_mailing, weekday_to_date, recycle_object, save_object
 
 
 def create_session_pairings():
 
-    form = recycle_object('Saved_Information/confirmation_form.pkl')
-    info = recycle_object('Saved_Information/scheduled_entities.pkl')
+    form = recycle_object('DMC_Bot/Saved_Information/confirmation_form.pkl')
+    info = recycle_object('DMC_Bot/Saved_Information/scheduled_entities.pkl')
 
 
     mentor_list = info["mentor_list"]
@@ -21,7 +21,7 @@ def create_session_pairings():
 
     responses = form.update_responses()
 
-    rejected_expression = json.load(open('Saved_Information/expressions.json'))["FORM"]["SESSION_REJECTION"]
+    rejected_expression = json.load(open('DMC_Bot/Saved_Information/expressions.json'))["FORM"]["SESSION_REJECTION"]
 
     for response in responses:
         for question in response["answers"].values():
@@ -54,7 +54,7 @@ def send_final_emails(sessions):
     for session in sessions:
         mega_session_list.append(send_email(session))
 
-    save_object(mega_session_list, 'Saved_Information/Session_Log.pkl')
+    save_object(mega_session_list, 'DMC_Bot/Saved_Information/Session_Log.pkl')
 
 
 def send_email(session : Session_Request):
@@ -64,7 +64,7 @@ def send_email(session : Session_Request):
     
     # outlook = win32.Dispatch('outlook.application')                                             # find the outlook application
 
-    email_outline = open('Saved_Information/Secondary_Email_Confirmation.txt', 'r')       # grab the expressions used in the email
+    email_outline = open('DMC_Bot/Saved_Information/Secondary_Email_Confirmation.txt', 'r')       # grab the expressions used in the email
     email_outline = email_outline.read()
     subject = email_outline[email_outline.index('{')+1 : email_outline.index('}')]
     body = email_outline.replace(subject, "")[3:]
@@ -128,7 +128,7 @@ def send_rejection(session : Session_Request):
 
     # outlook = win32.Dispatch('outlook.application')                                             # find the outlook application
 
-    email_outline = open('Saved_Information/Secondary_Email_Confirmation.txt', 'r')       # grab the expressions used in the email
+    email_outline = open('DMC_Bot/Saved_Information/Secondary_Email_Confirmation.txt', 'r')       # grab the expressions used in the email
     email_outline = email_outline.read()
     subject = email_outline[email_outline.index('{')+1 : email_outline.index('}')]
     body = email_outline.replace(subject, "")[3:]

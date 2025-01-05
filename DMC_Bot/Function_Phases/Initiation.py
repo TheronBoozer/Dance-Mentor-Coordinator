@@ -2,7 +2,7 @@
 import json
 
 # internal references
-from DMC_Bot import flags
+import flags
 from Function_Phases.Helpers import get_links, recycle_object, save_object, smtp_mailing
 from Scheduled_Entities.Google_Form import Google_Form
 
@@ -44,7 +44,7 @@ def make_initial_form(mentors : list, locations : list, sessions : list):
     form = get_initial_form()                                                                                               # get the confirmation form link
     form.clear_form()                                                                                                       # remove all current questions and sections
 
-    expressions = json.load(open('DMC_Bot/Saved_Information/expressions.json'))["FORM"]                                             # grab the expressions used in the form
+    expressions = json.load(open('DMC_Bot/Saved_Information/expressions.json'))["FORM"]                                     # grab the expressions used in the form
     mentor_names = []                                                                                                       # create the initial array of mentors
 
     for i, mentor in enumerate(mentors):                                                                                    # for each mentor
