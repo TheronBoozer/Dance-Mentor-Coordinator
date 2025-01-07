@@ -8,11 +8,13 @@ from google.auth.exceptions import RefreshError
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 
+from flags import *
+from Function_Phases.Helpers import get_links
+
 
 
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/forms.body', 'https://www.googleapis.com/auth/forms']
-DISCOVERY_DOC = "https://forms.googleapis.com/$discovery/rest?version=v1"
 
 class Google_Sheet:
     """
@@ -76,8 +78,6 @@ class Google_Sheet:
             "sheets",
             "v4",
             credentials=creds,
-            # discoveryServiceUrl=DISCOVERY_DOC,
-            # static_discovery=False,
         )
 
         return sheet_service
@@ -91,3 +91,16 @@ class Google_Sheet:
         self.sheet_service.spreadsheets().values().append(
             spreadsheetId=self.sheet_id, range="Sheet1!A1",
             valueInputOption="RAW", body=body).execute()
+        
+
+
+
+def authenticate_google():
+    try:
+        link = get_links()["CONFIRMATION_FORM_EDIT_LINK"]
+        Google_Sheet(link)
+        if DEBUG_ON:
+            print(f"Authentication credentials updated with the following scopes:\n\t${SCOPES.join(', ')}")
+    except:
+        if DEBUG_ON:
+            print("Failed to authenticate credentials.\nPlease try again and follow the link to provide access to your google sheets and forms.")

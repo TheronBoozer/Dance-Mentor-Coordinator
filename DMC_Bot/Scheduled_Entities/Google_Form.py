@@ -39,7 +39,7 @@ class Google_Form:
 
         self.form_id = link[start_index:link.rindex('/')]               # clip the id out of the url
         self.form_service = self.__setup_form_service()                 # set up the form recognition and such
-        self.recipients = ["wtboozer@wpi.edu"]                          # create an empty list of emails for the form to be sent to
+        self.recipients = []                                            # create an empty list of emails for the form to be sent to
 
         self.responses = []                                             # cretae the list of responses to be filled later
 

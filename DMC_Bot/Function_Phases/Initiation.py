@@ -2,7 +2,7 @@
 import json
 
 # internal references
-import flags
+from flags import *
 from Function_Phases.Helpers import get_links, recycle_object, save_object, smtp_mailing
 from Scheduled_Entities.Google_Form import Google_Form
 
@@ -19,10 +19,8 @@ def send_out_initial_form() -> Google_Form:
 
     form = make_initial_form(mentor_list, location_list, session_requests)                      # create the form
 
-    if flags.EMAIL_ON:
+    if EMAIL_ON:
         send_form(form)                                                                         # email the form out
-
-    save_object(form, 'DMC_Bot/Saved_Information/confirmation_form.pkl')
     
     return form
 
@@ -88,15 +86,15 @@ def send_form(form : Google_Form):
     subject = body[body.index('{')+1:body.index('}')]                                           # parse the subject
     body = body.replace(subject, "")[3:]                                                        # remove subject
 
-    recipients = form.get_recipients()
+    recipients = []
+
+    if EMAIL_ON:
+        recipients.extend(form.get_recipients())
+
+    if DEBUG_ON:
+        recipients.extend(ADDITIONAL_TEST_EMAILS)
 
     body = body.replace("[CONFIRMATION_FORM_LINK]", form_link)                                  # replace the confirmation
 
-    # mail = outlook.CreateItem(0)                                                                # create an email item
-    # mail.To = ";".join(form.get_recipients())                                                   # send the email to the form recipients
-    # mail.Subject = subject                                                                      # set the subject
-    # mail.Body = body                                                                            # set the body
-    
-    # mail.Send()
     smtp_mailing(recipients, subject, body)
 

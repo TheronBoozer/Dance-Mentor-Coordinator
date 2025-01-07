@@ -2,14 +2,16 @@
 import json
 
 # internal references
-import flags
+from Scheduled_Entities.Google_Form import Google_Form
+from flags import *
 from Scheduled_Entities.Session_Request import Session_Request
-from Function_Phases.Helpers import smtp_mailing, weekday_to_date, recycle_object, save_object
+from Function_Phases.Helpers import get_links, smtp_mailing, weekday_to_date, recycle_object, save_object
 
 
 def create_session_pairings():
 
-    form = recycle_object('DMC_Bot/Saved_Information/confirmation_form.pkl')
+    form_link = get_links()["CONFIRMATION_FORM_EDIT_LINK"]
+    form = Google_Form(form_link)
     info = recycle_object('DMC_Bot/Saved_Information/scheduled_entities.pkl')
 
 
@@ -42,7 +44,7 @@ def create_session_pairings():
                 session_requests[int(session_id) - 1].add_mentor_option([match_rating, mentor_list[int(mentor_id) - 1], answer])
 
 
-    if flags.EMAIL_ON:
+    if EMAIL_ON or DEBUG_ON:
         send_final_emails(session_requests)
 
     # form.deleteAllResponses()
@@ -107,13 +109,15 @@ def send_email(session : Session_Request):
     body = body.replace("[SESSION_DESCRIPTION]", description)
 
     mentee_emails.append(mentor_email)
-    recipients = mentee_emails
-    # mail = outlook.CreateItem(0)                                                                # create an email item
-    # mail.To = ";".join(recipients)                                                              # send the email to the form recipients
-    # mail.Subject = subject                                                                      # set the subject
-    # mail.Body = body                                                                            # set the body including the confirmation link
+
+    recipients = []
     
-    # mail.Send()
+    if EMAIL_ON:
+        recipients.extend(mentee_emails)
+
+    if DEBUG_ON:
+        recipients.extend(ADDITIONAL_TEST_EMAILS)
+
     smtp_mailing(recipients, subject, body)
 
 
@@ -121,12 +125,19 @@ def send_email(session : Session_Request):
 
 
 def send_rejection(session : Session_Request):
-    emails = session.get_emails()
+    
+    emails = []
+
+    if EMAIL_ON:
+        emails.extend(session.get_emails())
+
+    if DEBUG_ON:
+        print("adding test emails")
+        emails.extend(ADDITIONAL_TEST_EMAILS)
+
     names = session.get_participants()
     topic = session.get_topic()
     description = session.get_description()
-
-    # outlook = win32.Dispatch('outlook.application')                                             # find the outlook application
 
     email_outline = open('DMC_Bot/Saved_Information/Secondary_Email_Confirmation.txt', 'r')       # grab the expressions used in the email
     email_outline = email_outline.read()
@@ -138,10 +149,6 @@ def send_rejection(session : Session_Request):
     body = body.replace("[SESSION_DECRIPTION]", description)
 
     recipients = emails
-    # mail = outlook.CreateItem(0)                                                                # create an email item
-    # mail.To = ";".join(recipients)                                                             # send the email to the form recipients
-    # mail.Subject = subject                                                       # set the subject
-    # mail.Body = body                # set the body including the confirmation link
-    
-    # mail.Send()
+
+
     smtp_mailing(recipients, subject, body)
