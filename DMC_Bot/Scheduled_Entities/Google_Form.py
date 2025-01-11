@@ -1,4 +1,3 @@
-import argparse
 import json
 from apiclient import discovery
 from oauth2client import client, file, tools

@@ -20,7 +20,9 @@ def main():
         print("it's go time")
         print(f"running on: {os.name};\n\t - 'nt' = Windows\n\t - 'posix' = Linux\n\n")
 
-    task = sys.argv.pop(1)
+    task = ''
+    if len(sys.argv) > 1:
+        task = sys.argv.pop(1)
 
     if task == "Schedule":
         
@@ -62,6 +64,7 @@ def main():
 
     else:
         print("Please enter a command line argument for what the program should do\n")
+
 
 
 

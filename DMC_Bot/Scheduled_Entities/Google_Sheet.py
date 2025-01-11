@@ -1,4 +1,3 @@
-import argparse
 from apiclient import discovery
 from oauth2client import client, file, tools
 
@@ -100,7 +99,7 @@ def authenticate_google():
         link = get_links()["CONFIRMATION_FORM_EDIT_LINK"]
         Google_Sheet(link)
         if DEBUG_ON:
-            print(f"Authentication credentials updated with the following scopes:\n\t${SCOPES.join(', ')}")
+            print(f"Authentication credentials updated with the following scopes:\n\t${', '.join(SCOPES)}")
     except:
         if DEBUG_ON:
             print("Failed to authenticate credentials.\nPlease try again and follow the link to provide access to your google sheets and forms.")

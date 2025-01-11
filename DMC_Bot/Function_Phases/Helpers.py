@@ -166,7 +166,7 @@ def recycle_object(filename):
 # --------------------------------------------
 
 def smtp_mailing(recipients, subject, body):
-    smtp_info = json.load(open('DMC_Bot/Saved_Information/smtp_secrets.json'))
+    smtp_info = json.load(open('DMC_Bot/Saved_Information/smtp_secrets.json'))['DANCE_GMAIL']
     
     server = smtp_info['server']
     port = smtp_info['port']

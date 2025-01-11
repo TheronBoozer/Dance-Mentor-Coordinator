@@ -21,6 +21,9 @@ chmod 755 DMC_Bot/Launchers/Initiate.sh
 chmod 755 DMC_Bot/Launchers/Scrape.sh
 chmod 755 DMC_Bot/Launchers/Update.sh
 chmod 755 DMC_Bot/Launchers/Restart.sh
+chmod 755 DMC_Bot/Launchers/Authenticate.sh
+chmod 755 DMC_Bot/Launchers/Toggle.sh
+
 
 # set cron variables
 (crontab -l 2>/dev/null; echo "SHELL=/home/$USER/DMC_Bot/.venv") | crontab -                # set cron shell to venv
