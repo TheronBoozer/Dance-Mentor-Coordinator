@@ -1,5 +1,7 @@
 from apiclient import discovery
+import httplib2
 from oauth2client import client, file, tools
+from oauth2client.service_account import ServiceAccountCredentials
 
 import os.path
 
@@ -28,15 +30,35 @@ class Google_Sheet:
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    def __init__(self, link : str):
+    def __init__(self, link : str, manual=False):
 
         start_index = link.find('/d/') + 3                              # find the start of the sheet ID
 
-        self.sheet_id = link[start_index:link.rindex('/')]               # clip the id out of the url
-        self.sheet_service = self.__setup_sheet_service()                 # set up the sheet recognition and such
+        self.sheet_id = link[start_index:link.rindex('/')]              # clip the id out of the url
+
+        if manual:
+            self.sheet_service = self.__setup_sheet_service()
+        else:
+            try:
+                self.sheet_service = self.__setup_sheet_service()
+            except:
+                self.sheet_service = self.__setup_sheet_service_account()       # set up the sheet recognition and such
 
 
 
+    def __setup_sheet_service_account(self):
+        creds = ServiceAccountCredentials.from_json_keyfile_name("DMC_Bot/Saved_Information/service_oauth.json", SCOPES)
+
+        if not creds or creds.invalid:
+            print("unable to authenticate using service key")
+            return
+            
+        http_auth = creds.authorize(httplib2.Http())
+        return discovery.build(
+            'sheets',
+            'v4',
+            http=http_auth
+        )
 
     def __setup_sheet_service(self):
         """
@@ -95,11 +117,9 @@ class Google_Sheet:
 
 
 def authenticate_google():
-    try:
+    #try:
         link = get_links()["CONFIRMATION_FORM_EDIT_LINK"]
-        Google_Sheet(link)
+        Google_Sheet(link, manual=True)
         if DEBUG_ON:
-            print(f"Authentication credentials updated with the following scopes:\n\t${', '.join(SCOPES)}")
-    except:
-        if DEBUG_ON:
-            print("Failed to authenticate credentials.\nPlease try again and follow the link to provide access to your google sheets and forms.")
+            print(f"Authentication credentials updated with the following scopes:\n\t{', '.join(SCOPES)}")
+    #exc#nt("Failed to authenticate credentials.\nPlease try again and follow the link to provide access to your google sheets and forms.")

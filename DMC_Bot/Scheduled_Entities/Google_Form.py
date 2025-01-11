@@ -1,9 +1,11 @@
 import json
 from apiclient import discovery
 from oauth2client import client, file, tools
+from oauth2client.service_account import ServiceAccountCredentials
 
 import os.path
 import datetime
+import httplib2
 
 from google.auth.exceptions import RefreshError
 from google.auth.transport.requests import Request
@@ -32,12 +34,20 @@ class Google_Form:
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    def __init__(self, link : str):
+    def __init__(self, link : str, manual=False):
 
         start_index = link.find('/d/') + 3                              # find the start of the form ID
 
         self.form_id = link[start_index:link.rindex('/')]               # clip the id out of the url
-        self.form_service = self.__setup_form_service()                 # set up the form recognition and such
+
+        if manual:
+            self.form_service = self.__setup_from_service_account()     # set up the form recognition and such
+        else:
+            try:
+                self.form_service = self.__setup_from_service_account()
+            except:
+                self.form_service = self.__setup_form_service()
+
         self.recipients = []                                            # create an empty list of emails for the form to be sent to
 
         self.responses = []                                             # cretae the list of responses to be filled later
@@ -49,6 +59,20 @@ class Google_Form:
     # //////////////////////////////////////*   PRIVATE METHODS   */////////////////////////////////////////////
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    def __setup_from_service_account(self):
+        creds = ServiceAccountCredentials.from_json_keyfile_name("DMC_Bot/Saved_Information/service_oauth.json", SCOPES)
+
+        if not creds or creds.invalid:
+            print("unable to authenticate using service key")
+            return
+            
+        http_auth = creds.authorize(httplib2.Http())
+        return discovery.build(
+            'forms',
+            'v1',
+            http=http_auth
+        )
 
     def __setup_form_service(self):
         """
