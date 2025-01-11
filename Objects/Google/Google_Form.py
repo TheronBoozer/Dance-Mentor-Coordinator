@@ -1,27 +1,16 @@
 import json
-from apiclient import discovery
-from oauth2client import client, file, tools
-from oauth2client.service_account import ServiceAccountCredentials
-
-import os.path
 import datetime
-import httplib2
-
-from google.auth.exceptions import RefreshError
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
 
 
-from Scheduled_Entities.Mentor import Mentor
-from Scheduled_Entities.Session_Request import Session_Request
+from .Google_Driver import Google_Driver
+from Objects.Mentor import Mentor
+from Objects.Session_Request import Session_Request
 
-from Function_Phases.Helpers import weekly_timing
+from Helpers import weekly_timing
 
+from file_paths import EXPRESSIONS_FILE
 
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/forms.body', 'https://www.googleapis.com/auth/forms.responses.readonly']
-DISCOVERY_DOC = "https://forms.googleapis.com/$discovery/rest?version=v1"
-
-class Google_Form:
+class Google_Form(Google_Driver):
     """
     Creates an editable google form object
     """
@@ -34,95 +23,14 @@ class Google_Form:
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    def __init__(self, link : str, manual=False):
+    def __init__(self, link : str):
 
-        start_index = link.find('/d/') + 3                              # find the start of the form ID
-
-        self.form_id = link[start_index:link.rindex('/')]               # clip the id out of the url
-
-        if manual:
-            self.form_service = self.__setup_from_service_account()     # set up the form recognition and such
-        else:
-            try:
-                self.form_service = self.__setup_from_service_account()
-            except:
-                self.form_service = self.__setup_form_service()
+        super().__init__(link)
+        self.service = super().setup_form_service()
 
         self.recipients = []                                            # create an empty list of emails for the form to be sent to
 
         self.responses = []                                             # cretae the list of responses to be filled later
-
-
-
-    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    # //////////////////////////////////////*   PRIVATE METHODS   */////////////////////////////////////////////
-    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    def __setup_from_service_account(self):
-        creds = ServiceAccountCredentials.from_json_keyfile_name("DMC_Bot/Saved_Information/service_oauth.json", SCOPES)
-
-        if not creds or creds.invalid:
-            print("unable to authenticate using service key")
-            return
-            
-        http_auth = creds.authorize(httplib2.Http())
-        return discovery.build(
-            'forms',
-            'v1',
-            http=http_auth
-        )
-
-    def __setup_form_service(self):
-        """
-        Sets up the authentication for the form in question
-        If not previously authenticated, the setup will need to be manually verified
-        """
-        
-        creds = None                                                                        # create credentials
-        reload_needed = False
-
-        if os.path.exists("DMC_Bot/Saved_Information/token.json") :                                                   # if the file 'token.json' exists
-            creds = Credentials.from_authorized_user_file('DMC_Bot/Saved_Information/token.json')             # make credentials from the saved token
-        else:
-            reload_needed = True
-
-        if not creds or not creds.valid or not creds.scopes == SCOPES:                      # if the credentials weren't set or are invalid and the necessary scopes are provided
-
-            if creds and creds.expired and creds.refresh_token and not reload_needed:                            # if the credentials expired
-                try:
-                    creds.refresh(Request())                                                    # refresh them from the token
-                except RefreshError:
-                    reload_needed = True
-            elif not reload_needed and not creds.scopes == SCOPES:
-                reload_needed = True
-            else :                                                                          # otherwise
-                reload_needed = True
-
-            
-
-            if reload_needed:
-                
-                store = file.Storage("DMC_Bot/Saved_Information/token.json")                        # grab or make the saved credentials token
-                flow = client.flow_from_clientsecrets(                                      # authenticate manually
-                    'DMC_Bot/Saved_Information/client_oauth.json', SCOPES
-                )
-                creds = tools.run_flow(flow, store)                                         # update the credentials from the manual authentication
-
-            with open('DMC_Bot/Saved_Information/token.json', 'w') as token :                       # open 'tokens.json'
-                token.write(creds.to_json())                                                # save the credentials to the json file
-
-
-        form_service = discovery.build(                                                     # create the google api service for all future use
-            "forms",
-            "v1",
-            credentials=creds,
-            discoveryServiceUrl=DISCOVERY_DOC,
-            static_discovery=False,
-        )
-
-        return form_service
     
 
 
@@ -139,12 +47,12 @@ class Google_Form:
         self.responses = []
 
         try:
-            responses = self.form_service.forms().responses().list(formId=self.form_id).execute()["responses"]
+            responses = self.service.forms().responses().list(formId=self.id).execute()["responses"]
         except KeyError:
             print("there are no responses")
             return self.responses
 
-        initiation_time = weekly_timing("initiation", True)
+        initiation_time = weekly_timing(["Saturday", "08:00"], True)
 
         for response in responses:
             create_time = int(datetime.datetime.strptime(response["createTime"], "%Y-%m-%dT%H:%M:%S.%fZ").timestamp())
@@ -161,7 +69,7 @@ class Google_Form:
         Clears all questions and descriptions from the form
         """
         
-        form = self.form_service.forms().get(formId=self.form_id).execute()                     # get the form used
+        form = self.service.forms().get(formId=self.id).execute()                     # get the form used
         questions = form.get('items', [])                                                       # find all the items inthe form
 
         if len(questions) == 0: return form                                                     # if the form is already emtpy, return the form
@@ -177,9 +85,9 @@ class Google_Form:
         batch_delete_request = {"requests" : delete_requests}                                   # create the batch request item
 
         return (                                                                                # return the form
-            self.form_service
+            self.service
             .forms()
-            .batchUpdate(formId=self.form_id, body=batch_delete_request)                        # delete all the requested items
+            .batchUpdate(formId=self.id, body=batch_delete_request)                        # delete all the requested items
             .execute()
         )
 
@@ -202,7 +110,7 @@ class Google_Form:
             options.append(option)                                                              # add that option to the big list for later
 
         if index == -1:                                                                         # if no index was provided
-            form = self.form_service.forms().get(formId=self.form_id).execute()                 # get the form
+            form = self.service.forms().get(formId=self.id).execute()                 # get the form
             index = len(form.get('items', []))                                                  # make the index the end of the questions
 
         NEW_QUESTION = {                                                                        # make the question item
@@ -236,8 +144,8 @@ class Google_Form:
             NEW_QUESTION["requests"][0]["createItem"]["item"]["questionItem"]["question"]["questionId"] = id                     # add a custom itemId to the item
 
         return (                                                                                # return the form
-            self.form_service.forms()
-            .batchUpdate(formId=self.form_id, body=NEW_QUESTION)                                # create the questions
+            self.service.forms()
+            .batchUpdate(formId=self.id, body=NEW_QUESTION)                                # create the questions
             .execute()
         )
     
@@ -247,10 +155,10 @@ class Google_Form:
         adds the question to determine how much the mentor would like to take on that session
         """
         
-        form = self.form_service.forms().get(formId=self.form_id).execute()                     # get the form
+        form = self.service.forms().get(formId=self.id).execute()                     # get the form
         index = len(form.get('items', []))                                                      # make the index the end of the questions
 
-        expressions = json.load(open('DMC_Bot/Saved_Information/expressions.json'))["FORM"]["SCALE_QUESTION"]
+        expressions = json.load(open(EXPRESSIONS_FILE))["FORM"]["SCALE_QUESTION"]
         
         NEW_QUESTION = {                                                                        # make the question item
             "requests": [
@@ -283,8 +191,8 @@ class Google_Form:
         }
     
         return (                                                                                # return the form
-                self.form_service.forms()
-                .batchUpdate(formId=self.form_id, body=NEW_QUESTION)                            # create the questions
+                self.service.forms()
+                .batchUpdate(formId=self.id, body=NEW_QUESTION)                            # create the questions
                 .execute()
             )
 
@@ -294,7 +202,7 @@ class Google_Form:
         Adds a section page to the google form
         """
 
-        form = self.form_service.forms().get(formId=self.form_id).execute()                     # get the form
+        form = self.service.forms().get(formId=self.id).execute()                     # get the form
         num_of_questions = len(form.get('items', []))                                           # get the number of items in the form
     
         NEW_SECTION = {                                                                         # create the section item
@@ -321,8 +229,8 @@ class Google_Form:
             NEW_SECTION["requests"][0]["createItem"]["item"]["itemId"] = id                     # add a custom itemId to the item
 
         return (                                                                                # return the form
-            self.form_service.forms()
-            .batchUpdate(formId=self.form_id, body=NEW_SECTION)                                 # add the new section
+            self.service.forms()
+            .batchUpdate(formId=self.id, body=NEW_SECTION)                                 # add the new section
             .execute()
         )
     
@@ -331,7 +239,7 @@ class Google_Form:
         Adds a text item to the google form
         """
         
-        form = self.form_service.forms().get(formId=self.form_id).execute()                     # get the form
+        form = self.service.forms().get(formId=self.id).execute()                     # get the form
         num_of_questions = len(form.get('items', []))                                           # get the number of items in the form
     
         NEW_SECTION = {                                                                         # create the text item
@@ -355,8 +263,8 @@ class Google_Form:
         }
 
         return (                                                                                # return the form
-            self.form_service.forms()
-            .batchUpdate(formId=self.form_id, body=NEW_SECTION)                                 # add the new text
+            self.service.forms()
+            .batchUpdate(formId=self.id, body=NEW_SECTION)                                 # add the new text
             .execute()
         )
     
@@ -365,10 +273,10 @@ class Google_Form:
         adds the question to determine how much the mentor would like to take on that session
         """
         
-        form = self.form_service.forms().get(formId=self.form_id).execute()                     # get the form
+        form = self.service.forms().get(formId=self.id).execute()                     # get the form
         index = len(form.get('items', []))                                                      # make the index the end of the questions
 
-        question = json.load(open('DMC_Bot/Saved_Information/expressions.json'))["FORM"]["NOTE_QUESTION"]
+        question = json.load(open(EXPRESSIONS_FILE))["FORM"]["NOTE_QUESTION"]
         
         NEW_QUESTION = {                                                                        # make the question item
             "requests": [
@@ -395,8 +303,8 @@ class Google_Form:
         }
     
         return (                                                                                # return the form
-                self.form_service.forms()
-                .batchUpdate(formId=self.form_id, body=NEW_QUESTION)                            # create the questions
+                self.service.forms()
+                .batchUpdate(formId=self.id, body=NEW_QUESTION)                            # create the questions
                 .execute()
             )
 
@@ -406,7 +314,7 @@ class Google_Form:
         Creates a form question based on mentor and location availability
         """
 
-        file = json.load(open('DMC_Bot/Saved_Information/expressions.json'))
+        file = json.load(open(EXPRESSIONS_FILE))
         expressions = file["FORM"]
 
         possible_times = mentor.get_schedule().cross_check_with(request.get_schedule())         # cross check the mentors schedule with the session schedule
@@ -442,34 +350,6 @@ class Google_Form:
         self.recipients.append(email)                                                           # add the email to the saved list
 
 
-    # def clear_responses(self):
-    #     """
-    #     Clears all questions and descriptions from the form
-    #     """
-        
-    #     form = self.form_service.forms().get(formId=self.form_id).execute()                     # get the form used
-    #     responses = self.form_service.forms().responses().list(formId=self.form_id).execute()["responses"]
-    #     questions = form.get('items', [])                                                       # find all the items inthe form
-
-    #     if len(questions) == 0: return form                                                     # if the form is already emtpy, return the form
-
-    #     delete_requests = []                                                                    # create the array of requests
-
-    #     for i, item in enumerate(questions):                                                    # for each item in the form
-    #         if 'title' in item:                                                                 # if the item has a title
-    #             delete_requests.append({"deleteItem": {"location": {"index": i}}})              # add the index of the item to the delete requests
-
-    #     delete_requests.reverse()                                                               # reverse the list to avoid index errors
-
-    #     batch_delete_request = {"requests" : delete_requests}                                   # create the batch request item
-
-    #     return (                                                                                # return the form
-    #         self.form_service
-    #         .forms()
-    #         .batchUpdate(formId=self.form_id, body=batch_delete_request)                        # delete all the requested items
-    #         .execute()
-    #     )
-
 
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -481,4 +361,4 @@ class Google_Form:
         return self.recipients
     
     def get_id(self):
-        return self.form_id
+        return self.id

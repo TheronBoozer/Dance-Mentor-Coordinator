@@ -4,7 +4,7 @@ import requests
 import json
 import smtplib
 
-
+from file_paths import LINKS_FILE, SMTP_INFORMATION
 
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -17,7 +17,7 @@ def __remove_old_rows(rows : list):
     A function that removes rows with a timestamp older than the last 'initial' phase
     """
     
-    last_week_timing = weekly_timing("initiation")                                                      # get the unix timestamp of last weeks run
+    last_week_timing = weekly_timing(["Saturday", "08:00"])                                                # get the unix timestamp of last weeks run
 
     for row in rows[::-1]:                                                                              # loop throw each row from the back
         fixed_format = row[:row.index("\t")].strip()                                                    # grab just the timestamp
@@ -46,7 +46,7 @@ def get_links():
     Fetches the links to the location and mentor google sheets
     """
     
-    links = json.load(open('DMC_Bot/Saved_Information/links.json'))                                             # open the file 'links.json'
+    links = json.load(open(LINKS_FILE))                                             # open the file 'links.json'
     return links                                                                                        # returns the dictionary
 
 
@@ -84,22 +84,21 @@ def create_2d_array(link : str, recent = False):
 # --------------timing functions--------------
 # --------------------------------------------
 
-def weekly_timing(phase : str, last_week=True):
+def weekly_timing(phase : list, last_week=True):
     """
     convert an array in the form ["weekday", hour, minute] into the unix timestamp of the past week
         set last_week to False to grab the most recent one
     """
 
-    phase_time = json.load(open('DMC_Bot/Saved_Information/timing.json'))[phase]                                        # grab what time the program is meant to run each week
 
     weekday_reference = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]          # create a weekday reference array
 
     current_weekday = datetime.datetime.now().weekday()                                                         # get what weekday it is today
-    target_weekday = weekday_reference.index(phase_time[0].capitalize())                                        # convert the weekday string to the numeric interpretation
+    target_weekday = weekday_reference.index(phase[0].capitalize())                                        # convert the weekday string to the numeric interpretation
 
     current_time = int(datetime.datetime.now().timestamp())                                                     # get the current timestamp
-    target_hour = int(phase_time[1][:phase_time[1].index(':')])                                                 # save the target hour in military time
-    target_minute = int(phase_time[1][phase_time[1].index(':')+1:])                                             # save the target minute
+    target_hour = int(phase[1][:phase[1].index(':')])                                                 # save the target hour in military time
+    target_minute = int(phase[1][phase[1].index(':')+1:])                                             # save the target minute
 
     days_between_target_and_now = (current_weekday + (7 - target_weekday)) % 7 + 7 * int(last_week)             # some math to find how many days have passed since the target day
 
@@ -166,12 +165,12 @@ def recycle_object(filename):
 # --------------------------------------------
 
 def smtp_mailing(recipients, subject, body):
-    smtp_info = json.load(open('DMC_Bot/Saved_Information/smtp_secrets.json'))['DANCE_GMAIL']
+    smtp_info = json.load(open(SMTP_INFORMATION))['DANCE_GMAIL']
     
     server = smtp_info['server']
     port = smtp_info['port']
-    username = smtp_info['username']            # danceofficers@gmail.com
-    password = smtp_info['password']            # ch@ch@ch@1997 or app password once I sign in
+    username = smtp_info['username']
+    password = smtp_info['password']
 
     from_user = username
     to_user = ";".join(recipients)

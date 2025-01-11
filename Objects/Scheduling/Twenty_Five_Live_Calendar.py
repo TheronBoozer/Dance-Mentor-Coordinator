@@ -2,7 +2,7 @@ import datetime
 import time
 import requests
 
-from Timekeeping.Quarter_Hour import Quarter_Hour
+from Objects.Timekeeping.Quarter_Hour import Quarter_Hour
 
 
 class Twenty_Five_Live_Calendar:

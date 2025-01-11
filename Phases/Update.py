@@ -1,9 +1,9 @@
 # internal references
-from Function_Phases.Helpers import get_links, recycle_object
-from Scheduled_Entities.Google_Sheet import Google_Sheet
-from Function_Phases.Restart import reboot
+from Helpers import get_links, recycle_object
+from Objects.Google.Google_Sheet import Google_Sheet
+from Phases.Restart import reboot
 
-
+from file_paths import SESSION_LOG
 
 def update():
 
@@ -20,7 +20,7 @@ def count_sessions():
 
     sheet = Google_Sheet(sheet_link)
 
-    session_log = recycle_object('DMC_Bot/Saved_Information/Session_Log.pkl')
+    session_log = recycle_object(SESSION_LOG)
 
     sheet.append(session_log)
 

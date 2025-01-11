@@ -3,15 +3,16 @@ import json
 
 # internal references
 from flags import *
-from Function_Phases.Helpers import get_links, recycle_object, save_object, smtp_mailing
-from Scheduled_Entities.Google_Form import Google_Form
+from Helpers import get_links, recycle_object, smtp_mailing
+from Objects.Google.Google_Form import Google_Form
 
+from file_paths import SAVED_OBJECTS, FORM_EMAIL, EXPRESSIONS_FILE
 
 def send_out_initial_form() -> Google_Form:
     """
     assigns the proper data and then makes and emails the initial form
     """
-    info = recycle_object('DMC_Bot/Saved_Information/scheduled_entities.pkl')
+    info = recycle_object(SAVED_OBJECTS)
     
     mentor_list = info["mentor_list"]                                                           # set the mentor list
     location_list = info["location_list"]                                                       # set the location list
@@ -42,7 +43,7 @@ def make_initial_form(mentors : list, locations : list, sessions : list):
     form = get_initial_form()                                                                                               # get the confirmation form link
     form.clear_form()                                                                                                       # remove all current questions and sections
 
-    expressions = json.load(open('DMC_Bot/Saved_Information/expressions.json'))["FORM"]                                     # grab the expressions used in the form
+    expressions = json.load(open(EXPRESSIONS_FILE))["FORM"]                                     # grab the expressions used in the form
     mentor_names = []                                                                                                       # create the initial array of mentors
 
     for i, mentor in enumerate(mentors):                                                                                    # for each mentor
@@ -81,7 +82,7 @@ def send_form(form : Google_Form):
     # outlook = win32.Dispatch('outlook.application')                                             # find the outlook application
     form_link = f'https://docs.google.com/forms/d/{form.get_id()}/viewform'                     # get the form share link
 
-    body = open('DMC_Bot/Saved_Information/Initial_Mentor_Email.txt', 'r')                              # grab the email file
+    body = open(FORM_EMAIL, 'r')                              # grab the email file
     body = body.read()                                                                          # read it
     subject = body[body.index('{')+1:body.index('}')]                                           # parse the subject
     body = body.replace(subject, "")[3:]                                                        # remove subject

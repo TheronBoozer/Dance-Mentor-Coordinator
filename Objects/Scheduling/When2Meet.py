@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 import requests
 
 # from Timekeeping
-from Timekeeping.Quarter_Hour import Quarter_Hour
+from Objects.Timekeeping.Quarter_Hour import Quarter_Hour
 
 
 class When2Meet:

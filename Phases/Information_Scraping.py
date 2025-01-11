@@ -1,9 +1,10 @@
 # internal references
-from Function_Phases.Helpers import get_links, create_2d_array, save_object
-from Scheduled_Entities.Location import Location
-from Scheduled_Entities.Mentor import Mentor
-from Scheduled_Entities.Session_Request import Session_Request
+from Helpers import get_links, create_2d_array, save_object
+from Objects.Location import Location
+from Objects.Mentor import Mentor
+from Objects.Session_Request import Session_Request
 
+from file_paths import SAVED_OBJECTS
 
 def get_weekly_information():
     """
@@ -16,7 +17,7 @@ def get_weekly_information():
         "session_requests" : get_sessions(),                                        # set the session information
     }
 
-    save_object(information, 'DMC_Bot/Saved_Information/scheduled_entities.pkl')
+    save_object(information, SAVED_OBJECTS)
     
     return information
 
@@ -63,8 +64,6 @@ def get_sessions():
     for information in session_information:                                         # for each array in the 2d array
         sessions.append(Session_Request(information))                               # add to the array
 
-    # if not sessions:
-    #     return False
     
     return sessions
  

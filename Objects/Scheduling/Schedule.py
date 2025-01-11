@@ -1,8 +1,8 @@
-from Scheduling.Twenty_Five_Live_Calendar import Twenty_Five_Live_Calendar
-from Scheduling.When2Meet import When2Meet
-from Scheduling import Schedule
+from Objects.Scheduling.Twenty_Five_Live_Calendar import Twenty_Five_Live_Calendar
+from Objects.Scheduling.When2Meet import When2Meet
+from Objects.Scheduling import Schedule
 
-from Timekeeping.Day import Day
+from Objects.Timekeeping.Day import Day
 
 
 class Schedule:

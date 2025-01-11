@@ -1,6 +1,0 @@
-token.json
-client_oauth.json
-smtp_secrets.json
-service_oauth.json
-*.pyc
-*.pkl

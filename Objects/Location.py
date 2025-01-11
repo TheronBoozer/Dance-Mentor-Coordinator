@@ -1,12 +1,15 @@
-from typing import List
-from Timekeeping.Quarter_Hour import Quarter_Hour
-from Timekeeping import Hour
+from Objects.Scheduling.Schedule import Schedule
+from Objects.Scheduling.Twenty_Five_Live_Calendar import Twenty_Five_Live_Calendar
+from Objects.Scheduling.When2Meet import When2Meet
 
-class Hour:
+
+
+class Location:
     """
-    Object that holds 4 quarter hour objects in a row
-    Has a start and end time
+    An object to store practice location information such as the locations schedule
     """
+
+
 
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -14,24 +17,18 @@ class Hour:
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    def __init__(self, quarters:List[Quarter_Hour]):
-        self.quarters = quarters
-        self.weekday = quarters[0].get_string_weekday()
+    def __init__(self, information):
+        self.name = information[0]                                                          # store the location name
+        self.schedule = Schedule()                                                          # create a base schedule
 
+        self.twenty_five_live_link = information[1]                                         # save 25live link
+        self.when2meet_link = information[2]                                                # save when2meet link
 
+        self.booked_quarters = Twenty_Five_Live_Calendar(self.twenty_five_live_link)        # save the booked times according to 25live
+        self.available_quarters = When2Meet(self.when2meet_link)                            # save the available times according to a when2meet
 
-    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    # ///////////////////////////////////////*   PUBLIC METHODS   */////////////////////////////////////////////
-    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    # //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    def __eq__(self, other : Hour):
-        day = self.get_weekday() == other.get_weekday()
-        start = self.get_start_time() == other.get_start_time()
-        end = self.get_end_time() == other.get_end_time()
-
-        return start and end and day
+        self.schedule.change_availability(self.available_quarters)                          # update the schedule with the available times
+        self.schedule.change_unavailability(self.booked_quarters)                           # update the schedule with the unavailable times
 
 
 
@@ -41,23 +38,14 @@ class Hour:
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    def get_start_time(self):
-        return self.quarters[0].get_start_time()
+    def get_schedule(self):
+        return self.schedule
     
-    def get_end_time(self):
-        return self.quarters[-1].get_end_time()
-    
-    def get_start_int(self):
-        return self.get_start_time().get_int_time() + self.quarters[0].get_weekday()*24*3600
-    
-    def get_end_int(self):
-        return self.get_end_time().get_int_time() + self.quarters[0].get_weekday()*24*3600
-    
-    def get_weekday(self):
-        return self.weekday
+    def get_name(self):
+        return self.name
     
 
-
+    
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
     # /////////////////////////////////////////*   TO STRING   *////////////////////////////////////////////////
@@ -65,5 +53,8 @@ class Hour:
     # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     def __str__(self) -> str:
-        return f"{self.weekday} from {self.get_start_time()} to {self.get_end_time()}"
-    
+        return f"""
+    {self.name}:
+     Operating Hours - {self.when2meet_link}
+     25Live page - {self.twenty_five_live_link}
+                """

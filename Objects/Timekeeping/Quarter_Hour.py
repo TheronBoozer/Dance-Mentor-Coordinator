@@ -1,4 +1,4 @@
-from Timekeeping.Hourly_Time import Hourly_Time
+from .Hourly_Time import Hourly_Time
 
 
 class Quarter_Hour:

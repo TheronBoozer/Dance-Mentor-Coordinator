@@ -2,17 +2,17 @@
 import json
 
 # internal references
-from Scheduled_Entities.Google_Form import Google_Form
+from Objects.Google.Google_Form import Google_Form
 from flags import *
-from Scheduled_Entities.Session_Request import Session_Request
-from Function_Phases.Helpers import get_links, smtp_mailing, weekday_to_date, recycle_object, save_object
-
+from Objects.Session_Request import Session_Request
+from Helpers import get_links, smtp_mailing, weekday_to_date, recycle_object, save_object
+from file_paths import SAVED_OBJECTS, EXPRESSIONS_FILE, SESSION_LOG, SESSION_EMAIL, REJECTION_EMAIL
 
 def create_session_pairings():
 
     form_link = get_links()["CONFIRMATION_FORM_EDIT_LINK"]
     form = Google_Form(form_link)
-    info = recycle_object('DMC_Bot/Saved_Information/scheduled_entities.pkl')
+    info = recycle_object(SAVED_OBJECTS)
 
 
     mentor_list = info["mentor_list"]
@@ -23,14 +23,14 @@ def create_session_pairings():
 
     responses = form.update_responses()
 
-    rejected_expression = json.load(open('DMC_Bot/Saved_Information/expressions.json'))["FORM"]["SESSION_REJECTION"]
+    rejected_expression = json.load(open(EXPRESSIONS_FILE))["FORM"]["SESSION_REJECTION"]
 
     for response in responses:
         for question in response["answers"].values():
             
             question_id = question["questionId"]
 
-            if question_id == "00000000" or 'b' in question_id:
+            if question_id == "00000000" or 'a' not in question_id:
                 continue
 
             session_id = question_id[5:]
@@ -38,7 +38,7 @@ def create_session_pairings():
             linked_question = response["answers"][question_id.replace('a', 'b')]
 
             answer = question["textAnswers"]["answers"][0]["value"]
-            
+
             match_rating = int(linked_question["textAnswers"]["answers"][0]["value"]) * 10
             if not answer == rejected_expression:
                 session_requests[int(session_id) - 1].add_mentor_option([match_rating, mentor_list[int(mentor_id) - 1], answer])
@@ -47,7 +47,7 @@ def create_session_pairings():
     if EMAIL_ON or DEBUG_ON:
         send_final_emails(session_requests)
 
-    # form.deleteAllResponses()
+
 
 
 def send_final_emails(sessions):
@@ -56,7 +56,7 @@ def send_final_emails(sessions):
     for session in sessions:
         mega_session_list.append(send_email(session))
 
-    save_object(mega_session_list, 'DMC_Bot/Saved_Information/Session_Log.pkl')
+    save_object(mega_session_list, SESSION_LOG)
 
 
 def send_email(session : Session_Request):
@@ -66,7 +66,7 @@ def send_email(session : Session_Request):
     
     # outlook = win32.Dispatch('outlook.application')                                             # find the outlook application
 
-    email_outline = open('DMC_Bot/Saved_Information/Secondary_Email_Confirmation.txt', 'r')       # grab the expressions used in the email
+    email_outline = open(SESSION_EMAIL, 'r')       # grab the expressions used in the email
     email_outline = email_outline.read()
     subject = email_outline[email_outline.index('{')+1 : email_outline.index('}')]
     body = email_outline.replace(subject, "")[3:]
@@ -139,7 +139,7 @@ def send_rejection(session : Session_Request):
     topic = session.get_topic()
     description = session.get_description()
 
-    email_outline = open('DMC_Bot/Saved_Information/Secondary_Email_Confirmation.txt', 'r')       # grab the expressions used in the email
+    email_outline = open(REJECTION_EMAIL, 'r')       # grab the expressions used in the email
     email_outline = email_outline.read()
     subject = email_outline[email_outline.index('{')+1 : email_outline.index('}')]
     body = email_outline.replace(subject, "")[3:]

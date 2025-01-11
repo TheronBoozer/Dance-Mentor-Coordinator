@@ -1,7 +1,7 @@
 import re
 
-from Scheduling.When2Meet import When2Meet
-from Scheduling.Schedule import Schedule
+from Objects.Scheduling.When2Meet import When2Meet
+from Objects.Scheduling.Schedule import Schedule
 
 class Session_Request:
     """

@@ -1,10 +1,8 @@
-from Scheduled_Entities.Google_Sheet import authenticate_google
-from Function_Phases.Information_Scraping import get_weekly_information
-from Function_Phases.Initiation import send_out_initial_form
-from Function_Phases.Confirmation import create_session_pairings
-from Function_Phases.Update import update
-from Function_Phases.Restart import reboot
-from Scheduler import assign_task_timing
+from Phases.Information_Scraping import get_weekly_information
+from Phases.Initiation import send_out_initial_form
+from Phases.Confirmation import create_session_pairings
+from Phases.Update import update
+from Phases.Restart import reboot
 from flags import *
 
 import os
@@ -24,13 +22,7 @@ def main():
     if len(sys.argv) > 1:
         task = sys.argv.pop(1)
 
-    if task == "Schedule":
-        
-        if DEBUG_ON: print("Assigning tasks\n Beginning while(true) loop")
-        assign_task_timing()
-        if DEBUG_ON: print("forever loop exited for unknown reason")
-
-    elif task == "Scrape":
+    if task == "Scrape":
 
         get_weekly_information()
         if DEBUG_ON: print("Information saved as pickles (file format, not the food)")
@@ -57,10 +49,6 @@ def main():
 
         if DEBUG_ON: print("Will reboot soon")
         reboot()
-
-    elif task == "Authenticate":
-
-        authenticate_google()
 
     else:
         print("Please enter a command line argument for what the program should do\n")
