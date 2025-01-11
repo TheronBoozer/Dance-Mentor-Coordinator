@@ -1,4 +1,7 @@
 import os
 
 def reboot():
-    os.system("shutdown -t 5 -r -f")
+    if os.name == 'nt':
+        os.system("shutdown -t 5 -r -f")
+    else:
+        os.system("reboot")
