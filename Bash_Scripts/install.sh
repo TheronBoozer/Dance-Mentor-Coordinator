@@ -1,8 +1,8 @@
 # create virtual environment (venv)
 cd ~
-mkdir ~/DMC_Bot/.venv
-python -m venv --system-site-packages ~/DMC_Bot/.venv
-source ~/DMC_Bot/.venv/bin/activate
+mkdir ~/.venv
+python -m venv --system-site-packages ~/.venv
+source ~/.venv/bin/activate
 
 # use pip to install packages
 python -m ensurepip --upgrade
@@ -13,23 +13,26 @@ pip install --upgrade datetime
 pip install --upgrade requests
 pip install --upgrade beautifulsoup4
 
+# deactivate venv
+deactivate
+
 # make launchers executable
 cd ~
-chmod 755 DMC_Bot/Bash_Scripts/Launchers/Schedule.sh
-chmod 755 DMC_Bot/Bash_Scripts/Launchers/Confirm.sh
-chmod 755 DMC_Bot/Bash_Scripts/Launchers/Initiate.sh
-chmod 755 DMC_Bot/Bash_Scripts/Launchers/Scrape.sh
-chmod 755 DMC_Bot/Bash_Scripts/Launchers/Update.sh
-chmod 755 DMC_Bot/Bash_Scripts/Launchers/Restart.sh
-chmod 755 DMC_Bot/Bash_Scripts/Launchers/Authenticate.sh
-chmod 755 DMC_Bot/Bash_Scripts/Launchers/Toggle.sh
+chmod 755 Bash_Scripts/Launchers/Schedule.sh
+chmod 755 Bash_Scripts/Launchers/Confirm.sh
+chmod 755 Bash_Scripts/Launchers/Initiate.sh
+chmod 755 Bash_Scripts/Launchers/Scrape.sh
+chmod 755 Bash_Scripts/Launchers/Update.sh
+chmod 755 Bash_Scripts/Launchers/Restart.sh
+chmod 755 Bash_Scripts/Launchers/Authenticate.sh
+chmod 755 Bash_Scripts/Launchers/Toggle.sh
 
 # set cron tasks
-(crontab -l; echo "0 0 * * 6 sh ~/DMC_Bot/Bash_Scripts/Launchers/Restart.sh >> ~/DMC_Bot/Bash_Scripts/logs/restart.log") | crontab -        # restart at 00:00 Saturday
-(crontab -l; echo "45 7 * * 6 sh ~/DMC_Bot/Bash_Scripts/Launchers/Scrape.sh >> ~/DMC_Bot/Bash_Scripts/logs/scrape.log") | crontab -         # Scrape info at 07:45 Saturday
-(crontab -l; echo "0 8 * * 6 sh ~/DMC_Bot/Bash_Scripts/Launchers/Initiate.sh >> ~/DMC_Bot/Bash_Scripts/logs/initial.log") | crontab -       # Initialize at 08:00 Saturday
-(crontab -l; echo "0 20 * * 7 sh ~/DMC_Bot/Bash_Scripts/Launchers/Confirm.sh >> ~/DMC_Bot/Bash_Scripts/logs/confirm.log") | crontab -       # Confirm at 20:00 Sunday
-(crontab -l; echo "15 20 * * 7 sh ~/DMC_Bot/Bash_Scripts/Launchers/Update.sh >> ~/DMC_Bot/Bash_Scripts/logs/update.log") | crontab -        # Update at 20:15 Sunday
+(crontab -l; echo "0 0 * * 6 sh ~/Bash_Scripts/Launchers/Restart.sh >> ~/Bash_Scripts/logs/restart.log") | crontab -        # restart at 00:00 Saturday
+(crontab -l; echo "45 7 * * 6 sh ~/Bash_Scripts/Launchers/Scrape.sh >> ~/Bash_Scripts/logs/scrape.log") | crontab -         # Scrape info at 07:45 Saturday
+(crontab -l; echo "0 8 * * 6 sh ~/Bash_Scripts/Launchers/Initiate.sh >> ~/Bash_Scripts/logs/initial.log") | crontab -       # Initialize at 08:00 Saturday
+(crontab -l; echo "0 20 * * 7 sh ~/Bash_Scripts/Launchers/Confirm.sh >> ~/Bash_Scripts/logs/confirm.log") | crontab -       # Confirm at 20:00 Sunday
+(crontab -l; echo "15 20 * * 7 sh ~/Bash_Scripts/Launchers/Update.sh >> ~/Bash_Scripts/logs/update.log") | crontab -        # Update at 20:15 Sunday
 
 # turn off LEDs
 cd ~
@@ -39,3 +42,6 @@ sudo sh -c "echo 'dtparam=act_led_activelow=on\n' >>/boot/firmware/config.txt"  
 
 # restart cron
 service cron restart
+
+# restart
+echo 'Reboot? (y/n)' && read x && [[ "$x" == "y" ]] && sudo reboot
