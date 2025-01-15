@@ -5,7 +5,7 @@ import json
 from Objects.Google.Google_Form import Google_Form
 from flags import *
 from Objects.Session_Request import Session_Request
-from Helpers import get_links, smtp_mailing, weekday_to_date, recycle_object, save_object
+from Helpers import get_links, smtp_mailing, weekday_to_date, recycle_object, save_object, grab_text
 from file_paths import SAVED_OBJECTS, EXPRESSIONS_FILE, SESSION_LOG, SESSION_EMAIL, REJECTION_EMAIL
 
 def create_session_pairings():
@@ -64,10 +64,9 @@ def send_email(session : Session_Request):
     sends an email with the session details
     """
     
-    # outlook = win32.Dispatch('outlook.application')                                             # find the outlook application
 
-    email_outline = open(SESSION_EMAIL, 'r')       # grab the expressions used in the email
-    email_outline = email_outline.read()
+    doc_link = get_links()["CONFIRMATION_EMAIL_LINK"]
+    email_outline = grab_text(doc_link)                                     # grab the expressions used in the email
     subject = email_outline[email_outline.index('{')+1 : email_outline.index('}')]
     body = email_outline.replace(subject, "")[3:]
 
@@ -139,8 +138,8 @@ def send_rejection(session : Session_Request):
     topic = session.get_topic()
     description = session.get_description()
 
-    email_outline = open(REJECTION_EMAIL, 'r')       # grab the expressions used in the email
-    email_outline = email_outline.read()
+    doc_link = get_links()["REJECTION_EMAIL_LINK"]
+    email_outline =grab_text(doc_link)       # grab the expressions used in the email
     subject = email_outline[email_outline.index('{')+1 : email_outline.index('}')]
     body = email_outline.replace(subject, "")[3:]
 

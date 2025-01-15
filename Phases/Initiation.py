@@ -3,7 +3,7 @@ import json
 
 # internal references
 from flags import *
-from Helpers import get_links, recycle_object, smtp_mailing
+from Helpers import get_links, recycle_object, smtp_mailing, grab_text
 from Objects.Google.Google_Form import Google_Form
 
 from file_paths import SAVED_OBJECTS, FORM_EMAIL, EXPRESSIONS_FILE
@@ -20,7 +20,7 @@ def send_out_initial_form() -> Google_Form:
 
     form = make_initial_form(mentor_list, location_list, session_requests)                      # create the form
 
-    if EMAIL_ON:
+    if EMAIL_ON or DEBUG_ON:
         send_form(form)                                                                         # email the form out
     
     return form
@@ -79,11 +79,10 @@ def send_form(form : Google_Form):
     sends an email with an attached google form
     """
     
-    # outlook = win32.Dispatch('outlook.application')                                             # find the outlook application
     form_link = f'https://docs.google.com/forms/d/{form.get_id()}/viewform'                     # get the form share link
 
-    body = open(FORM_EMAIL, 'r')                              # grab the email file
-    body = body.read()                                                                          # read it
+    doc_link = get_links()["FORM_EMAIL_LINK"]
+    body = grab_text(doc_link)                                                                  # grab the email file
     subject = body[body.index('{')+1:body.index('}')]                                           # parse the subject
     body = body.replace(subject, "")[3:]                                                        # remove subject
 
@@ -94,6 +93,7 @@ def send_form(form : Google_Form):
 
     if DEBUG_ON:
         recipients.extend(ADDITIONAL_TEST_EMAILS)
+        print("Email sent:\n" + body)
 
     body = body.replace("[CONFIRMATION_FORM_LINK]", form_link)                                  # replace the confirmation
 

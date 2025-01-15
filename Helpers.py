@@ -81,6 +81,19 @@ def create_2d_array(link : str, recent = False):
 
 
 # --------------------------------------------
+# ---------------docs functions---------------
+# --------------------------------------------
+
+def grab_text(link : str):
+    txt_link = link[:link.index('edit')] + 'export?format=txt'                                          # converts basic 'share' link to a readable txt link
+
+    google_doc = requests.get(txt_link)                                                                 # read the txt file made from the link
+    text = google_doc.text                                                                              # sorts it into only the text
+
+    return text
+
+
+# --------------------------------------------
 # --------------timing functions--------------
 # --------------------------------------------
 

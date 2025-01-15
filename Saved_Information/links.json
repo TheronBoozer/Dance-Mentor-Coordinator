@@ -3,5 +3,9 @@
     "LOCATION_INFORMATION_SHEET_LINK" : "https://docs.google.com/spreadsheets/d/1L2Plgoly26nA3JbeQHk6si435xnZJkBeNMDg_CqHEaw/edit?resourcekey=&gid=1306915179#gid=1306915179",
     "SESSION_REQUEST_SHEET_LINK" : "https://docs.google.com/spreadsheets/d/1PtMRoHYLS_VMHVLC0O4lCinp1BIVL-425-z9owAa88U/edit?resourcekey=&gid=553428416#gid=553428416",
     "CONFIRMATION_FORM_EDIT_LINK" : "https://docs.google.com/forms/d/19x6nZejSCaEvw9J3Mup8wAX46jwteNp7BLDcuhnMUOY/edit",
-    "SESSION_LOG_SHEET" : "https://docs.google.com/spreadsheets/d/1ueTWu_qzz_CshyQsz3_J6j2yVMNs1mIqjJOmqu3KzC0/edit?gid=0#gid=0"
+    "SESSION_LOG_SHEET" : "https://docs.google.com/spreadsheets/d/1ueTWu_qzz_CshyQsz3_J6j2yVMNs1mIqjJOmqu3KzC0/edit?gid=0#gid=0",
+
+    "CONFIRMATION_EMAIL_LINK" : "https://docs.google.com/document/d/14sw4ZHIaY07qidpQ7eagRhvAJezWGDC88AoApW0Hamk/edit?tab=t.0",
+    "FORM_EMAIL_LINK" : "https://docs.google.com/document/d/1ripzsxzfhKsLCiwWaJOggyfFK6_RZ4qmMUCY0CTLUOY/edit?tab=t.0",
+    "REJECTION_EMAIL_LINK" : "https://docs.google.com/document/d/1hy-2pSPn94OtSd54-A7Hl-mXzl6oJ6yNCony5iBFok4/edit?tab=t.0"
 }
