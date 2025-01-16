@@ -5,8 +5,8 @@ import json
 from Objects.Google.Google_Form import Google_Form
 from flags import *
 from Objects.Session_Request import Session_Request
-from Helpers import get_links, smtp_mailing, weekday_to_date, recycle_object, save_object, grab_text
-from file_paths import SAVED_OBJECTS, EXPRESSIONS_FILE, SESSION_LOG, SESSION_EMAIL, REJECTION_EMAIL
+from Helpers import get_expressions, get_links, smtp_mailing, weekday_to_date, recycle_object, save_object, grab_text
+from file_paths import SAVED_OBJECTS, SESSION_LOG
 
 def create_session_pairings():
 
@@ -23,7 +23,7 @@ def create_session_pairings():
 
     responses = form.update_responses()
 
-    rejected_expression = json.load(open(EXPRESSIONS_FILE))["FORM"]["SESSION_REJECTION"]
+    rejected_expression = get_expressions()["SESSION_REJECTION"]
 
     for response in responses:
         for question in response["answers"].values():

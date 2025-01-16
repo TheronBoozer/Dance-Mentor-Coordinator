@@ -1,15 +1,9 @@
 from apiclient import discovery
-from oauth2client import client, file, tools
 from oauth2client.service_account import ServiceAccountCredentials
 
-import os.path
 import httplib2
 
-from google.auth.exceptions import RefreshError
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-
-from file_paths import SERVICE_AUTH, CLIENT_AUTH, AUTH_TOKEN
+from file_paths import SERVICE_AUTH
 
 
 

@@ -6,7 +6,7 @@ from .Google_Driver import Google_Driver
 from Objects.Mentor import Mentor
 from Objects.Session_Request import Session_Request
 
-from Helpers import weekly_timing
+from Helpers import weekly_timing, get_expressions
 
 from file_paths import EXPRESSIONS_FILE
 
@@ -158,7 +158,7 @@ class Google_Form(Google_Driver):
         form = self.service.forms().get(formId=self.id).execute()                     # get the form
         index = len(form.get('items', []))                                                      # make the index the end of the questions
 
-        expressions = json.load(open(EXPRESSIONS_FILE))["FORM"]["SCALE_QUESTION"]
+        expressions = get_expressions()["SCALE_QUESTION"]
         
         NEW_QUESTION = {                                                                        # make the question item
             "requests": [
@@ -276,7 +276,7 @@ class Google_Form(Google_Driver):
         form = self.service.forms().get(formId=self.id).execute()                     # get the form
         index = len(form.get('items', []))                                                      # make the index the end of the questions
 
-        question = json.load(open(EXPRESSIONS_FILE))["FORM"]["NOTE_QUESTION"]
+        question = get_expressions()["NOTE_QUESTION"]
         
         NEW_QUESTION = {                                                                        # make the question item
             "requests": [
@@ -314,8 +314,7 @@ class Google_Form(Google_Driver):
         Creates a form question based on mentor and location availability
         """
 
-        file = json.load(open(EXPRESSIONS_FILE))
-        expressions = file["FORM"]
+        expressions = get_expressions()
 
         possible_times = mentor.get_schedule().cross_check_with(request.get_schedule())         # cross check the mentors schedule with the session schedule
 

@@ -9,8 +9,6 @@ def update():
 
     count_sessions()
 
-    update_saved_info()
-
     reboot()
 
 
@@ -23,6 +21,3 @@ def count_sessions():
     session_log = recycle_object(SESSION_LOG)
 
     sheet.append(session_log)
-
-def update_saved_info():
-    return

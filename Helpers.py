@@ -33,7 +33,7 @@ def __create_dictionary(link, gid = ""):
 
     csv_link = link[:link.index('edit')] + 'export?format=tsv'                                          # converts basic 'share' link to a readable csv link
     if not gid == "":
-        csv_link = csv_link + + "&gid=" + gid
+        csv_link = csv_link + "&gid=" + gid
 
     google_sheet = requests.get(csv_link)                                                               # read the csv file made from the link
     unorganized_data = google_sheet.text                                                                # sorts it into only the text
@@ -45,8 +45,8 @@ def __create_dictionary(link, gid = ""):
 
     for string in array_of_str_rows:
         vals = string.split("\t")
-        dict[vals[0]] = vals[1]
-
+        dict[vals[0][1:]] = vals[1]
+    print(dict)
     return dict
 
 
@@ -65,10 +65,13 @@ def get_links():
     Fetches the links to the location and mentor google sheets
     """
     
-    links = json.load(open(LINKS_FILE))                                             # open the file 'links.json'
-    return links                                                                                        # returns the dictionary
-    # __create_dictionary("https://docs.google.com/spreadsheets/d/1OGVFmUgGz4AmGEcMtyjuUAEWVI9AmyHku6pTbkhFDK4/edit?gid=1923771014#gid=1923771014", gid = "1923771014")
+    # links = json.load(open(LINKS_FILE))                                             # open the file 'links.json'
+    # return links                                                                                        # returns the dictionary
+    return __create_dictionary("https://docs.google.com/spreadsheets/d/1OGVFmUgGz4AmGEcMtyjuUAEWVI9AmyHku6pTbkhFDK4/edit?gid=1923771014#gid=1923771014", gid = "1923771014")
 
+def get_expressions():
+    link = get_links()["EXPRESSIONS"]
+    return __create_dictionary(link)
 
 def create_2d_array(link : str, recent = False, gid = ""):
     """

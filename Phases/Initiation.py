@@ -3,10 +3,10 @@ import json
 
 # internal references
 from flags import *
-from Helpers import get_links, recycle_object, smtp_mailing, grab_text
+from Helpers import get_links, recycle_object, smtp_mailing, grab_text, get_expressions
 from Objects.Google.Google_Form import Google_Form
 
-from file_paths import SAVED_OBJECTS, FORM_EMAIL, EXPRESSIONS_FILE
+from file_paths import SAVED_OBJECTS, EXPRESSIONS_FILE
 
 def send_out_initial_form() -> Google_Form:
     """
@@ -43,7 +43,7 @@ def make_initial_form(mentors : list, locations : list, sessions : list):
     form = get_initial_form()                                                                                               # get the confirmation form link
     form.clear_form()                                                                                                       # remove all current questions and sections
 
-    expressions = json.load(open(EXPRESSIONS_FILE))["FORM"]                                     # grab the expressions used in the form
+    expressions = get_expressions()                                                                                         # grab the expressions used in the form
     mentor_names = []                                                                                                       # create the initial array of mentors
 
     for i, mentor in enumerate(mentors):                                                                                    # for each mentor
