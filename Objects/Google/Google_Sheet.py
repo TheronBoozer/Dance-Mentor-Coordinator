@@ -1,20 +1,5 @@
-
-
 from Objects.Google.Google_Driver import Google_Driver
 from flags import *
-
-import httplib2
-from oauth2client.service_account import ServiceAccountCredentials
-from apiclient import discovery
-from oauth2client import client, file, tools
-
-import os.path
-import httplib2
-
-from google.auth.exceptions import RefreshError
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from file_paths import AUTH_TOKEN, CLIENT_AUTH
 
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/forms.body', 'https://www.googleapis.com/auth/forms']
