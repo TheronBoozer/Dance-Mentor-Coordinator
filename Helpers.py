@@ -29,6 +29,25 @@ def __remove_old_rows(rows : list):
 
     return rows
 
+def __create_dictionary(link, gid = ""):
+
+    csv_link = link[:link.index('edit')] + 'export?format=tsv'                                          # converts basic 'share' link to a readable csv link
+    if not gid == "":
+        csv_link = csv_link + + "&gid=" + gid
+
+    google_sheet = requests.get(csv_link)                                                               # read the csv file made from the link
+    unorganized_data = google_sheet.text                                                                # sorts it into only the text
+    array_of_str_rows = unorganized_data.split('\r')                                                    # splits the text into rows
+
+    array_of_str_rows.pop(0)                                                                            # remove the label row
+
+    dict = {}
+
+    for string in array_of_str_rows:
+        vals = string.split("\t")
+        dict[vals[0]] = vals[1]
+
+    return dict
 
 
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,14 +67,17 @@ def get_links():
     
     links = json.load(open(LINKS_FILE))                                             # open the file 'links.json'
     return links                                                                                        # returns the dictionary
+    # __create_dictionary("https://docs.google.com/spreadsheets/d/1OGVFmUgGz4AmGEcMtyjuUAEWVI9AmyHku6pTbkhFDK4/edit?gid=1923771014#gid=1923771014", gid = "1923771014")
 
 
-def create_2d_array(link : str, recent = False):
+def create_2d_array(link : str, recent = False, gid = ""):
     """
     Generates a 2d array from a given google sheet link
     """
     
     csv_link = link[:link.index('edit')] + 'export?format=tsv'                                          # converts basic 'share' link to a readable csv link
+    if not gid == "":
+        csv_link = csv_link + + "&gid=" + gid
 
     google_sheet = requests.get(csv_link)                                                               # read the csv file made from the link
     unorganized_data = google_sheet.text                                                                # sorts it into only the text
