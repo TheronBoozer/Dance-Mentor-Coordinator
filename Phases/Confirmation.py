@@ -3,10 +3,10 @@ import json
 
 # internal references
 from Objects.Google.Google_Form import Google_Form
-from flags import *
+from Globals.flags import *
 from Objects.Session_Request import Session_Request
-from Helpers import get_expressions, get_links, smtp_mailing, weekday_to_date, recycle_object, save_object, grab_text
-from file_paths import SAVED_OBJECTS, SESSION_LOG
+from Globals.Helpers import get_expressions, get_links, smtp_mailing, weekday_to_date, recycle_object, save_object, grab_text
+from Globals.file_paths import SAVED_OBJECTS, SESSION_LOG
 
 def create_session_pairings():
 

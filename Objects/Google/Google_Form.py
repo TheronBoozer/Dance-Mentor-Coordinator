@@ -4,7 +4,7 @@ from .Google_Driver import Google_Driver
 from Objects.Mentor import Mentor
 from Objects.Session_Request import Session_Request
 
-from Helpers import weekly_timing, get_expressions
+from Globals.Helpers import weekly_timing, get_expressions
 
 class Google_Form(Google_Driver):
     """

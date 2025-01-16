@@ -1,9 +1,9 @@
 # internal references
-from Helpers import get_links, recycle_object
+from Globals.Helpers import get_links, recycle_object
 from Objects.Google.Google_Sheet import Google_Sheet
 from Phases.Restart import reboot
 
-from file_paths import SESSION_LOG
+from Globals.file_paths import SESSION_LOG
 
 def update():
 

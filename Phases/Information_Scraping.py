@@ -1,10 +1,10 @@
 # internal references
-from Helpers import get_links, create_2d_array, save_object
+from Globals.Helpers import get_links, create_2d_array, save_object
 from Objects.Location import Location
 from Objects.Mentor import Mentor
 from Objects.Session_Request import Session_Request
 
-from file_paths import SAVED_OBJECTS
+from Globals.file_paths import SAVED_OBJECTS
 
 def get_weekly_information():
     """

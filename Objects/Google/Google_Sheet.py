@@ -1,5 +1,5 @@
 from Objects.Google.Google_Driver import Google_Driver
-from flags import *
+from Globals.flags import *
 
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/forms.body', 'https://www.googleapis.com/auth/forms']

@@ -3,7 +3,7 @@ from Phases.Initiation import send_out_initial_form
 from Phases.Confirmation import create_session_pairings
 from Phases.Update import update
 from Phases.Restart import reboot
-from flags import *
+from Globals.flags import *
 
 import os
 import sys

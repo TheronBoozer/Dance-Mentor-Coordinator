@@ -3,7 +3,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 import httplib2
 
-from file_paths import SERVICE_AUTH
+from Globals.file_paths import SERVICE_AUTH
 
 
 
