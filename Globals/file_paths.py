@@ -11,8 +11,7 @@ __PICKLED_FOLDER = __PRIMARY_FOLDER + "Pickles/"
 
 
 # files
-EXPRESSIONS_FILE = __PRIMARY_FOLDER + "expressions.json"
-LINKS_FILE = __PRIMARY_FOLDER + "links.json"
+LINKS_LINK = "https://docs.google.com/spreadsheets/d/1OGVFmUgGz4AmGEcMtyjuUAEWVI9AmyHku6pTbkhFDK4/edit?gid=1923771014#gid=1923771014"
 
 SAVED_OBJECTS = __PICKLED_FOLDER + "Scheduled_Entities.pkl"
 SESSION_LOG = __PICKLED_FOLDER + "Session_Log.pkl"

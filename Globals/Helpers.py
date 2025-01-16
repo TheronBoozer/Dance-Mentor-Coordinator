@@ -4,7 +4,7 @@ import requests
 import json
 import smtplib
 
-from Globals.file_paths import SMTP_INFORMATION
+from Globals.file_paths import SMTP_INFORMATION, LINKS_LINK
 
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,7 +67,7 @@ def get_links():
     
     # links = json.load(open(LINKS_FILE))                                             # open the file 'links.json'
     # return links                                                                                        # returns the dictionary
-    return __create_dictionary("https://docs.google.com/spreadsheets/d/1OGVFmUgGz4AmGEcMtyjuUAEWVI9AmyHku6pTbkhFDK4/edit?gid=1923771014#gid=1923771014", gid = "1923771014")
+    return __create_dictionary(LINKS_LINK)
 
 def get_expressions():
     link = get_links()["EXPRESSIONS"]
