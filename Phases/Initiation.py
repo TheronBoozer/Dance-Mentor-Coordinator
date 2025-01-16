@@ -6,7 +6,7 @@ from flags import *
 from Helpers import get_links, recycle_object, smtp_mailing, grab_text, get_expressions
 from Objects.Google.Google_Form import Google_Form
 
-from file_paths import SAVED_OBJECTS, EXPRESSIONS_FILE
+from file_paths import SAVED_OBJECTS
 
 def send_out_initial_form() -> Google_Form:
     """

@@ -1,14 +1,10 @@
-import json
 import datetime
-
 
 from .Google_Driver import Google_Driver
 from Objects.Mentor import Mentor
 from Objects.Session_Request import Session_Request
 
 from Helpers import weekly_timing, get_expressions
-
-from file_paths import EXPRESSIONS_FILE
 
 class Google_Form(Google_Driver):
     """
