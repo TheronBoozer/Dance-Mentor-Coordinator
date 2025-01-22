@@ -46,7 +46,7 @@ def __create_dictionary(link, gid = ""):
     for string in array_of_str_rows:
         vals = string.split("\t")
         dict[vals[0][1:]] = vals[1]
-    print(dict)
+
     return dict
 
 
@@ -65,8 +65,6 @@ def get_links():
     Fetches the links to the location and mentor google sheets
     """
     
-    # links = json.load(open(LINKS_FILE))                                             # open the file 'links.json'
-    # return links                                                                                        # returns the dictionary
     return __create_dictionary(LINKS_LINK)
 
 def get_expressions():

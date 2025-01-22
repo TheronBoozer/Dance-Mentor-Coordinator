@@ -2,4 +2,4 @@
 # Scrape.sh
 # navigate to home directory, then to this directory, then execute python script, then back home
 
-sudo ~/DMC_Bot/.venv/bin/python ~/DMC_Bot/main.py "Scrape"
+sudo ~/.venv/bin/python ~/main.py "Scrape"

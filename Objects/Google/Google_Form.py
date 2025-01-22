@@ -154,7 +154,7 @@ class Google_Form(Google_Driver):
         form = self.service.forms().get(formId=self.id).execute()                     # get the form
         index = len(form.get('items', []))                                                      # make the index the end of the questions
 
-        expressions = get_expressions()["SCALE_QUESTION"]
+        expressions = get_expressions()
         
         NEW_QUESTION = {                                                                        # make the question item
             "requests": [
@@ -162,10 +162,10 @@ class Google_Form(Google_Driver):
                     "createItem": {
                         "item": {
                             "title": (
-                                expressions["TITLE"]
+                                expressions["SCALE_TITLE"]
                             ),
                             "description" : (
-                                expressions["DESCRIPTION"]
+                                expressions["SCALE_DESCRIPTION"]
                             ),
                             "questionItem": {
                                 "question": {
@@ -174,8 +174,8 @@ class Google_Form(Google_Driver):
                                     "scaleQuestion": {
                                         "low": 0,
                                         "high": 5,
-                                        "lowLabel": expressions["LOW_LABEL"],
-                                        "highLabel": expressions["HIGH_LABEL"]
+                                        "lowLabel": expressions["SCALE_LOW_LABEL"],
+                                        "highLabel": expressions["SCALE_HIGH_LABEL"]
                                     },
                                 }
                             },
