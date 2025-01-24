@@ -5,6 +5,7 @@ import json
 import smtplib
 
 from Globals.file_paths import SMTP_INFORMATION, LINKS_LINK
+from Globals.flags import ADDITIONAL_TEST_EMAILS
 
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -208,12 +209,15 @@ def smtp_mailing(recipients, subject, body):
     username = smtp_info['username']
     password = smtp_info['password']
 
-    from_user = username
-    to_user = ";".join(recipients)
 
-    message = f'Subject: {subject}\n\n{body}'
+    message = "From: %s\r\n" % 'DanceLessons_smtp@wpi.edu'
+    message += "To: %s\r\n" % '; '.join(recipients)
+    message += "CC: %s\r\n" % '; '.join(ADDITIONAL_TEST_EMAILS)
+    message += "Subject: %s\r\n" % subject
+    message += "\r\n"
+    message += body
 
     with smtplib.SMTP(server, port) as smtp:
         smtp.starttls()
         smtp.login(username, password)
-        smtp.sendmail(from_user, to_user, message)
+        smtp.sendmail(username, recipients, message)
