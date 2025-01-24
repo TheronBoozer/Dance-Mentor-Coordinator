@@ -1,9 +1,6 @@
-# external imports
-import json
 
 # internal references
 from Objects.Google.Google_Form import Google_Form
-from Globals.flags import *
 from Objects.Session_Request import Session_Request
 from Globals.Helpers import get_expressions, get_links, smtp_mailing, weekday_to_date, recycle_object, save_object, grab_text
 from Globals.file_paths import SAVED_OBJECTS, SESSION_LOG
@@ -44,8 +41,7 @@ def create_session_pairings():
                 session_requests[int(session_id) - 1].add_mentor_option([match_rating, mentor_list[int(mentor_id) - 1], answer])
 
 
-    if EMAIL_ON or DEBUG_ON:
-        send_final_emails(session_requests)
+    send_final_emails(session_requests)
 
 
 
@@ -107,15 +103,7 @@ def send_email(session : Session_Request):
     body = body.replace("[SESSION_TOPIC]", topic)
     body = body.replace("[SESSION_DESCRIPTION]", description)
 
-    mentee_emails.append(mentor_email)
-
-    recipients = []
-    
-    if EMAIL_ON:
-        recipients.extend(mentee_emails)
-
-    if DEBUG_ON:
-        recipients.extend(ADDITIONAL_TEST_EMAILS)
+    recipients = mentee_emails + mentor_email
 
     smtp_mailing(recipients, subject, body)
 
@@ -125,14 +113,7 @@ def send_email(session : Session_Request):
 
 def send_rejection(session : Session_Request):
     
-    emails = []
-
-    if EMAIL_ON:
-        emails.extend(session.get_emails())
-
-    if DEBUG_ON:
-        print("adding test emails")
-        emails.extend(ADDITIONAL_TEST_EMAILS)
+    emails = session.get_emails()
 
     names = session.get_participants()
     topic = session.get_topic()

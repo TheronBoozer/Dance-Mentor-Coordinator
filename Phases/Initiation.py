@@ -1,9 +1,5 @@
-# external imports
-import json
-
 # internal references
-from Globals.flags import *
-from Globals.Helpers import get_links, recycle_object, smtp_mailing, grab_text, get_expressions
+from Globals.Helpers import get_flags, get_links, recycle_object, smtp_mailing, grab_text, get_expressions
 from Objects.Google.Google_Form import Google_Form
 
 from Globals.file_paths import SAVED_OBJECTS
@@ -20,8 +16,7 @@ def send_out_initial_form() -> Google_Form:
 
     form = make_initial_form(mentor_list, location_list, session_requests)                      # create the form
 
-    if EMAIL_ON or DEBUG_ON:
-        send_form(form)                                                                         # email the form out
+    send_form(form)                                                                         # email the form out
     
     return form
 
@@ -81,21 +76,20 @@ def send_form(form : Google_Form):
     
     form_link = f'https://docs.google.com/forms/d/{form.get_id()}/viewform'                     # get the form share link
 
+    links = get_links()
+    dm_sheet_link = links["DANCE_MENTOR_INFORMATION_SHEET_LINK"]
+    secretary = get_flags()["SECRETARY_EMAIL"]
+
     doc_link = get_links()["FORM_EMAIL_LINK"]
     body = grab_text(doc_link)                                                                  # grab the email file
     subject = body[body.index('{')+1:body.index('}')]                                           # parse the subject
-    body = body.replace(subject, "")[3:]                                                        # remove subject
+    body = body.replace(subject, "")[5:]                                                        # remove subject
 
-    recipients = []
-
-    if EMAIL_ON:
-        recipients.extend(form.get_recipients())
-
-    if DEBUG_ON:
-        recipients.extend(ADDITIONAL_TEST_EMAILS)
-        print("Email sent:\n" + body)
+    recipients = form.get_recipients()
 
     body = body.replace("[CONFIRMATION_FORM_LINK]", form_link)                                  # replace the confirmation
+    body = body.replace("DANCE_MENTOR_INFORMATION_SHEET_LINK", dm_sheet_link)
+    body = body.replace("[SECRETARY_EMAIL]", secretary)
 
     smtp_mailing(recipients, subject, body)
 

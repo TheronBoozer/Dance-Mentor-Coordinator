@@ -4,8 +4,11 @@ import requests
 import json
 import smtplib
 
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 from Globals.file_paths import SMTP_INFORMATION, LINKS_LINK
-from Globals.flags import ADDITIONAL_TEST_EMAILS
+
 
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,6 +49,12 @@ def __create_dictionary(link, gid = ""):
 
     for string in array_of_str_rows:
         vals = string.split("\t")
+
+        if vals[1] == 'TRUE':
+            vals[1] = True
+        elif vals[1] == 'FALSE':
+            vals[1] = False
+
         dict[vals[0][1:]] = vals[1]
 
     return dict
@@ -70,6 +79,10 @@ def get_links():
 
 def get_expressions():
     link = get_links()["EXPRESSIONS"]
+    return __create_dictionary(link)
+
+def get_flags():
+    link = get_links()["FLAGS"]
     return __create_dictionary(link)
 
 def create_2d_array(link : str, recent = False, gid = ""):
@@ -201,7 +214,7 @@ def recycle_object(filename):
 # --------------email functions---------------
 # --------------------------------------------
 
-def smtp_mailing(recipients, subject, body):
+def smtp_mailing(recipients : list, subject : str, body : str):
     smtp_info = json.load(open(SMTP_INFORMATION))['OUTLOOK']
     
     server = smtp_info['server']
@@ -209,15 +222,26 @@ def smtp_mailing(recipients, subject, body):
     username = smtp_info['username']
     password = smtp_info['password']
 
+    flags = get_flags()
+    EMAIL_ON = flags['EMAIL_ON']
+    if not EMAIL_ON:
+        recipients.clear()
 
-    message = "From: %s\r\n" % 'DanceLessons_smtp@wpi.edu'
-    message += "To: %s\r\n" % '; '.join(recipients)
-    message += "CC: %s\r\n" % '; '.join(ADDITIONAL_TEST_EMAILS)
-    message += "Subject: %s\r\n" % subject
-    message += "\r\n"
-    message += body
+    secretary = flags["SECRETARY_EMAIL"]
+    recipients.append(secretary)
+
+    message = MIMEMultipart("alternative")
+    message["From"] = 'DanceLessons_smtp@wpi.edu'
+    message['To'] = '; '.join(recipients)
+    message['Cc'] = secretary
+    message['Subject'] = subject
+
+    body = '<div>%s</div>' % body.replace("\r\n\r\n", "<br>").replace("\r\n", "<br>")
+    body = MIMEText(body, 'html')
+    message.attach(body)
+
 
     with smtplib.SMTP(server, port) as smtp:
         smtp.starttls()
         smtp.login(username, password)
-        smtp.sendmail(username, recipients, message)
+        smtp.sendmail(username, recipients, message.as_string())
