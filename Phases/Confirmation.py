@@ -103,7 +103,8 @@ def send_email(session : Session_Request):
     body = body.replace("[SESSION_TOPIC]", topic)
     body = body.replace("[SESSION_DESCRIPTION]", description)
 
-    recipients = mentee_emails + mentor_email
+    recipients = mentee_emails
+    recipients.append(mentor_email)
 
     smtp_mailing(recipients, subject, body)
 
