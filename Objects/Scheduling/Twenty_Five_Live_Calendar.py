@@ -40,7 +40,7 @@ class Twenty_Five_Live_Calendar:
         """
 
         full_unix = datetime.datetime.strptime(str(timestamp[:-1:]), "%Y%m%dT%H%M%S")   # get the full unix timestamp
-        time_unix = int(time.mktime(full_unix.timetuple())) % (24*3600) - 5*3600        # convert the full unix to just the hour and minute in EST
+        time_unix = (int(time.mktime(full_unix.timetuple())) - 5*3600) % (24*3600)        # convert the full unix to just the hour and minute in EST
         weekday = full_unix.weekday()                                                   # get the weekday from the full unix
 
         return (weekday, time_unix)

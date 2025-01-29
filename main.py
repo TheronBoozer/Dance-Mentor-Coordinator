@@ -1,4 +1,3 @@
-from Globals.Helpers import smtp_mailing
 from Phases.Information_Scraping import get_weekly_information
 from Phases.Initiation import send_out_initial_form
 from Phases.Confirmation import create_session_pairings
