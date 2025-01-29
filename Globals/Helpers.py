@@ -215,7 +215,7 @@ def recycle_object(filename):
 # --------------------------------------------
 
 def smtp_mailing(recipients : list, subject : str, body : str):
-    smtp_info = json.load(open(SMTP_INFORMATION))['OUTLOOK']
+    smtp_info = json.load(open(SMTP_INFORMATION))
     
     server = smtp_info['server']
     port = smtp_info['port']
