@@ -1,0 +1,35 @@
+{Phase Test}
+This is a test of the DMAC system phases
+
+------GENERAL-------
+[OS]
+
+[CRONTAB]
+
+[WIFI]
+
+[LINK]
+
+[PICKLES]
+
+[EMAILING]
+
+
+-------SCRAPING-------
+[LOCATION]
+
+[MENTOR]
+
+[SESSION]
+
+
+-------INITIATION---------
+[FORM_ACCESS]
+
+
+-------CONFIRMATION---------
+[RESPONSE_GATHERING]
+
+
+--------UPDATE---------
+[SHEET_ACCESS]

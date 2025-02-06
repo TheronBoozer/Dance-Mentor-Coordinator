@@ -1,6 +1,7 @@
 from Phases.Information_Scraping import get_weekly_information
 from Phases.Initiation import send_out_initial_form
 from Phases.Confirmation import create_session_pairings
+from Phases.Phase_Test import test
 from Phases.Update import update
 from Phases.Restart import reboot
 
@@ -50,5 +51,5 @@ def main():
     else:
         print("Please enter a command line argument for what the program should do\n")
 
-
+    test()
 main()
