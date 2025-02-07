@@ -1,35 +1,30 @@
-{Phase Test}
-This is a test of the DMAC system phases
-
-------GENERAL-------
-[OS]
-
-[CRONTAB]
-
-[WIFI]
-
-[LINK]
-
-[PICKLES]
-
-[EMAILING]
-
-
--------SCRAPING-------
-[LOCATION]
-
-[MENTOR]
-
-[SESSION]
-
-
--------INITIATION---------
-[FORM_ACCESS]
-
-
--------CONFIRMATION---------
-[RESPONSE_GATHERING]
-
-
---------UPDATE---------
-[SHEET_ACCESS]
+{[SUBJECT]}
+<b>This is a test of the DMAC system phases:</b><br><br>
+<table align='center' style='text-align:center'>
+  <tr>
+    <td align='center' style='text-align:center'>
+        --------GENERAL--------<br>
+        Operating System:<br>
+            [OS]
+        [CRONTAB]
+        [WIFI]
+        [LINK]
+        [PICKLES]
+        [EMAILING]
+        <br>
+        --------SCRAPING--------
+        [LOCATION]
+        [MENTOR]
+        [SESSION]
+        <br>
+        --------INITIATION--------
+        [FORM_ACCESS]
+        <br>
+        --------CONFIRMATION--------
+        [RESPONSE_GATHERING]
+        <br>
+        --------UPDATE--------
+        [SHEET_ACCESS]
+    </td>
+  </tr>
+</table>
