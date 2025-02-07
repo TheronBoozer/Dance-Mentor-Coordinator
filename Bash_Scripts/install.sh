@@ -28,6 +28,7 @@ chmod 755 Bash_Scripts/Launchers/Authenticate.sh
 chmod 755 Bash_Scripts/Launchers/Toggle.sh
 
 # set cron tasks
+(crontab -l; echo "0 20 * * 5 sh ~/Bash_Scripts/Launchers/Test.sh >> ~/Bash_Scripts/logs/test.log 2>&1") | crontab -             # test at 20:00 Friday
 (crontab -l; echo "0 0 * * 6 sh ~/Bash_Scripts/Launchers/Restart.sh >> ~/Bash_Scripts/logs/restart.log 2>&1") | crontab -        # restart at 00:00 Saturday
 (crontab -l; echo "45 7 * * 6 sh ~/Bash_Scripts/Launchers/Scrape.sh >> ~/Bash_Scripts/logs/scrape.log 2>&1") | crontab -         # Scrape info at 07:45 Saturday
 (crontab -l; echo "0 8 * * 6 sh ~/Bash_Scripts/Launchers/Initiate.sh >> ~/Bash_Scripts/logs/initial.log 2>&1") | crontab -       # Initialize at 08:00 Saturday

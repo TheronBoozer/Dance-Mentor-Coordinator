@@ -1,0 +1,30 @@
+{All Systems Go}
+<b>This is a test of the DMAC system phases:</b><br><br>
+<table align='center' style='text-align:center'>
+  <tr>
+    <td align='center' style='text-align:center'>
+        --------GENERAL--------<br>
+        Operating System:<br>
+            <p style="color: orange;">Windows</p>
+        <p style="color: orange;">Not run through Crontab</p>
+        <p style="color: green;">Connected to the Internet</p>
+        <p style="color: green;">Links Accessed</p>
+        <p style="color: green;">Pickling Functional</p>
+        <p style="color: green;"><p style="color: green;">Emailing successful</p></p>
+        <br>
+        --------SCRAPING--------
+        <p style="color: green;">7 locations found</p>
+        <p style="color: green;">4 mentors found</p>
+        <p style="color: green;">2 sessions found</p>
+        <br>
+        --------INITIATION--------
+        <p style="color: green;">Form access granted</p>
+        <br>
+        --------CONFIRMATION--------
+        <p style="color: green;">Response updating seccessful</p>
+        <br>
+        --------UPDATE--------
+        <p style="color: green;">Session log accessed</p>
+    </td>
+  </tr>
+</table>

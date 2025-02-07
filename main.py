@@ -48,8 +48,11 @@ def main():
         print("Will reboot soon")
         reboot()
 
+    elif task == "Test":
+        test()
+        print("System tested")
+
     else:
         print("Please enter a command line argument for what the program should do\n")
 
-    test()
 main()
