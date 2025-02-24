@@ -29,7 +29,6 @@ def create_session_pairings():
 
             if question_id == "00000000" or 'a' not in question_id:
                 continue
-
             session_id = question_id[5:]
             mentor_id = question_id[:4]
             linked_question = response["answers"][question_id.replace('a', 'b')]

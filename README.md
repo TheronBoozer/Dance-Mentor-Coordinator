@@ -1,5 +1,5 @@
 # Dance Mentor Automatic Coordination (DMAC)
-DMAC is an automated scheduling system designed for the WPI Ballroom Dance Team. The system employs object oriented programming in Python to schedule individual dance lessons between mentors and mentees. In brief the system takes Google Form session request responses and creates a list of possible times for each mentor. These times are listed in a new Google Form that the each mentor completes to accept or deny the session requests. Once all mentor responses are in, emails are sent out to the mentors and mentees with session details.
+DMAC is an automated scheduling system designed for the WPI Ballroom Dance Team. The system employs object oriented programming in Python to schedule individual dance lessons between mentors and mentees. In brief the system takes Google Form session request responses and creates a list of possible times for each mentor. These times are listed in a new Google Form that each mentor completes to accept or deny the session requests. Once all mentor responses are in, emails are sent out to the mentors and mentees with session details.
 ## Table of Contents
 1. [Getting Started](#Getting-Started)
 	- [Installation](#Installation)
