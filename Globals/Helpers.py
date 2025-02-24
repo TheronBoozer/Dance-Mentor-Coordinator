@@ -228,7 +228,12 @@ def smtp_mailing(recipients : list, subject : str, body : str):
         recipients.clear()
 
     secretary = flags["SECRETARY_EMAIL"]
-    recipients.append(secretary)
+    DEBUG_ON = flags['DEBUG_ON']
+    if DEBUG_ON:
+        recipients.append(secretary)
+
+    if recipients == []:
+        return
 
     message = MIMEMultipart("alternative")
     message["From"] = 'DanceLessons_smtp@wpi.edu'

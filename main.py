@@ -5,6 +5,8 @@ from Phases.Phase_Test import test
 from Phases.Update import update
 from Phases.Restart import reboot
 
+from Globals.Helpers import smtp_mailing
+
 import os
 import sys
 
@@ -13,7 +15,7 @@ def main():
     """
     Adds the created tasks to the correctly scheduled times
     """
-
+    
     print(f"running on: {os.name};\n\t - 'nt' = Windows\n\t - 'posix' = Linux\n\n")
 
     task = ''
@@ -55,4 +57,8 @@ def main():
     else:
         print("Please enter a command line argument for what the program should do\n")
 
-main()
+try:
+    main()
+except Exception as e:
+    print(repr(e))
+    smtp_mailing([], "ERROR OCCURED", repr(e))
