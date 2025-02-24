@@ -4,7 +4,7 @@ from Phases.Information_Scraping import get_weekly_information
 from Phases.Initiation import send_out_initial_form
 from Phases.Confirmation import create_session_pairings
 from Phases.Phase_Test import test
-from Phases.Update import update
+from Phases.Update import clean_folders, update
 from Phases.Restart import reboot
 
 from Globals.Helpers import smtp_mailing
@@ -65,3 +65,5 @@ except Exception as e:
     print(f"\t{repr(e)}")
     smtp_mailing([], "ERROR OCCURED", repr(e))
     print("\tError email sent")
+
+clean_folders()
