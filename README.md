@@ -7,9 +7,9 @@ DMAC is an automated scheduling system designed for the WPI Ballroom Dance Team.
 2. [How to Use](#How-to-Use)
 	- [Making a Session Request](#Making-a-Session-Request)
 	- [Adding a Mentor](#Adding-a-Mentor)
-	- Adding a Location
-	- Upkeep
-	- Example
+	- [Adding a Location](#Adding-a-Lcation)
+	- [Upkeep](#Upkeep)
+	- [Example]
 3. How It Works
 	- Phases
 		- Reboot
@@ -66,7 +66,7 @@ Now is a good time to change username and password as well as setting up the Wi-
 Once imaged, the SD card can be inserted back into the pi. It is a good idea to boot it up and check SSH connection.
 
 ### Transfer Files
-I will share two ways to do this, [git](#Git) and [SCP (Secure Copy Protocol)](#scp). Even using git, you will need to add a few files containing authentication information, and while you can copy it over later through SCP separately, I find using SCP from the start is easier. 
+The code automatically pulls from the Deploy branch on github, so it is important to set up the git repository. 
 
 #### Git
 SSH into the Raspberry Pi.
@@ -76,13 +76,10 @@ Assuming you're on the same network use:
 
 Then clone the repository:
 
+	git init .
     git clone https://github.com/TheronBoozer/Dance-Mentor-Coordinator.git
-
-#### SCP
-Download the code onto your local machine. From there, recursively SCP the files onto the local Raspberry Pi:
-
-	cd [path-to-code]
-	scp -r ./* [user]@[hostname].local:~/
+	git checkout Deploy
+	git pull
 
 ## Setup
 After installing the code onto the Raspberry Pi, a bash script can be run to set up the crontab, virtual environment, dependencies, and turn off the LED.
@@ -93,7 +90,7 @@ To do so, run:
 You will need to enter your password to edit the crontab and then click y to reboot. This will set up everything needed for the scripts to run aside from the secrets that are needed.
 
 ### Add the secrets files
-Two secret files are needed -- smtp_secrets.json and service_oauth.json. Transferring them via SCP will be easiest, but writing hem with nano will be covered. 
+Two secret files are needed -- smtp_secrets.json and service_oauth.json. Transferring them via SCP will be easiest, but writing them with nano will be covered. 
 
 #### smtp secrets
 The SMTP secrets file will contain login information to the email account being used. The JSON will look as follows for an outlook email:
@@ -140,7 +137,9 @@ Once made navigate to the service account to *KEYS* and create a new key. This w
 Take your json key from earlier and, like earlier, we will push through scp to the raspberry pi. Rename your json key to *service_oauth.json* and push it to the *Ignored* folder.
 
 	cd [PATH_TO_KEY]
-	scp ./service_oauth.json [USER]@[HOSTNAME].local:Saved_Information/Ignored/
+	scp ./service_oauth.json [USER]@[HOSTNAME].local:~/Saved_Information/Ignored/
+
+Or manually type the key into the file through `nano ~/Saved_Information/Ignored/service_oauth.json`
 
 ##### Provide Access Permissions
 The final step for oauth is to share whatever files the service account needs to access. This is as simple as sharing your google drive files with any other google email, just hit share and paste in your service accounts email which should look like: [NAME]@[PROJECT].iam.gserviceaccount.com.
@@ -169,6 +168,34 @@ Making a session request is as simple as filling out the session request Google 
 These inputs get taken into consideration when pairing the mentees with a mentor. The automation system considers the schedule and the preferred mentors; the rest of the information is given to the mentors to self evaluate their ability to teach the lesson where they then provide a self evaluation from 1-5 as to how capable they would be to teach the lesson.
 
 ## Adding a Mentor
+Adding a mentor simply requires the mentor to fill out the Entry Form, which requires the following:
+ - First and last name of the mentor
+ - Their preferred email
+ - Their phone number
+ - preferred contact method
+ - A [When2Meet](when2meet.com) of their termly schedule
+ - The mentors dancing level for each style
+ - The dancers ability to teach certain roles
 
+The name, email, and phone number get used in the emailing process. The When2Meet is used for creating session pairings. And the rest of the information is for the website information.
 
+## Adding a Lcation
+Similar to the previous two there's a form. The Practice Location Form requires:
+ - The name of the location
+ - The [25Live](https://25live.collegenet.com/pro/wpi) calendar URL
+ - A [When2Meet](When2Meet.com) of the locations operating times
+
+The name should be recognizable to everyone as that's what goes in the emails. The 25live is where the data of space bookings is read. The When2Meet is for the opening and closing hours and any other non-scheduled unavailabilities.
+
+## Upkeep
+The human input to keep the system running is minimal, but not zero. There are a few things that can be done to keep things organized. It's best to have the Secretary handle these.
+
+### When2Meet reminders
+A reminder to the mentors to update their When2Meets should be sent to them each term - though they should remember after they are sent a whole bunch of wrong times the first week.
+
+### Cleaning the Sheets
+While the code has been made to read spreadsheets from the botttom up, ignoring old data, it's still a good idea to either clear the old data or create whole new sheets. Clearing rows simply by right clicking and deleting NOT by deleting the data in the rows will work. OR create a new sheet and then link it to both the form and the Links spreadsheet. Sheets to clean are as follows:
+ - Mentor Session Log
+ - Session Request
+ - Session Confirmation
 

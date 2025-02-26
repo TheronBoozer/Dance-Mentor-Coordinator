@@ -11,6 +11,8 @@ def update():
 
     count_sessions()
 
+    clean_folders()
+
     reboot()
 
 

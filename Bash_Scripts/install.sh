@@ -18,16 +18,17 @@ deactivate
 
 # make launchers executable
 cd ~
-chmod 755 Bash_Scripts/Launchers/Schedule.sh
 chmod 755 Bash_Scripts/Launchers/Confirm.sh
 chmod 755 Bash_Scripts/Launchers/Initiate.sh
 chmod 755 Bash_Scripts/Launchers/Scrape.sh
 chmod 755 Bash_Scripts/Launchers/Update.sh
 chmod 755 Bash_Scripts/Launchers/Restart.sh
-chmod 755 Bash_Scripts/Launchers/Authenticate.sh
-chmod 755 Bash_Scripts/Launchers/Toggle.sh
+chmod 755 Bash_Scripts/Launchers/Test.sh
+chmod 755 Bash_Scripts/Launchers/Pull.sh
+
 
 # set cron tasks
+(crontab -l; echo "0 18 * * 5 sh ~/Bash_Scripts/Launchers/Pull.sh >> ~/Bash_Scripts/logs/test.log 2>&1") | crontab -             # pull from git at 18:00 Friday
 (crontab -l; echo "0 20 * * 5 sh ~/Bash_Scripts/Launchers/Test.sh >> ~/Bash_Scripts/logs/test.log 2>&1") | crontab -             # test at 20:00 Friday
 (crontab -l; echo "0 0 * * 6 sh ~/Bash_Scripts/Launchers/Restart.sh >> ~/Bash_Scripts/logs/restart.log 2>&1") | crontab -        # restart at 00:00 Saturday
 (crontab -l; echo "45 7 * * 6 sh ~/Bash_Scripts/Launchers/Scrape.sh >> ~/Bash_Scripts/logs/scrape.log 2>&1") | crontab -         # Scrape info at 07:45 Saturday

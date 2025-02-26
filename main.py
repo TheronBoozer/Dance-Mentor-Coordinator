@@ -18,7 +18,7 @@ def main():
     Adds the created tasks to the correctly scheduled times
     """
 
-    print(f"{datetime.now()}:\n\trunning on {os.name}")
+    print(f"{datetime.now()}:\n\trunning on {"Windows" if os.name == 'nt' else "Linux"}")
 
     task = ''
     if len(sys.argv) > 1:
