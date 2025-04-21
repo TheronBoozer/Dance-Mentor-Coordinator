@@ -1,4 +1,5 @@
 from datetime import datetime
+import traceback
 
 from Phases.Information_Scraping import get_weekly_information
 from Phases.Initiation import send_out_initial_form
@@ -18,7 +19,7 @@ def main():
     Adds the created tasks to the correctly scheduled times
     """
 
-    print(f"{datetime.now()}:\n\trunning on {"Windows" if os.name == 'nt' else "Linux"}")
+    # print(f"{datetime.now()}:\n\trunning on {"Windows" if os.name == 'nt' else "Linux"}")
 
     task = ''
     if len(sys.argv) > 1:
@@ -61,9 +62,10 @@ def main():
 
 try:
     main()
-except Exception as e:
-    print(f"\t{repr(e)}")
-    smtp_mailing([], "ERROR OCCURED", repr(e))
+except Exception:
+    e = traceback.format_exc()
+    print(f"\t{e}")
+    # smtp_mailing([], "ERROR OCCURED", e)
     print("\tError email sent")
 
 clean_folders()

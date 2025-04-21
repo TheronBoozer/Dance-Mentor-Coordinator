@@ -83,13 +83,13 @@ class Session_Request:
         if mentor.get_name() in self.mentor_preference:
             match_rating += 100 + self.mentor_preference.index(mentor.get_name())
 
-        qualifiers = mentor.get_teaching_levels()
+        # qualifiers = mentor.get_teaching_levels()
 
-        for style in self.styles:
-            match_rating += qualifiers[style]["Level"]
+        # for style in self.styles:
+        #     match_rating += qualifiers[style]["Level"]
 
-            for part in self.parts:
-                match_rating += int(part in qualifiers[style]["Part"])
+            # for part in self.parts:
+            #     match_rating += int(part in qualifiers[style]["Part"])
 
         if match_rating > self.assigned_mentor[0]:
             self.assigned_mentor = [match_rating, mentor, time]
