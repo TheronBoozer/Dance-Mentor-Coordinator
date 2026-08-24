@@ -48,7 +48,7 @@ class When2Meet:
         full_unix = datetime.datetime.fromtimestamp(int(timestamp), pytz.timezone("UTC"))
         local_unix = full_unix.astimezone(timezone)
 
-        time_unix = int(time.mktime(local_unix.timetuple())) % (24*3600) - 5*3600       # convert the full unix to just the hour and minute in EST
+        time_unix = int(time.mktime(local_unix.timetuple())) % (24*3600) - 4*3600       # convert the full unix to just the hour and minute in EST
         weekday = full_unix.weekday()                                                   # get the weekday from the full unix
         quarter = Quarter_Hour(weekday, time_unix).set_available()                      # create Quarter_Hour object for the time
 

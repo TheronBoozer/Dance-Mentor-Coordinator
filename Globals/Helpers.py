@@ -21,7 +21,7 @@ def __remove_old_rows(rows : list):
     A function that removes rows with a timestamp older than the last 'initial' phase
     """
     
-    last_week_timing = weekly_timing(["Saturday", "08:00"])                                                # get the unix timestamp of last weeks run
+    last_week_timing = weekly_timing(["Saturday", "08:00"])                                             # get the unix timestamp of last weeks run
 
     for row in rows[::-1]:                                                                              # loop throw each row from the back
         fixed_format = row[:row.index("\t")].strip()                                                    # grab just the timestamp
