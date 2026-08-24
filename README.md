@@ -80,9 +80,7 @@ Install git on the pi:
 
 Then clone the repository:
 
-	git init .
-    git clone https://github.com/TheronBoozer/Dance-Mentor-Coordinator.git
-	cd Dance-Mentor-Coordinator
+	git clone --depth=1 --branch=Deploy https://github.com/TheronBoozer/Dance-Mentor-Coordinator.git ~/
 	git checkout Deploy
 	git pull
 
