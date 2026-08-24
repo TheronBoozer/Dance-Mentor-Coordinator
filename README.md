@@ -74,6 +74,10 @@ Assuming you're on the same network use:
 
     ssh [user]@[hostname].local
 
+Install git on the pi:
+
+	sudo apt install git
+
 Then clone the repository:
 
 	git init .
