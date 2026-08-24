@@ -82,6 +82,7 @@ Then clone the repository:
 
 	git init .
     git clone https://github.com/TheronBoozer/Dance-Mentor-Coordinator.git
+	cd Dance-Mentor-Coordinator
 	git checkout Deploy
 	git pull
 
